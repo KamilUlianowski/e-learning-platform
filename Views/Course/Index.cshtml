@@ -1,0 +1,12 @@
+﻿@model List<E_LearningWeb.Models.Movie>
+
+<ul class="nav nav-pills nav-stacked">
+    @foreach (var item in Model)
+    {
+        <li class="">
+            <a  href="@Url.Action("Index", "Video", new {videoUrl = @item.VideoUrl})">
+                <h3>@item.Title</h3>
+            </a>
+        </li>
+    }
+</ul>

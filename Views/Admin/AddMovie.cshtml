@@ -1,0 +1,59 @@
+﻿@model E_LearningWeb.Models.Movie
+
+
+@*@using (Html.BeginForm("Index", "Admin", FormMethod.Post, new {@class = "addMovieForm", role = "form"}))
+    {
+        <div class="form-group form-inline">
+            @Html.Label("Course Title", new { @class ="form-control " })
+            @Html.TextBoxFor(x => x.Title, new {@class = "form-control"})
+        </div>
+        <div class="form-group form-inline">
+            @Html.Label("Video Url", new { @class = "form-control-label" })
+            @Html.TextBoxFor(x => x.VideoUrl, new { @class = "form-control" })
+        </div>
+    }*@
+
+
+@using (Html.BeginForm("AddMovie", "Admin", FormMethod.Post, new {@class = "addMovieForm", role = "form"}))
+{
+    <div class="form-group row">
+        <label for="inputEmail3" class="col-sm-2 form-control-label">Video Title</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(x => x.Title, new {@class="form-control"})
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="inputPassword3" class="col-sm-2 form-control-label">Video Url</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(x => x.VideoUrl, new { @class = "form-control" })
+        </div>
+    </div>
+  
+    <div class="form-group row">
+        <label class="col-sm-2">Course</label>
+        <div class="col-sm-10">
+           @{
+               var selectList = new SelectList(
+                   new List<SelectListItem>
+                   {
+            new SelectListItem {Text = "C#", Value = "1"},
+            new SelectListItem {Text = "Java", Value = "2"},
+            new SelectListItem {Text = "C++", Value = "3"},
+            new SelectListItem {Text = "Python", Value = "4"},
+            new SelectListItem {Text = "Asp.net", Value = "5"},
+            new SelectListItem {Text = "Spring", Value = "6"},
+            new SelectListItem {Text = "WPF", Value = "7"},
+            new SelectListItem {Text = "WCF", Value = "8"},
+
+                   }, "Value", "Text");
+        }
+
+        @Html.DropDownListFor(m => m.CourseId, selectList, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-offset-2 col-sm-10">
+            <input type="submit" class="btn btn-secondary">Add Movie>
+        </div>
+    </div>
+}

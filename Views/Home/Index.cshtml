@@ -1,0 +1,11 @@
+﻿@model List<E_LearningWeb.Models.Course>
+
+<div class="images">
+    @foreach (var item in Model)
+    {
+        
+        <a href="@Url.Action("Index", "Course", new { courseId=@item.Id })">
+            <img class="img-rounded tile " src=@item.ImageUrl>
+        </a>
+    }
+</div>
