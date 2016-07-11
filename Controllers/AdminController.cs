@@ -1,12 +1,13 @@
 ﻿using E_LearningWeb.Models;
 using Microsoft.SharePoint.Client;
+using System;
 using System.Web.Mvc;
 
 namespace E_LearningWeb.Controllers
 {
     public class AdminController : Controller
     {
-        private static SharePointContext spContext;
+        private static string _spHostUrl = String.Empty;
         // GET: Admin
         public ActionResult Index()
         {
@@ -17,9 +18,9 @@ namespace E_LearningWeb.Controllers
         [HttpGet]
         public ActionResult AddMovie()
         {
-            if (spContext == null)
+            if (_spHostUrl == null)
             {
-                spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
+                _spHostUrl = SharePointContext.GetSPHostUrl(System.Web.HttpContext.Current.Request).AbsoluteUri;
             }
 
             return View();
@@ -28,8 +29,7 @@ namespace E_LearningWeb.Controllers
         [HttpPost]
         public ActionResult AddMovie(Movie movie)
         {
-            //var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
-
+            var spContext = (SharePointContext)System.Web.HttpContext.Current.Session["SharepointContext"];
             using (var clientContext = spContext.CreateUserClientContextForSPHost())
             {
                 if (clientContext != null)
@@ -51,7 +51,9 @@ namespace E_LearningWeb.Controllers
                     clientContext.ExecuteQuery();
                 }
             }
-            return View();
+            return RedirectToAction("AddMovie", "Admin",
+                new { SPHostUrl = _spHostUrl });
+            //  return View();
         }
     }
 }

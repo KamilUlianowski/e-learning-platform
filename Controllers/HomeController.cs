@@ -12,6 +12,8 @@ namespace E_LearningWeb.Controllers
         [SharePointContextFilter]
         public ActionResult Index()
         {
+            System.Web.HttpContext.Current.Session.Add("SharepointContext",
+                SharePointContextProvider.Current.GetSharePointContext(HttpContext));
             var listOfCourses = new List<Course>();
             var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
 

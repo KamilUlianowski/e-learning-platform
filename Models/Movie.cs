@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace E_LearningWeb.Models
 {
@@ -9,7 +6,13 @@ namespace E_LearningWeb.Models
     {
         public int Id { get; set; }
         public int CourseId { get; set; }
+
+        [StringLength(60, MinimumLength = 3)]
+        [Required]
         public string Title { get; set; }
+
+        [Required]
+        [StringLength(60, MinimumLength = 3)]
         public string VideoUrl { get; set; }
     }
 }
