@@ -1,21 +1,31 @@
 ﻿@import url('Site.css');
+
 body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
 
 #Video {
-  width: 100%    !important;
-  height: auto   !important;
+    width: 100% !important;
+    height: auto !important;
+}
+
+.marginTop {
+    margin-top: 15px;
 }
 
 .addMovieForm {
-    margin-top: 10px;    
+    margin-top: 10px;
 }
 
 .images {
     margin-top: 10px;
 }
+
+.rowinline {
+    display: inline;
+}
+
 
 /* Set padding to keep content from hitting the edges */
 .body-content {

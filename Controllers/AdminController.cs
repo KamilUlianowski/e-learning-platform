@@ -1,28 +1,58 @@
-﻿using E_LearningWeb.Models;
+﻿using System;
+using E_LearningWeb.Models;
 using Microsoft.SharePoint.Client;
-using System;
 using System.Web.Mvc;
 
 namespace E_LearningWeb.Controllers
 {
     public class AdminController : Controller
     {
-        private static string _spHostUrl = String.Empty;
         // GET: Admin
         public ActionResult Index()
         {
+            System.Web.HttpContext.Current.Session.Add("logged", true);
+            //   return RedirectToAction("Index", "Home",
+            //new { SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"] });
+
             return View();
         }
 
+        public ActionResult DeleteMovie(int id)
+        {
+
+            var spContext = (SharePointContext)System.Web.HttpContext.Current.Session["SharepointContext"];
+            using (var clientContext = spContext.CreateUserClientContextForSPHost())
+            {
+                if (clientContext != null)
+                {
+                    var web = clientContext.Web;
+                    clientContext.Load(web.Lists);
+                    clientContext.ExecuteQuery();
+                    var contextList = clientContext.Web.Lists.GetByTitle("Movies");
+                    ListItemCollection listItems = contextList.GetItems(CamlQuery.CreateAllItemsQuery());
+                    clientContext.Load(listItems);
+                    clientContext.ExecuteQuery();
+
+                    foreach (ListItem listItem in listItems)
+                    {
+                        if (Convert.ToInt32(listItem["jkyq"]) == id)
+                        {
+                            ListItem itemDelete = listItems.GetById(id);
+                            itemDelete.DeleteObject();
+                            clientContext.ExecuteQuery();
+                            break;
+                        }
+                    }
+
+                }
+            }
+
+            return View();
+        }
 
         [HttpGet]
         public ActionResult AddMovie()
         {
-            if (_spHostUrl == null)
-            {
-                _spHostUrl = SharePointContext.GetSPHostUrl(System.Web.HttpContext.Current.Request).AbsoluteUri;
-            }
-
             return View();
         }
 
@@ -52,7 +82,7 @@ namespace E_LearningWeb.Controllers
                 }
             }
             return RedirectToAction("AddMovie", "Admin",
-                new { SPHostUrl = _spHostUrl });
+                new { SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"] });
             //  return View();
         }
     }

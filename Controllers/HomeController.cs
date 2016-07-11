@@ -1,19 +1,29 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using E_LearningWeb.Models;
+using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using E_LearningWeb.Models;
 
 namespace E_LearningWeb.Controllers
 {
     public class HomeController : Controller
     {
+        private static bool _sessionInitialized = false;
         [SharePointContextFilter]
         public ActionResult Index()
         {
-            System.Web.HttpContext.Current.Session.Add("SharepointContext",
-                SharePointContextProvider.Current.GetSharePointContext(HttpContext));
+            if (_sessionInitialized == false)
+            {
+                _sessionInitialized = true;
+                System.Web.HttpContext.Current.Session.Add("logged", false);
+
+                System.Web.HttpContext.Current.Session.Add("SharepointContext",
+                    SharePointContextProvider.Current.GetSharePointContext(HttpContext));
+
+                System.Web.HttpContext.Current.Session.Add("spHostUrl",
+                    SharePointContext.GetSPHostUrl(System.Web.HttpContext.Current.Request).AbsoluteUri);
+            }
+
             var listOfCourses = new List<Course>();
             var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
 
@@ -30,7 +40,7 @@ namespace E_LearningWeb.Controllers
                     ListItemCollection items = contextList.GetItems(query);
                     clientContext.Load(items);
                     clientContext.ExecuteQuery();
-                  
+
                     foreach (ListItem listItem in items)
                     {
                         listOfCourses.Add(new Course()
@@ -41,7 +51,7 @@ namespace E_LearningWeb.Controllers
                             ImageUrl = listItem["_x0076_pe2"].ToString()
                         });
 
-               
+
                     }
                 }
             }

@@ -12,7 +12,6 @@ namespace E_LearningWeb.Models
         public string Title { get; set; }
 
         [Required]
-        [StringLength(60, MinimumLength = 3)]
         public string VideoUrl { get; set; }
     }
 }
