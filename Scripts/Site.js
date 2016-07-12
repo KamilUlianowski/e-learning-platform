@@ -1,3 +1,3 @@
-﻿$("li").hover(function () {
+﻿$(".movieRow").hover(function () {
     $(this).toggleClass('active');
 });

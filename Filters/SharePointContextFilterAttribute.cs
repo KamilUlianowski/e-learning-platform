@@ -1,4 +1,5 @@
 using System;
+using System.Web;
 using System.Web.Mvc;
 
 namespace E_LearningWeb
@@ -24,8 +25,9 @@ namespace E_LearningWeb
                     filterContext.Result = new RedirectResult(redirectUrl.AbsoluteUri);
                     break;
                 case RedirectionStatus.CanNotRedirect:
-                    filterContext.Result = new ViewResult { ViewName = "Error" };
-                    break;
+                    //filterContext.Result = new ViewResult { ViewName = "Error" };
+                    filterContext.HttpContext = (HttpContextBase)System.Web.HttpContext.Current.Session["HttpContext"];
+                    return;
             }
         }
     }

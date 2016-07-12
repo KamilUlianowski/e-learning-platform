@@ -10,11 +10,11 @@
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
+
             <div class="navbar-header">
-                @Html.ActionLink("E-Learning platform", "Index", "Home", new object {}, new {@class = "navbar-brand"})
-            </div>
-            <div>
-                @Html.ActionLink("Admin", "Index", "Admin", new object { }, new { @class = "navbar-brand" })
+                @Html.ActionLink("E-Learning platform", "Index", "Home", new object { }, new { @class = "navbar-brand" })
+            </div><div class="navbar-header">
+                @Html.ActionLink("Courses", "Course", "Home", new object { }, new { @class = "navbar-brand" })
             </div>
         </div>
     </div>

@@ -1,28 +1,42 @@
-﻿@model List<E_LearningWeb.Models.Movie>
+﻿@model E_LearningWeb.ViewModels.CourseViewModel
 
-<ul class="nav nav-pills nav-stacked" id="ListOfMovies">
-    @foreach (var item in Model)
-    {
-        <li class="inline-block">
-            <a href="@Url.Action("Index", "Video", new {videoUrl = @item.VideoUrl})">
-                <h3>@item.Title</h3>
-            </a>
-            @if ((bool)System.Web.HttpContext.Current.Session["logged"])
-            {
-                <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </button>
-            }
-        </li>
+    <div class="nav nav-pills nav-stacked col-lg-12" id="ListOfMovies">
+        @foreach (var item in Model.ListOfMovies)
+        {
+            <div class="col-lg-10 movieRow">
+                <a href="@Url.Action("Index", "Video", new {videoUrl = @item.VideoUrl})">
+                    <h3>@item.Title</h3>
+                </a>
+            </div>
+            <div class="col-lg-1 marginTop ">
+                @if ((bool)System.Web.HttpContext.Current.Session["logged"])
+                {
+                    <span>
+                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("UpdateMovie", "Admin", new {id = @item.Id, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                    </span>
+                }
+            </div>
+            <div class="col-lg-1 marginTop ">
+                @if ((bool) System.Web.HttpContext.Current.Session["logged"])
+                {
+                    <span>
+                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("DeleteMovie", "Admin", new {id = @item.Id, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </span>
+                }
+            </div>
+        }
 
-    }
-</ul>
-
+    </div>
 @if ((bool)System.Web.HttpContext.Current.Session["logged"])
 {
     <button class="btn btn-primary marginTop" type="button" id="addressSearch"
             onclick="location.href = '@Url.Action("AddMovie", "Admin",
-                                          new {SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
-        <h3> Add new movie </h3>
+                                              new {id = @Model.CourseId, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'"
+            style="margin-left: 15px">
+        <h4> Add new movie </h4>
     </button>
 }
