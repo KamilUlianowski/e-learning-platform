@@ -1,13 +1,17 @@
-﻿using System;
+﻿using E_LearningWeb.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using E_LearningWeb.Models;
 
 namespace E_LearningWeb.Services
 {
     public interface ISharepointService
     {
         List<Course> GetCourses();
+        List<Post> GetDiscussionPosts(string courseName);
+        List<Movie> GetMovies(int courseId);
+        Movie GetMovieInfo(int id);
+        bool AddVote(int movieId, double rating);
+        bool DeleteMovie(int id);
+        bool UpdateMovie(Movie movie);
+
     }
 }

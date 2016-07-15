@@ -1,4 +1,5 @@
 ﻿using E_LearningWeb.Models;
+using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
 using Microsoft.SharePoint.Client;
 using System;
@@ -9,38 +10,17 @@ namespace E_LearningWeb.Controllers
 {
     public class AdminController : Controller
     {
+        private readonly ISharepointService _sharepointService;
 
-        public ActionResult DeleteMovie(int id)
+        public AdminController(ISharepointService sharepointService)
         {
-            int course = 0;
-            var spContext = (SharePointContext)System.Web.HttpContext.Current.Session["SharepointContext"];
-            using (var clientContext = spContext.CreateUserClientContextForSPHost())
-            {
-                if (clientContext != null)
-                {
-                    var web = clientContext.Web;
-                    clientContext.Load(web.Lists);
-                    clientContext.ExecuteQuery();
-                    var contextList = clientContext.Web.Lists.GetByTitle("Movies");
-                    ListItemCollection listItems = contextList.GetItems(CamlQuery.CreateAllItemsQuery());
-                    clientContext.Load(listItems);
-                    clientContext.ExecuteQuery();
+            _sharepointService = sharepointService;
+        }
 
-                    foreach (ListItem listItem in listItems)
-                    {
-                        if (Convert.ToInt32(listItem["jkyq"]) == id)
-                        {
-                            course = Convert.ToInt32(listItem["b9dk"]);
-                            ListItem itemDelete = listItem;
-                            itemDelete.DeleteObject();
-                            clientContext.ExecuteQuery();
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return RedirectToAction("Index", "Course", new { courseId = course });
+        public ActionResult DeleteMovie(int id, int courseId)
+        {
+            _sharepointService.DeleteMovie(id);
+            return RedirectToAction("Index", "Course", new { courseId = courseId });
         }
 
         [HttpGet]
@@ -120,36 +100,7 @@ namespace E_LearningWeb.Controllers
         [HttpPost]
         public ActionResult UpdateMovie(Movie movie)
         {
-            var spContext = (SharePointContext)System.Web.HttpContext.Current.Session["SharepointContext"];
-            using (var clientContext = spContext.CreateUserClientContextForSPHost())
-            {
-                if (clientContext != null)
-                {
-                    var web = clientContext.Web;
-                    clientContext.Load(web.Lists);
-                    clientContext.ExecuteQuery();
-                    var contextList = clientContext.Web.Lists.GetByTitle("Movies");
-
-
-                    ListItemCollection listItems = contextList.GetItems(CamlQuery.CreateAllItemsQuery());
-                    clientContext.Load(listItems);
-                    clientContext.ExecuteQuery();
-
-                    foreach (ListItem listItem in listItems)
-                    {
-                        if (Convert.ToInt32(listItem["jkyq"]) == movie.Id)
-                        {
-                            listItem["Title"] = movie.Title;
-                            listItem["meuv"] = movie.VideoUrl;
-                            listItem["b9dk"] = movie.CourseId;
-                            listItem.Update();
-                            clientContext.ExecuteQuery();
-                            break;
-                        }
-                    }
-
-                }
-            }
+            _sharepointService.UpdateMovie(movie);
             return RedirectToAction("Index", "Course", new { courseId = movie.CourseId });
         }
 

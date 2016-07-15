@@ -24,7 +24,7 @@
             @if ((bool)System.Web.HttpContext.Current.Session["logged"])
             {
                 <span>
-                    <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("DeleteMovie", "Admin", new {id = @item.Id, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
+                    <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("DeleteMovie", "Admin", new {id = @item.Id, courseId = @item.CourseId, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
                         <span class="glyphicon glyphicon-remove"></span>
                     </button>
                 </span>
@@ -117,7 +117,7 @@
 
                     </article>
                 }
-                @using (Html.BeginForm("Course", "Home", FormMethod.Post, new { role = "form" }))
+                @using (Html.BeginForm("ListOfCourses", "Course", FormMethod.Post, new { role = "form" }))
                 {
                     <div class="well">
                         <h4>Leave a Comment:</h4>
