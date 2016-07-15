@@ -1,42 +1,133 @@
 ﻿@model E_LearningWeb.ViewModels.CourseViewModel
 
-    <div class="nav nav-pills nav-stacked col-lg-12" id="ListOfMovies">
-        @foreach (var item in Model.ListOfMovies)
-        {
-            <div class="col-lg-10 movieRow">
-                <a href="@Url.Action("Index", "Video", new {videoUrl = @item.VideoUrl})">
-                    <h3>@item.Title</h3>
-                </a>
-            </div>
-            <div class="col-lg-1 marginTop ">
-                @if ((bool)System.Web.HttpContext.Current.Session["logged"])
-                {
-                    <span>
-                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("UpdateMovie", "Admin", new {id = @item.Id, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </button>
-                    </span>
-                }
-            </div>
-            <div class="col-lg-1 marginTop ">
-                @if ((bool) System.Web.HttpContext.Current.Session["logged"])
-                {
-                    <span>
-                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("DeleteMovie", "Admin", new {id = @item.Id, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                    </span>
-                }
-            </div>
-        }
+<div class="nav nav-pills nav-stacked col-lg-12" id="ListOfMovies">
+    @foreach (var item in Model.ListOfMovies)
+    {
 
-    </div>
+        <div class="col-lg-8 movieRow">
+            <a href="@Url.Action("Index", "Video", new {videoUrl = @item.VideoUrl})">
+                <h3><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>   <span>@item.Title</span></h3>
+            </a>
+        </div>
+        <div id="@item.Id" class="rateit col-lg-2" style="margin-top: 20px" data-rateit-value="@item.Rating" data-rateit-ispreset="true"></div>
+        <div class="col-lg-1 marginTop ">
+            @if ((bool)System.Web.HttpContext.Current.Session["logged"])
+            {
+                <span>
+                    <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("UpdateMovie", "Admin", new {id = @item.Id, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                </span>
+            }
+        </div>
+        <div class="col-lg-1 marginTop ">
+            @if ((bool)System.Web.HttpContext.Current.Session["logged"])
+            {
+                <span>
+                    <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("DeleteMovie", "Admin", new {id = @item.Id, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </span>
+            }
+        </div>
+    }
+
+</div>
 @if ((bool)System.Web.HttpContext.Current.Session["logged"])
 {
-    <button class="btn btn-primary marginTop" type="button" id="addressSearch"
-            onclick="location.href = '@Url.Action("AddMovie", "Admin",
-                                              new {id = @Model.CourseId, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'"
-            style="margin-left: 15px">
-        <h4> Add new movie </h4>
-    </button>
-}
+    <button type="button" class="btn btn-primary btn-lg marginTop" style="margin-left: 15px" data-toggle="modal" data-target="#myModal">Add movie</button>
+
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                @using (Html.BeginForm("AddMovie", "Admin", FormMethod.Post, new { role = "form" }))
+                {
+                    <div class="modal-header form-group">
+                            <label class="form-control-label">Video Title</label>
+                            @Html.TextBoxFor(x => x.NewMovie.Title, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.NewMovie.Title)
+                    </div>
+
+                    <div class="modal-header form-group">
+                            <label class="form-control-label">Video Url</label>
+                            @Html.TextBoxFor(x => x.NewMovie.VideoUrl, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.NewMovie.VideoUrl)
+                    </div>
+
+                    <div class="modal-header">
+                        <label class="form-control-label">Course</label>
+                        @{
+                            var selectList = new SelectList(
+                                new List<SelectListItem>
+                                {
+                                    new SelectListItem {Text = "C#", Value = "1"},
+                                    new SelectListItem {Text = "Java", Value = "2"},
+                                    new SelectListItem {Text = "C++", Value = "3"},
+                                    new SelectListItem {Text = "Python", Value = "4"},
+                                    new SelectListItem {Text = "Asp.net", Value = "5"},
+                                    new SelectListItem {Text = "Spring", Value = "6"},
+                                    new SelectListItem {Text = "WPF", Value = "7"},
+                                    new SelectListItem {Text = "WCF", Value = "8"},
+
+                                }, "Value", "Text");
+                        }
+
+                        @Html.DropDownListFor(m => m.CourseId, new SelectList(selectList, "Value", "Text", @Model.CourseId), new { @class = "form-control" })
+                    </div>
+
+                    <div class="form-group modal-header">
+                        <input type="submit" class="btn btn-primary" value="Add">
+                    </div>
+
+                            }
+            </div>
+        </div>
+    </div>
+                            }
+
+
+<button id="ButtonPosts">Comments (@Model.ListOfPosts.Count)</button>
+<div id="Posts" class="container" style="display:none;">
+    <div class="row">
+
+        <div class="col-md-8">
+            <section class="comment-list">
+                <!-- First Comment -->
+                @foreach (var item in Model.ListOfPosts)
+                {
+                    <article class="row marginTop">
+
+                        <div class="col-md-12 col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <header class="text-left">
+                                        <span><b>@item.Author</b> on</span><time class="comment-date"><i class="fa fa-clock-o"></i> @item.Created</time>
+                                    </header>
+                                    <div class="comment-post">
+                                        <p>
+                                            @item.Body
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </article>
+                }
+                @using (Html.BeginForm("Course", "Home", FormMethod.Post, new { role = "form" }))
+                {
+                    <div class="well">
+                        <h4>Leave a Comment:</h4>
+                        <div class="form-group">
+                            @Html.TextAreaFor(x => x.Text, new { @class = "form-control", @rows = 5, @style = "-moz-min-width:100%;-ms-min-width:100%;-o-min-width:100%;-webkit-min-width:100%;min-width:100%" })
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add comment</button>
+                    </div>
+                }
+            </section>
+        </div>
+    </div>
+</div>

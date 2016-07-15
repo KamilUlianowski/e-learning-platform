@@ -1,4 +1,5 @@
 ﻿using E_LearningWeb.Models;
+using E_LearningWeb.ViewModels;
 using Microsoft.SharePoint.Client;
 using System;
 using System.Text.RegularExpressions;
@@ -45,11 +46,11 @@ namespace E_LearningWeb.Controllers
         [HttpGet]
         public ActionResult AddMovie(int id)
         {
-            return View();
+            return View(new Movie() { CourseId = id });
         }
 
         [HttpPost]
-        public ActionResult AddMovie(Movie movie)
+        public ActionResult AddMovie(CourseViewModel courseViewModel)
         {
             var spContext = (SharePointContext)System.Web.HttpContext.Current.Session["SharepointContext"];
             using (var clientContext = spContext.CreateUserClientContextForSPHost())
@@ -61,22 +62,25 @@ namespace E_LearningWeb.Controllers
                     clientContext.ExecuteQuery();
                     var contextList = clientContext.Web.Lists.GetByTitle("Movies");
 
-                    string id = GetVideoId(movie.VideoUrl);
+                    string id = GetVideoId(courseViewModel.NewMovie.VideoUrl);
                     string embedUrl =
                     "https://www.youtube.com/embed/" + id;
 
                     ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
                     ListItem listItem = contextList.AddItem(itemCreateInfo);
-                    listItem["Title"] = movie.Title;
+                    listItem["Title"] = courseViewModel.NewMovie.Title;
                     listItem["meuv"] = embedUrl;
-                    listItem["b9dk"] = movie.CourseId;
-                    listItem["jkyq"] = 100;
+                    listItem["b9dk"] = courseViewModel.CourseId;
+                    listItem["jkyq"] = Int32.Parse(System.Web.HttpContext.Current.Session["MaxMovieId"].ToString()) + 1;
+                    listItem["envb"] = 0;
+                    listItem["snyt"] = 0;
+
 
                     listItem.Update();
                     clientContext.ExecuteQuery();
                 }
             }
-            return RedirectToAction("Index", "Course", new { courseId = movie.CourseId });
+            return RedirectToAction("Index", "Course", new { courseId = courseViewModel.CourseId });
             //  return View();
         }
 

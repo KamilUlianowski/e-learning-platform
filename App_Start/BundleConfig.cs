@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace E_LearningWeb
 {
@@ -9,6 +8,8 @@ namespace E_LearningWeb
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+                "~/Scripts/jquery.rateit.js",
+                "~/Scripts/jquery.star-rating-svg.js",
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -28,6 +29,8 @@ namespace E_LearningWeb
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/rateit.css",
+                      "~/Content/star-rating-svg.css",
                       "~/Content/site.css"));
         }
     }

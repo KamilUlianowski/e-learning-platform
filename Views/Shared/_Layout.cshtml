@@ -4,17 +4,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link rel="stylesheet" type="text/css" href="/Content/star-rating-svg.css">
+    <script src="/Scripts/jquery.star-rating-svg.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
 
-            <div class="navbar-header">
+            <div class="navbar-header" style="margin-left: 15px">
                 @Html.ActionLink("E-Learning platform", "Index", "Home", new object { }, new { @class = "navbar-brand" })
             </div><div class="navbar-header">
-                @Html.ActionLink("Courses", "Course", "Home", new object { }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Courses", "ListOfCourses"
+                                            , "Course", new object { }, new { @class = "navbar-brand" })
             </div>
         </div>
     </div>
@@ -28,6 +32,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/metro-ui")
     @Scripts.Render("~/bundles/spcontext")
     @Scripts.Render("~/Scripts/Site.js")
     @RenderSection("scripts", required: false)

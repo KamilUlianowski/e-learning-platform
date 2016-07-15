@@ -1,0 +1,13 @@
+﻿@using E_LearningWeb.Models
+@using Microsoft.SharePoint.Client
+@model List<Course>
+
+<div class="marginTop col-lg-12">
+    @foreach (var item in Model)
+    {
+        <a href="@Url.Action("Index", "Course", new {courseId = @item.Id, courseName = @item.Title})">
+            <img src=@item.ImageUrl>
+        </a>
+    }
+</div>
+

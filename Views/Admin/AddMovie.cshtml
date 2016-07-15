@@ -5,7 +5,7 @@
     <div class="form-group row marginTop">
         <label class="col-sm-2 form-control-label">Video Title</label>
         <div class="col-sm-10">
-            @Html.TextBoxFor(x => x.Title, new {@class="form-control"})
+            @Html.TextBoxFor(x => x.Title, new {@class = "form-control"})
             @Html.ValidationMessageFor(x => x.Title)
         </div>
     </div>
@@ -36,7 +36,8 @@
                    }, "Value", "Text");
         }
 
-        @Html.DropDownListFor(m => m.CourseId, selectList, new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.CourseId, new SelectList(selectList,"Value","Text", @Model.CourseId), new { @class = "form-control"})
+            
         </div>
     </div>
     <div class="form-group row">
