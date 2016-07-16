@@ -7,9 +7,9 @@ namespace E_LearningWeb.Controllers
 {
     public class CourseController : Controller
     {
-        private readonly SharepointService _sharepointService;
+        private readonly ISharepointService _sharepointService;
 
-        public CourseController(SharepointService sharepointService)
+        public CourseController(ISharepointService sharepointService)
         {
             _sharepointService = sharepointService;
         }
@@ -22,16 +22,22 @@ namespace E_LearningWeb.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index(string courseId, string courseName)
+        public ActionResult Index(string courseId)
         {
             CourseViewModel courseViewModel = new CourseViewModel()
             {
                 CourseId = Parse(courseId),
-                ListOfPosts = _sharepointService.GetDiscussionPosts(courseName),
+                ListOfPosts = _sharepointService.GetDiscussionPosts(courseId),
                 ListOfMovies = _sharepointService.GetMovies(Parse(courseId))
             };
-
             return View(courseViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Index(string text, string courseId)
+        {
+            _sharepointService.AddPost(text, courseId);
+            return RedirectToAction("Index", "Course", new {courseId = courseId});
         }
 
         public bool AddVote(int movieId, double rating)

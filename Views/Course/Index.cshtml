@@ -117,7 +117,7 @@
 
                     </article>
                 }
-                @using (Html.BeginForm("ListOfCourses", "Course", FormMethod.Post, new { role = "form" }))
+                @using (Html.BeginForm("Index", "Course", new { courseId = @Model.CourseId }, FormMethod.Post))
                 {
                     <div class="well">
                         <h4>Leave a Comment:</h4>

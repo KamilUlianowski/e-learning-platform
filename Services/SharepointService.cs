@@ -3,6 +3,7 @@ using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace E_LearningWeb.Services
 {
@@ -31,6 +32,14 @@ namespace E_LearningWeb.Services
             clientContext.Load(items);
             clientContext.ExecuteQuery();
             return items;
+        }
+
+        private string GetVideoId(string link)
+        {
+            var youtubeMatch =
+             new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)")
+             .Match(link);
+            return youtubeMatch.Success ? youtubeMatch.Groups[1].Value : string.Empty;
         }
 
         public List<Course> GetCourses()
@@ -90,7 +99,7 @@ namespace E_LearningWeb.Services
             return movie;
         }
 
-        public List<Post> GetDiscussionPosts(string courseName)
+        public List<Post> GetDiscussionPosts(string courseId)
         {
             var listOfPosts = new List<Post>();
             if (clientContext == null) return listOfPosts;
@@ -99,10 +108,10 @@ namespace E_LearningWeb.Services
             int id = 0;
             foreach (var item in items)
             {
-                if (item["Title"] != null)
+                if (item["CourseId"] != null)
                 {
-                    var title = item["Title"].ToString();
-                    if (String.Equals(courseName, title))
+                    var course = item["CourseId"].ToString();
+                    if (string.Equals(courseId,course))
                     {
                         id = Int32.Parse(item["ID"].ToString());
                     }
@@ -120,6 +129,32 @@ namespace E_LearningWeb.Services
                 }
             }
             return listOfPosts;
+
+        }
+
+        public bool AddPost(string text, string courseId)
+        {
+            var contextList = GetSharepointListByTitle("Discussion");
+            var items = GetAllItems(contextList);
+            int id = 0;
+            foreach (var item in items)
+            {
+                if (item["CourseId"] != null)
+                {
+                    var course = item["CourseId"].ToString();
+                    if (string.Equals(course,courseId))
+                    {
+                        id = Int32.Parse(item["ID"].ToString());
+                    }
+                }
+            }
+            ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
+            ListItem listItem = contextList.AddItem(itemCreateInfo);
+            listItem["Body"] = text;
+            listItem["ParentItemID"] = id;
+            listItem.Update();
+            clientContext.ExecuteQuery();
+            return true;
 
         }
 
@@ -181,6 +216,28 @@ namespace E_LearningWeb.Services
             }
 
             return false;
+        }
+
+        public bool AddMovie(Movie movie)
+        {
+            var contextList = GetSharepointListByTitle("Movies");
+            string id = GetVideoId(movie.VideoUrl);
+            string embedUrl =
+            "https://www.youtube.com/embed/" + id;
+
+            ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
+            ListItem listItem = contextList.AddItem(itemCreateInfo);
+            listItem["Title"] = movie.Title;
+            listItem["meuv"] = embedUrl;
+            listItem["b9dk"] = movie.CourseId;
+            listItem["jkyq"] = Int32.Parse(System.Web.HttpContext.Current.Session["MaxMovieId"].ToString()) + 1;
+            listItem["envb"] = 0;
+            listItem["snyt"] = 0;
+
+            listItem.Update();
+            clientContext.ExecuteQuery();
+
+            return true;
         }
     }
 }

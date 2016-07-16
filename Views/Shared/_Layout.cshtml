@@ -14,12 +14,17 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
 
-            <div class="navbar-header" style="margin-left: 15px">
+            <div class="navbar-header">
                 @Html.ActionLink("E-Learning platform", "Index", "Home", new object { }, new { @class = "navbar-brand" })
-            </div><div class="navbar-header">
-                @Html.ActionLink("Courses", "ListOfCourses"
-                                            , "Course", new object { }, new { @class = "navbar-brand" })
             </div>
+            <div class="navbar-header">
+                @Html.ActionLink("Courses", "ListOfCourses"
+                    , "Course", new object {}, new {@class = "navbar-brand"})
+            </div>
+            <div class="navbar-header">
+            @Html.ActionLink("Tests", "Index"
+                                            , "Test", new object { }, new { @class = "navbar-brand" })
+        </div>
         </div>
     </div>
     <div class="container body-content">
