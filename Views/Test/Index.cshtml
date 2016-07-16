@@ -1,1 +1,73 @@
-﻿
+﻿@model List<E_LearningWeb.Models.Question>
+@{
+    int iterator = 0;
+    string labelName = string.Empty;
+}
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 id="QuestionText" class="modal-title">@Model[0].Text</h2>
+            </div>
+            <div class="modal-body">
+                <div class="radio">
+                    <h3>
+                        <input type="radio" id="answer1" name="optradio" value=0><label for="answer1" title="0">@Model[0].Answers[0];</label>
+                    </h3>
+                </div>
+                <div class="radio">
+                    <h3>
+                        <input type="radio" id="answer2" name="optradio" value=1><label for="answer2" title="1">@Model[0].Answers[1];</label>
+                    </h3>
+                </div>
+                <div class="radio">
+                    <h3>
+                        <input type="radio" id="answer3" name="optradio" value=2><label for="answer3" title="2" >@Model[0].Answers[2];</label>
+                    </h3>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="ConfirmButton2" type="button" class="btn btn-default">Select</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script type='text/javascript'>
+    var correctAnswer = @Model[0].CorrectAnswer;
+    //@labelName = "answer" + correctAnswer;
+    var count = 0;
+    $("#ConfirmButton2").click(function() {
+        count++;
+        if (count % 2 == 0) {
+            @if (iterator < Model.Count)
+            {
+                iterator++;
+                <text>
+            var z = $("input[type='radio']:checked").val();
+            $('label[title=@Model[0].CorrectAnswer]').removeClass("goodAnswer");
+            $("#ConfirmButton2").text("Selected");
+            $("#QuestionText").text("@Model[iterator].Text");
+            $('label[for=answer1]').text("@Model[iterator].Answers[0]");
+            $('label[for=answer2]').text("@Model[iterator].Answers[1]");
+            $('label[for=answer3]').text("@Model[iterator].Answers[2]");
+
+            </text>
+            }
+        } else {
+
+            $("#ConfirmButton2").text("Next");
+            $('label[title=@Model[0].CorrectAnswer]').addClass("goodAnswer");
+
+        }
+
+
+    });
+</script>

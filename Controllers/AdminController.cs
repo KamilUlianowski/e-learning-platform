@@ -20,12 +20,6 @@ namespace E_LearningWeb.Controllers
             return RedirectToAction("Index", "Course", new { courseId = courseId });
         }
 
-        [HttpGet]
-        public ActionResult AddMovie(int id)
-        {
-            return View(new Movie() { CourseId = id });
-        }
-
         [HttpPost]
         public ActionResult AddMovie(CourseViewModel courseViewModel)
         {

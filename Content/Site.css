@@ -146,3 +146,17 @@ textarea {
     width: 100px; /* width of the spinner gif */
     height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
 }
+
+@media screen and (min-width: 768px) {
+  .modal-lg{
+      width:900px;
+  }
+
+  .modal-sm{
+      width:300px;
+  }
+}
+
+.goodAnswer {
+    background-color: green;
+}
