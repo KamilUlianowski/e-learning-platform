@@ -80,6 +80,32 @@ namespace E_LearningWeb.Services
             return listOfMovies.Where(x => x.CourseId == Convert.ToInt32(courseId)).ToList();
         }
 
+        public List<Question> GetQuestions()
+        {
+            var listOfQuestions = new List<Question>();
+            if (clientContext == null) return listOfQuestions;
+            var contextList = GetSharepointListByTitle("Questions");
+            var items = GetAllItems(contextList);
+
+            foreach (var item in items)
+            {
+                listOfQuestions.Add(new Question()
+                {
+                    Text = item["emrq"].ToString(),
+                    Answers = new List<string>()
+                        {
+                            item["igug"].ToString(),
+                            item["_x0066_nv6"].ToString(),
+                            item["_x0065_es5"].ToString()
+                        },
+                    CorrectAnswer = Int32.Parse(item["t2vj"].ToString()),
+                    TestId = Int32.Parse(item["wm0t"].ToString())
+                });
+            }
+
+            return listOfQuestions;
+        }
+
         public Movie GetMovieInfo(int id)
         {
             var movie = new Movie();
@@ -111,7 +137,7 @@ namespace E_LearningWeb.Services
                 if (item["CourseId"] != null)
                 {
                     var course = item["CourseId"].ToString();
-                    if (string.Equals(courseId,course))
+                    if (string.Equals(courseId, course))
                     {
                         id = Int32.Parse(item["ID"].ToString());
                     }
@@ -142,7 +168,7 @@ namespace E_LearningWeb.Services
                 if (item["CourseId"] != null)
                 {
                     var course = item["CourseId"].ToString();
-                    if (string.Equals(course,courseId))
+                    if (string.Equals(course, courseId))
                     {
                         id = Int32.Parse(item["ID"].ToString());
                     }

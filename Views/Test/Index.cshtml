@@ -1,6 +1,7 @@
 ﻿@using Microsoft.Ajax.Utilities
 @model E_LearningWeb.ViewModels.TestViewModel
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+<button type="button" class="btn btn-primary btn-lg buttonTest marginTop col-lg-12" data-toggle="modal" data-target="#myModal" value="1">C# Collections and Generics</button>
+<button type="button" class="btn btn-primary btn-lg buttonTest marginTop col-lg-12" data-toggle="modal" data-target="#myModal" value="2">C# Functional Programming</button>
 
 <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -8,22 +9,22 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h2 id="QuestionText" class="modal-title">@Model.ListOfQuestions[0].Text</h2>
+                <h2 id="QuestionText" class="modal-title"></h2>
             </div>
             <div class="modal-body">
                 <div class="radio">
                     <h3>
-                        <input type="radio" id="answer0" name="optradio" value=0><label for="answer0" title="0">@Model.ListOfQuestions[0].Answers[0];</label>
+                        <input type="radio" id="answer0" name="optradio" value=0><label class="label label-default" for="answer0" title="0"></label>
                     </h3>
                 </div>
                 <div class="radio">
                     <h3>
-                        <input type="radio" id="answer1" name="optradio" value=1><label for="answer1" title="1">@Model.ListOfQuestions[0].Answers[1];</label>
+                        <input type="radio" id="answer1" name="optradio" value=1><label class="label label-default" for="answer1" title="1"></label>
                     </h3>
                 </div>
                 <div class="radio">
                     <h3>
-                        <input type="radio" id="answer2" name="optradio" value=2><label for="answer2" title="2">@Model.ListOfQuestions[0].Answers[2];</label>
+                        <input type="radio" id="answer2" name="optradio" value=2><label class="label label-default" for="answer2" title="2"></label>
                     </h3>
                 </div>
             </div>
@@ -39,37 +40,67 @@
 
 <script type='text/javascript'>
     var iterator = 0;
+    var correctAnswers = 0;
     var listOfPosts = [];
-    @foreach (var item in Model.ListOfQuestions)
-    {
-        <text>
-    listOfPosts.push({
-        text: "@HttpUtility.JavaScriptStringEncode(item.Text)",
-        answers: ["@HttpUtility.JavaScriptStringEncode(item.Answers[0])", "@HttpUtility.JavaScriptStringEncode(item.Answers[1])",
-            "@HttpUtility.JavaScriptStringEncode(item.Answers[2])"],
-        correctAnswer: "@item.CorrectAnswer"
-    });
-    </text>
-    }
+    var testId;
+    var itemId = 0;
+    var selectedAnswer;
     var count = 0;
-    $("#ConfirmButton2").click(function() {
+    $(".buttonTest").click(function () {
+        testId = $(this).val();
+        if (count % 2 == 1) {
+            $("label").removeClass("label-danger label-success");
+            count = 0;
+        }
+        iterator = 0;
+        listOfPosts = [];
+        @foreach (var item in Model.ListOfQuestions)
+        {
+
+            <text>
+        itemId = @item.TestId;
+        if (testId == itemId) {
+            listOfPosts.push({
+                text: "@HttpUtility.JavaScriptStringEncode(item.Text)",
+                answers: [
+                    "@HttpUtility.JavaScriptStringEncode(item.Answers[0])", "@HttpUtility.JavaScriptStringEncode(item.Answers[1])",
+                    "@HttpUtility.JavaScriptStringEncode(item.Answers[2])"
+                ],
+                correctAnswer: "@item.CorrectAnswer"
+            });
+        }
+        </text>
+        }
+        $("#QuestionText").text(listOfPosts[iterator].text);
+        $('label[for=answer0]').text(listOfPosts[iterator].answers[0]);
+        $('label[for=answer1]').text(listOfPosts[iterator].answers[1]);
+        $('label[for=answer2]').text(listOfPosts[iterator].answers[2]);
+    });
+    $("#ConfirmButton2").click(function () {
         count++;
 
         if (count % 2 == 0) {
             if (iterator < listOfPosts.length) {
-                 $('label[title=' +listOfPosts[iterator-1].correctAnswer + ']').removeClass("goodAnswer");
+                $("label").removeClass("label-danger label-success");
                 $("#ConfirmButton2").text("Selected");
                 $("#QuestionText").text(listOfPosts[iterator].text);
                 $('label[for=answer0]').text(listOfPosts[iterator].answers[0]);
                 $('label[for=answer1]').text(listOfPosts[iterator].answers[1]);
                 $('label[for=answer2]').text(listOfPosts[iterator].answers[2]);
             } else {
-                alert("Koniec testu");
+                alert("Koniec testu, liczba poprawnych odpowiedzi : " + correctAnswers + "/" + listOfPosts.length);
+                @Url.Action("Result","Test");
             }
 
         } else {
+            selectedAnswer = $('input[type=radio]:checked').val();
+            if (selectedAnswer == listOfPosts[iterator].correctAnswer) {
+                correctAnswers++;
+            } else {
+                $('label[title=' + selectedAnswer + ']').addClass("label-danger");
+            }
             $("#ConfirmButton2").text("Next");
-            $('label[title=' + listOfPosts[iterator].correctAnswer + ']').addClass("goodAnswer");
+            $('label[title=' + listOfPosts[iterator].correctAnswer + ']').addClass("label-success");
             iterator++;
         }
 

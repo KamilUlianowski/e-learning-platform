@@ -6,27 +6,24 @@ namespace E_LearningWeb.Controllers
 {
     public class TestController : Controller
     {
-        private readonly ITestService _testService;
+        private readonly ISharepointService _sharepointService;
         private static int _position;
 
-        public TestController(ITestService testService)
+        public TestController(ISharepointService sharepointService)
         {
-            _testService = testService;
+            _sharepointService = sharepointService;
         }
 
         public ActionResult Index()
         {
-            Session.Add("Position", 1);
             TestViewModel testViewModel = new TestViewModel();
-            testViewModel.ListOfQuestions = _testService.GetQuestions();
+            testViewModel.ListOfQuestions = _sharepointService.GetQuestions();
             return View(testViewModel);
         }
 
-        public bool GetPosition()
+        public ActionResult Result()
         {
-            Session["Position"] = ++_position;
-            var z = Session["Position"];
-            return true;
+            return View();
         }
     }
 }

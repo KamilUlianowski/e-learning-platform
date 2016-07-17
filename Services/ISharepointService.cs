@@ -8,12 +8,14 @@ namespace E_LearningWeb.Services
         List<Course> GetCourses();
         List<Post> GetDiscussionPosts(string courseId);
         List<Movie> GetMovies(int courseId);
+        List<Question> GetQuestions();
         Movie GetMovieInfo(int id);
         bool AddVote(int movieId, double rating);
         bool DeleteMovie(int id);
         bool UpdateMovie(Movie movie);
         bool AddMovie(Movie movie);
         bool AddPost(string text, string courseId);
+
 
     }
 }
