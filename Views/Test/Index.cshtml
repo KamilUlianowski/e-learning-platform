@@ -1,8 +1,5 @@
-﻿@model List<E_LearningWeb.Models.Question>
-@{
-    int iterator = 0;
-    string labelName = string.Empty;
-}
+﻿@using Microsoft.Ajax.Utilities
+@model E_LearningWeb.ViewModels.TestViewModel
 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
 <div id="myModal" class="modal fade" role="dialog">
@@ -11,22 +8,22 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h2 id="QuestionText" class="modal-title">@Model[0].Text</h2>
+                <h2 id="QuestionText" class="modal-title">@Model.ListOfQuestions[0].Text</h2>
             </div>
             <div class="modal-body">
                 <div class="radio">
                     <h3>
-                        <input type="radio" id="answer1" name="optradio" value=0><label for="answer1" title="0">@Model[0].Answers[0];</label>
+                        <input type="radio" id="answer0" name="optradio" value=0><label for="answer0" title="0">@Model.ListOfQuestions[0].Answers[0];</label>
                     </h3>
                 </div>
                 <div class="radio">
                     <h3>
-                        <input type="radio" id="answer2" name="optradio" value=1><label for="answer2" title="1">@Model[0].Answers[1];</label>
+                        <input type="radio" id="answer1" name="optradio" value=1><label for="answer1" title="1">@Model.ListOfQuestions[0].Answers[1];</label>
                     </h3>
                 </div>
                 <div class="radio">
                     <h3>
-                        <input type="radio" id="answer3" name="optradio" value=2><label for="answer3" title="2" >@Model[0].Answers[2];</label>
+                        <input type="radio" id="answer2" name="optradio" value=2><label for="answer2" title="2">@Model.ListOfQuestions[0].Answers[2];</label>
                     </h3>
                 </div>
             </div>
@@ -41,31 +38,39 @@
 @Scripts.Render("~/bundles/jquery")
 
 <script type='text/javascript'>
-    var correctAnswer = @Model[0].CorrectAnswer;
-    //@labelName = "answer" + correctAnswer;
+    var iterator = 0;
+    var listOfPosts = [];
+    @foreach (var item in Model.ListOfQuestions)
+    {
+        <text>
+    listOfPosts.push({
+        text: "@HttpUtility.JavaScriptStringEncode(item.Text)",
+        answers: ["@HttpUtility.JavaScriptStringEncode(item.Answers[0])", "@HttpUtility.JavaScriptStringEncode(item.Answers[1])",
+            "@HttpUtility.JavaScriptStringEncode(item.Answers[2])"],
+        correctAnswer: "@item.CorrectAnswer"
+    });
+    </text>
+    }
     var count = 0;
     $("#ConfirmButton2").click(function() {
         count++;
+
         if (count % 2 == 0) {
-            @if (iterator < Model.Count)
-            {
-                iterator++;
-                <text>
-            var z = $("input[type='radio']:checked").val();
-            $('label[title=@Model[0].CorrectAnswer]').removeClass("goodAnswer");
-            $("#ConfirmButton2").text("Selected");
-            $("#QuestionText").text("@Model[iterator].Text");
-            $('label[for=answer1]').text("@Model[iterator].Answers[0]");
-            $('label[for=answer2]').text("@Model[iterator].Answers[1]");
-            $('label[for=answer3]').text("@Model[iterator].Answers[2]");
-
-            </text>
+            if (iterator < listOfPosts.length) {
+                 $('label[title=' +listOfPosts[iterator-1].correctAnswer + ']').removeClass("goodAnswer");
+                $("#ConfirmButton2").text("Selected");
+                $("#QuestionText").text(listOfPosts[iterator].text);
+                $('label[for=answer0]').text(listOfPosts[iterator].answers[0]);
+                $('label[for=answer1]').text(listOfPosts[iterator].answers[1]);
+                $('label[for=answer2]').text(listOfPosts[iterator].answers[2]);
+            } else {
+                alert("Koniec testu");
             }
+
         } else {
-
             $("#ConfirmButton2").text("Next");
-            $('label[title=@Model[0].CorrectAnswer]').addClass("goodAnswer");
-
+            $('label[title=' + listOfPosts[iterator].correctAnswer + ']').addClass("goodAnswer");
+            iterator++;
         }
 
 

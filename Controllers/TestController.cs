@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using E_LearningWeb.Services;
+using E_LearningWeb.ViewModels;
 using System.Web.Mvc;
-using E_LearningWeb.Services;
 
 namespace E_LearningWeb.Controllers
 {
     public class TestController : Controller
     {
         private readonly ITestService _testService;
+        private static int _position;
 
         public TestController(ITestService testService)
         {
@@ -18,8 +16,17 @@ namespace E_LearningWeb.Controllers
 
         public ActionResult Index()
         {
-            var questions = _testService.GetQuestions();
-            return View(questions);
+            Session.Add("Position", 1);
+            TestViewModel testViewModel = new TestViewModel();
+            testViewModel.ListOfQuestions = _testService.GetQuestions();
+            return View(testViewModel);
+        }
+
+        public bool GetPosition()
+        {
+            Session["Position"] = ++_position;
+            var z = Session["Position"];
+            return true;
         }
     }
 }

@@ -227,6 +227,7 @@
     <Compile Include="SharePointContext.cs" />
     <Compile Include="TokenHelper.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
+    <Compile Include="ViewModels\TestViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\ajaxloader.gif" />
