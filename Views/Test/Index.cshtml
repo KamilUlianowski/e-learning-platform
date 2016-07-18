@@ -3,28 +3,29 @@
 <button type="button" class="btn btn-primary btn-lg buttonTest marginTop col-lg-12" data-toggle="modal" data-target="#myModal" value="1">C# Collections and Generics</button>
 <button type="button" class="btn btn-primary btn-lg buttonTest marginTop col-lg-12" data-toggle="modal" data-target="#myModal" value="2">C# Functional Programming</button>
 
-<div id="myModal" class="modal fade" role="dialog">
+<div id="myModal" class="modal fade" role="dialog" >
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h2 id="QuestionText" class="modal-title"></h2>
+                
+                <h2 class="modal-title"><b id="QuestionText"></b></h2>
             </div>
             <div class="modal-body">
                 <div class="radio">
                     <h3>
-                        <input type="radio" id="answer0" name="optradio" value=0><label class="label label-default" for="answer0" title="0"></label>
+                        <input type="radio" id="answer0" name="optradio" value=0><label class="labelAnswer" for="answer0" title="0"></label>
                     </h3>
                 </div>
                 <div class="radio">
                     <h3>
-                        <input type="radio" id="answer1" name="optradio" value=1><label class="label label-default" for="answer1" title="1"></label>
+                        <input type="radio" id="answer1" name="optradio" value=1><label class="labelAnswer" for="answer1" title="1"></label>
                     </h3>
                 </div>
                 <div class="radio">
                     <h3>
-                        <input type="radio" id="answer2" name="optradio" value=2><label class="label label-default" for="answer2" title="2"></label>
+                        <input type="radio" id="answer2" name="optradio" value=2><label class="labelAnswer" for="answer2" title="2"></label>
                     </h3>
                 </div>
             </div>
@@ -42,6 +43,7 @@
     var iterator = 0;
     var correctAnswers = 0;
     var listOfPosts = [];
+    var incorectAnswers = [];
     var testId;
     var itemId = 0;
     var selectedAnswer;
@@ -49,7 +51,7 @@
     $(".buttonTest").click(function () {
         testId = $(this).val();
         if (count % 2 == 1) {
-            $("label").removeClass("label-danger label-success");
+            $(".labelAnswer").removeClass("goodAnswer badAnswer");
             count = 0;
         }
         iterator = 0;
@@ -66,7 +68,8 @@
                     "@HttpUtility.JavaScriptStringEncode(item.Answers[0])", "@HttpUtility.JavaScriptStringEncode(item.Answers[1])",
                     "@HttpUtility.JavaScriptStringEncode(item.Answers[2])"
                 ],
-                correctAnswer: "@item.CorrectAnswer"
+                correctAnswer: "@item.CorrectAnswer",
+                id: @item.Id,
             });
         }
         </text>
@@ -81,15 +84,14 @@
 
         if (count % 2 == 0) {
             if (iterator < listOfPosts.length) {
-                $("label").removeClass("label-danger label-success");
+                $(".labelAnswer ").removeClass("goodAnswer badAnswer");
                 $("#ConfirmButton2").text("Selected");
                 $("#QuestionText").text(listOfPosts[iterator].text);
                 $('label[for=answer0]').text(listOfPosts[iterator].answers[0]);
                 $('label[for=answer1]').text(listOfPosts[iterator].answers[1]);
                 $('label[for=answer2]').text(listOfPosts[iterator].answers[2]);
             } else {
-                alert("Koniec testu, liczba poprawnych odpowiedzi : " + correctAnswers + "/" + listOfPosts.length);
-                @Url.Action("Result","Test");
+                window.location = "/Test/Result?correctAnswers=" + correctAnswers + "/" + listOfPosts.length+"&incorrectAnswersId=" + incorectAnswers;
             }
 
         } else {
@@ -97,10 +99,11 @@
             if (selectedAnswer == listOfPosts[iterator].correctAnswer) {
                 correctAnswers++;
             } else {
-                $('label[title=' + selectedAnswer + ']').addClass("label-danger");
+                incorectAnswers.push(listOfPosts[iterator].id, selectedAnswer);
+                $('label[title=' + selectedAnswer + ']').addClass("badAnswer");
             }
             $("#ConfirmButton2").text("Next");
-            $('label[title=' + listOfPosts[iterator].correctAnswer + ']').addClass("label-success");
+            $('label[title=' + listOfPosts[iterator].correctAnswer + ']').addClass("goodAnswer");
             iterator++;
         }
 

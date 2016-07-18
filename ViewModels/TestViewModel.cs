@@ -6,6 +6,7 @@ namespace E_LearningWeb.ViewModels
     public class TestViewModel
     {
         public List<Question> ListOfQuestions { get; set; }
+        public string CorrectAnswers { get; set; }
         public TestViewModel()
         {
 

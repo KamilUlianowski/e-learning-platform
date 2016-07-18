@@ -7,6 +7,32 @@ body {
 
 }
 
+.summaryWindow {
+    background-color: green;
+    color: white;
+    -ms-border-radius: 10px;
+    border-radius: 10px;
+    padding-bottom: 15px;
+    margin-top: 10px;
+}
+
+.answer {
+    border: 1px solid black
+}
+
+.summaryWindowReturn {
+    border: 1px solid white;
+    padding: 10px;
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+}
+
+a.summaryWindowReturn { color: white }
+a.summaryWindowReturn:active { color: white }
+a.summaryWindowReturn:link { color: white }
+a.summaryWindowReturn:visited { color: white }
+    
+
 #Video {
     width: 100% !important;
     height: auto !important;
@@ -159,4 +185,8 @@ textarea {
 
 .goodAnswer {
     background-color: green;
+}
+
+.badAnswer {
+      background-color: #d9534f;
 }

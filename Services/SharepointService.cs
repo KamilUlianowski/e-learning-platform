@@ -99,7 +99,8 @@ namespace E_LearningWeb.Services
                             item["_x0065_es5"].ToString()
                         },
                     CorrectAnswer = Int32.Parse(item["t2vj"].ToString()),
-                    TestId = Int32.Parse(item["wm0t"].ToString())
+                    TestId = Int32.Parse(item["wm0t"].ToString()),
+                    Id = item.Id
                 });
             }
 
@@ -240,7 +241,6 @@ namespace E_LearningWeb.Services
                     return true;
                 }
             }
-
             return false;
         }
 
