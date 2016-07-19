@@ -11,7 +11,7 @@
 
 </div>
 <div>
-    <h4 style="margin-top: 20px">Incorrect Questions</h4>
+    <h4 style="margin-top: 20px; color: #aaaaaa">Incorrect Questions</h4>
     @foreach (var item in Model.ListOfQuestions)
     {
         <div class="container marginTop answer img-rounded">
@@ -20,7 +20,7 @@
             {
                 if (i == item.CorrectAnswer)
                 {
-                    <h4><span class="glyphicon glyphicon-ok" style="color: green"></span> <label class="label label label-default col-lg-12">@item.Answers[i]</label></h4>
+                    <h4><span class="glyphicon glyphicon-ok" style="color:chartreuse"></span> <label class="label label label-default col-lg-12">@item.Answers[i]</label></h4>
                 }
                 else if (i == item.SelectedAnswer)
                 {

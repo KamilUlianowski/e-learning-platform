@@ -22,3 +22,16 @@ $(".rateit").click(function () {
     });
 
 });
+
+$("#sidebar").css("width", 60);
+$("#sidebar").hover(
+    function () {
+        $(this).animate({ width: '200' }, 200);
+        $(".itemText").show();
+    },
+    function () {
+        $(this).animate({ width: '60px' }, 200);
+
+    }
+
+);

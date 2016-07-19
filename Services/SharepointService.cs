@@ -60,7 +60,7 @@ namespace E_LearningWeb.Services
             return listOfCourses;
         }
 
-        public List<Movie> GetMovies(int courseId)
+        public List<Movie> GetAllMovies()
         {
             var listOfMovies = new List<Movie>();
             if (clientContext == null) return listOfMovies;
@@ -76,8 +76,12 @@ namespace E_LearningWeb.Services
                 Id = Convert.ToInt32(listItem["jkyq"]),
                 NumberOfVotes = Convert.ToInt32(listItem["snyt"].ToString())
             }));
-            System.Web.HttpContext.Current.Session.Add("MaxMovieId", listOfMovies.Max(x => x.Id));
-            return listOfMovies.Where(x => x.CourseId == Convert.ToInt32(courseId)).ToList();
+            return listOfMovies;
+        }
+
+        public List<Movie> GetMoviesFromCourse(List<Movie> movies, int id)
+        {
+            return movies.Where(x => x.CourseId == id).ToList();
         }
 
         public List<Question> GetQuestions()
@@ -264,6 +268,17 @@ namespace E_LearningWeb.Services
             clientContext.ExecuteQuery();
 
             return true;
+        }
+
+        public List<Course> CountMovies(List<Course> courses, List<Movie> movies)
+        {
+            foreach (var item in movies)
+            {
+                var firstOrDefault = courses.FirstOrDefault(x => x.Id == item.CourseId);
+                if (firstOrDefault != null)
+                    firstOrDefault.NumberOfMovies++;
+            }
+            return courses;
         }
     }
 }

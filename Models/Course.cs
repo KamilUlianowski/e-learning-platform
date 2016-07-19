@@ -11,5 +11,6 @@ namespace E_LearningWeb.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
+        public int NumberOfMovies { get; set; }
     }
 }

@@ -1,23 +1,26 @@
 ﻿@import url('Site.css');
 
 body {
-    padding-top: 50px;
     padding-bottom: 20px;
-    /*background-color: aliceblue;*/
-
+    padding-top: 10px;
+    min-height: 100%;
+    background-color: #181818;
 }
 
 .summaryWindow {
-    background-color: green;
+    background-color: #86ce31;
     color: white;
     -ms-border-radius: 10px;
     border-radius: 10px;
-    padding-bottom: 15px;
+    padding: 10px;
+    padding-bottom: 25px;
     margin-top: 10px;
 }
 
 .answer {
-    border: 1px solid black
+    border: 1px solid black;
+    background-color: white;
+    padding-bottom: 15px;
 }
 
 .summaryWindowReturn {
@@ -27,11 +30,22 @@ body {
     border-radius: 5px;
 }
 
-a.summaryWindowReturn { color: white }
-a.summaryWindowReturn:active { color: white }
-a.summaryWindowReturn:link { color: white }
-a.summaryWindowReturn:visited { color: white }
-    
+a.summaryWindowReturn {
+    color: white;
+}
+
+    a.summaryWindowReturn:active {
+        color: white;
+    }
+
+    a.summaryWindowReturn:link {
+        color: white;
+    }
+
+    a.summaryWindowReturn:visited {
+        color: white;
+    }
+
 
 #Video {
     width: 100% !important;
@@ -48,7 +62,6 @@ a.summaryWindowReturn:visited { color: white }
 
 .active {
     background-color: gainsboro;
-    
 }
 
 
@@ -76,79 +89,85 @@ textarea {
 @import url(//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
 /*Comment List styles*/
 .comment-list .row {
-  margin-bottom: 0px;
+    margin-bottom: 0px;
 }
+
 .comment-list .panel .panel-heading {
-  padding: 4px 15px;
-  position: absolute;
-  border:none;
-  /*Panel-heading border radius*/
-  border-top-right-radius:0px;
-  top: 1px;
+    padding: 4px 15px;
+    position: absolute;
+    border: none;
+    /*Panel-heading border radius*/
+    border-top-right-radius: 0px;
+    top: 1px;
 }
-.comment-list .panel .panel-heading.right {
-  border-right-width: 0px;
-  /*Panel-heading border radius*/
-  border-top-left-radius:0px;
-  right: 16px;
-}
-.comment-list .panel .panel-heading .panel-body {
-  padding-top: 6px;
-}
+
+    .comment-list .panel .panel-heading.right {
+        border-right-width: 0px;
+        /*Panel-heading border radius*/
+        border-top-left-radius: 0px;
+        right: 16px;
+    }
+
+    .comment-list .panel .panel-heading .panel-body {
+        padding-top: 6px;
+    }
+
 .comment-list figcaption {
-  /*For wrapping text in thumbnail*/
-  word-wrap: break-word;
+    /*For wrapping text in thumbnail*/
+    word-wrap: break-word;
 }
 /* Portrait tablets and medium desktops */
 @media (min-width: 768px) {
-  .comment-list .arrow:after, .comment-list .arrow:before {
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-color: transparent;
-  }
-  .comment-list .panel.arrow.left:after, .comment-list .panel.arrow.left:before {
-    border-left: 0;
-  }
-  /*****Left Arrow*****/
-  /*Outline effect style*/
-  .comment-list .panel.arrow.left:before {
-    left: 0px;
-    top: 30px;
-    /*Use boarder color of panel*/
-    border-right-color: inherit;
-    border-width: 16px;
-  }
-  /*Background color effect*/
-  .comment-list .panel.arrow.left:after {
-    left: 1px;
-    top: 31px;
-    /*Change for different outline color*/
-    border-right-color: #FFFFFF;
-    border-width: 15px;
-  }
-  /*****Right Arrow*****/
-  /*Outline effect style*/
-  .comment-list .panel.arrow.right:before {
-    right: -16px;
-    top: 30px;
-    /*Use boarder color of panel*/
-    border-left-color: inherit;
-    border-width: 16px;
-  }
-  /*Background color effect*/
-  .comment-list .panel.arrow.right:after {
-    right: -14px;
-    top: 31px;
-    /*Change for different outline color*/
-    border-left-color: #FFFFFF;
-    border-width: 15px;
-  }
+    .comment-list .arrow:after, .comment-list .arrow:before {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-color: transparent;
+    }
+
+    .comment-list .panel.arrow.left:after, .comment-list .panel.arrow.left:before {
+        border-left: 0;
+    }
+    /*****Left Arrow*****/
+    /*Outline effect style*/
+    .comment-list .panel.arrow.left:before {
+        left: 0px;
+        top: 30px;
+        /*Use boarder color of panel*/
+        border-right-color: inherit;
+        border-width: 16px;
+    }
+    /*Background color effect*/
+    .comment-list .panel.arrow.left:after {
+        left: 1px;
+        top: 31px;
+        /*Change for different outline color*/
+        border-right-color: #FFFFFF;
+        border-width: 15px;
+    }
+    /*****Right Arrow*****/
+    /*Outline effect style*/
+    .comment-list .panel.arrow.right:before {
+        right: -16px;
+        top: 30px;
+        /*Use boarder color of panel*/
+        border-left-color: inherit;
+        border-width: 16px;
+    }
+    /*Background color effect*/
+    .comment-list .panel.arrow.right:after {
+        right: -14px;
+        top: 31px;
+        /*Change for different outline color*/
+        border-left-color: #FFFFFF;
+        border-width: 15px;
+    }
 }
+
 .comment-list .comment-post {
-  margin-top: 6px;
+    margin-top: 6px;
 }
 
 #ButtonPosts {
@@ -156,8 +175,8 @@ textarea {
     font-size: 30px;
     margin-left: 20px;
     color: gray;
-    background:none;
-    border:none;
+    background: none;
+    border: none;
 }
 
 .spinner {
@@ -166,21 +185,21 @@ textarea {
     left: 50%;
     margin-left: -50px; /* half width of the spinner gif */
     margin-top: -50px; /* half height of the spinner gif */
-    text-align:center;
-    z-index:1234;
+    text-align: center;
+    z-index: 1234;
     overflow: auto;
     width: 100px; /* width of the spinner gif */
     height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
 }
 
 @media screen and (min-width: 768px) {
-  .modal-lg{
-      width:900px;
-  }
+    .modal-lg {
+        width: 900px;
+    }
 
-  .modal-sm{
-      width:300px;
-  }
+    .modal-sm {
+        width: 300px;
+    }
 }
 
 .goodAnswer {
@@ -188,5 +207,89 @@ textarea {
 }
 
 .badAnswer {
-      background-color: #d9534f;
+    background-color: #d9534f;
+}
+
+.greyColor {
+    color: #aaaaaa;
+}
+
+div.question {
+    border: 2px solid #f2f2f2;
+    padding: 5px;
+    -ms-border-radius: 10px;
+    border-radius: 10px;
+    margin-top: 5px;
+}
+
+    div.question:hover {
+        border: 2px solid gray;
+        padding: 5px;
+        -ms-border-radius: 10px;
+        border-radius: 10px;
+        margin-top: 5px;
+    }
+
+#wrapper {
+    overflow: hidden;
+}
+
+#sidebar {
+    position: absolute;
+    width: 250px;
+    height: 100%;
+    background-color: #222222;
+    overflow: hidden;
+    white-space: nowrap;
+    z-index: 9999999;
+}
+
+#content {
+    margin: 0 0 0 110px;
+    overflow: hidden;
+}
+
+html {
+    height: 100%;
+}
+
+.item {
+    margin-left: 20px;
+}
+
+.itemText {
+    margin-left: 25px;
+}
+
+.white {
+    color: #aaa;
+}
+
+    .white:hover {
+        color: white;
+    }
+
+.divLink:hover {
+    cursor: pointer;
+}
+
+
+.courseDiv {
+    background-color: #222222;
+    margin: 10px 30px 10px 0;
+}
+
+.courseDivHeader {
+    color: #f2f2f2;
+    font-size: 20px;
+    margin-top: 20px;
+    position: absolute;
+}
+
+
+.courseDivFooter {
+    color: #f2f2f2;
+    font-size: 20px;
+    margin-top: 80px;
+    position: absolute;
 }
