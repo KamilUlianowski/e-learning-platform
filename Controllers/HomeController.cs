@@ -20,10 +20,14 @@ namespace E_LearningWeb.Controllers
 
         private void InitializeSession()
         {
-            Session.Add("SharepointContext",
-                SharePointContextProvider.Current.GetSharePointContext(HttpContext));
-            var clientContext = ((SharePointContext)Session["SharepointContext"]).CreateAppOnlyClientContextForSPHost();
-            Session.Add("logged", GetUserPermissions(clientContext));
+            //Session.Add("SharepointContext",
+            //    SharePointContextProvider.Current.GetSharePointContext(HttpContext));
+
+            var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
+            var clientContext = spContext.CreateAppOnlyClientContextForSPHost();
+            Session.Add("ClientContext", clientContext);
+            clientContext = spContext.CreateUserClientContextForSPHost();
+            Session.Add("logged", false);
             _sessionInitialized = true;
 
         }

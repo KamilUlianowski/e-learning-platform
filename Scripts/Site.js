@@ -2,10 +2,6 @@
     $(this).toggleClass('active');
 });
 
-$("#ButtonPosts").click(function () {
-    $("#Posts").toggle();
-});
-
 $(".rateit").click(function () {
     var help = $(this).rateit('value');
     var movieId = $(this).attr("id");
@@ -35,3 +31,42 @@ $("#sidebar").hover(
     }
 
 );
+
+$(".pathLi").click(function() {
+    $(".pathLi").removeClass("selected");
+    $(this).addClass("selected");
+    $(".courseDiv").hide();
+    $("." + $(this).text()).show();
+    if ($(this).text() == "All") {
+        $(".courseDiv").show();
+    }
+});
+
+$("#LiMovies").click(function () {
+    $(".li-movies").removeClass("selected");
+    $(this).addClass("selected");
+    $(".section-content-course").hide();
+    $("#TableOfContent").show();
+});
+
+$("#LiDescription").click(function () {
+    $(".li-movies").removeClass("selected");
+    $(this).addClass("selected");
+    $(".section-content-course").hide();
+    $("#Description").show();
+});
+
+$("#LiDiscussion").click(function () {
+    $(".li-movies").removeClass("selected");
+    $(this).addClass("selected");
+    $(".section-content-course").hide();
+    $("#Discussion").show();
+});
+
+
+$("#LiTest").click(function () {
+    $(".li-movies").removeClass("selected");
+    $(this).addClass("selected");
+    $(".section-content-course").hide();
+    $("#LearningCheck").show();
+});

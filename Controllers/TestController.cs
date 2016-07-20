@@ -51,7 +51,7 @@ namespace E_LearningWeb.Controllers
                 }
                 return incorrectQuestoins;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 RedirectToAction("Index", "Test");
                 return new List<Question>();

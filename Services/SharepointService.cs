@@ -13,8 +13,8 @@ namespace E_LearningWeb.Services
         private ClientContext clientContext;
         public SharepointService()
         {
-            spContext = (SharePointContext)System.Web.HttpContext.Current.Session["SharepointContext"];
-            clientContext = spContext.CreateUserClientContextForSPHost();
+            //spContext = (SharePointContext)System.Web.HttpContext.Current.Session["SharepointContext"];
+            clientContext = (ClientContext)System.Web.HttpContext.Current.Session["ClientContext"];
         }
 
         private List GetSharepointListByTitle(string nameOfList)
@@ -55,7 +55,8 @@ namespace E_LearningWeb.Services
                 Title = listItem["Title"].ToString(),
                 Id = Convert.ToInt32(listItem["qgjk"]),
                 Description = listItem["b6yw"].ToString(),
-                ImageUrl = listItem["_x0076_pe2"].ToString()
+                ImageUrl = listItem["_x0076_pe2"].ToString(),
+                Path = listItem["i2ll"].ToString()
             }));
             return listOfCourses;
         }
@@ -128,6 +129,18 @@ namespace E_LearningWeb.Services
                 }
             }
             return movie;
+        }
+
+        public string GetCourseDescription(int id)
+        {
+            var contextList = GetSharepointListByTitle("Courses");
+            var items = GetAllItems(contextList);
+
+            foreach (var item in items.Where(item => Convert.ToInt32(item["qgjk"]) == id))
+            {
+                return item["b6yw"].ToString();
+            }
+            return String.Empty;
         }
 
         public List<Post> GetDiscussionPosts(string courseId)

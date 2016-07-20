@@ -32,6 +32,7 @@ namespace E_LearningWeb.Controllers
             Session.Add("MaxMovieId", allMovies.Max(x => x.Id) + 1);
             CourseViewModel courseViewModel = new CourseViewModel()
             {
+                Description = _sharepointService.GetCourseDescription(Int32.Parse(courseId)),
                 CourseId = Parse(courseId),
                 ListOfPosts = _sharepointService.GetDiscussionPosts(courseId),
                 ListOfMovies = _sharepointService.GetMoviesFromCourse(allMovies, Int32.Parse(courseId))

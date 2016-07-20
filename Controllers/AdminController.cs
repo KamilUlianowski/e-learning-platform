@@ -40,5 +40,10 @@ namespace E_LearningWeb.Controllers
             _sharepointService.UpdateMovie(movie);
             return RedirectToAction("Index", "Course", new { courseId = movie.CourseId });
         }
+
+        public ActionResult Index()
+        {
+            return View();
+        }
     }
 }

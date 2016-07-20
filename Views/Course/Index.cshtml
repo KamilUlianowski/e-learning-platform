@@ -1,38 +1,119 @@
 ﻿@model E_LearningWeb.ViewModels.CourseViewModel
 
-<div class="nav nav-pills nav-stacked col-lg-12" id="ListOfMovies">
-    @foreach (var item in Model.ListOfMovies)
-    {
+<section class="nav nav-pills nav-stacked col-lg-8 course-section" id="ListOfMovies">
+    <ul class="list-inline ul-content-course">
+        <li id="LiMovies" class="selected li-movies divLink">Table of contents</li>
+        <li id="LiDescription" class="li-movies divLink">Description</li>
+        <li id="LiDiscussion" class="li-movies divLink">Discussion</li>
+        <li id="LiTest" class="li-movies divLink">Learning Check</li>
+    </ul>
+    <div id="TableOfContent" class="col-lg-12 section-content-course">
+        @foreach (var item in Model.ListOfMovies)
+        {
 
-        <div class="col-lg-8 movieRow">
-            <a href="@Url.Action("Index", "Video", new {videoUrl = @item.VideoUrl})">
-                <h3><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>   <span>@item.Title</span></h3>
+            <a class="col-lg-8 movie-row" href="@Url.Action("Index", "Video", new {videoUrl = @item.VideoUrl})">
+                <h3 class="movie-row"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>   <span>@item.Title</span></h3>
             </a>
-        </div>
-        <div id="@item.Id" class="rateit col-lg-2" style="margin-top: 20px" data-rateit-value="@item.Rating" data-rateit-ispreset="true"></div>
-        <div class="col-lg-1 marginTop ">
-            @if ((bool)System.Web.HttpContext.Current.Session["logged"])
-            {
-                <span>
-                    <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("UpdateMovie", "Admin", new {id = @item.Id, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
-                        <span class="glyphicon glyphicon-edit"></span>
-                    </button>
-                </span>
-            }
-        </div>
-        <div class="col-lg-1 marginTop ">
-            @if ((bool)System.Web.HttpContext.Current.Session["logged"])
-            {
-                <span>
-                    <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("DeleteMovie", "Admin", new {id = @item.Id, courseId = @item.CourseId, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </button>
-                </span>
-            }
-        </div>
-    }
+            <div id="@item.Id" class="rateit col-lg-2" style="margin-top: 20px" data-rateit-value="@item.Rating" data-rateit-ispreset="true"></div>
+            <div class="col-lg-1 marginTop ">
+                @if ((bool)System.Web.HttpContext.Current.Session["logged"])
+                {
+                    <span>
+                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("UpdateMovie", "Admin", new {id = @item.Id, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                    </span>
+                }
+            </div>
+            <div class="col-lg-1 marginTop ">
+                @if ((bool)System.Web.HttpContext.Current.Session["logged"])
+                {
+                    <span>
+                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("DeleteMovie", "Admin", new {id = @item.Id, courseId = @item.CourseId, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </span>
+                }
+            </div>
+        }
+    </div>
+    <div id="Description" hidden class="col-lg-12 section-content-course">
+        <p class="description-text">@Model.Description</p>
+    </div>
 
-</div>
+    <div id="LearningCheck" hidden class="col-lg-12 section-content-course">
+        <div class="col-lg-9">
+            <h3 class="learning-check-text">
+                <span> Check your learning of key course concepts.</span>
+            </h3>
+            <h4 class="learning-check-text">
+                <span>  Learning checks are not timed and only you can see the results.</span>
+            </h4>
+        </div>
+        <div class="col-lg-3" style="margin-top: 32px;">
+            @Html.ActionLink("Try practice questions", "Index", new { controller = "Test" }, new { @class = "a-learning-check" })
+        </div>
+    </div>
+    @*<div class="col-lg-12">
+            <div class="marginTop">
+                @foreach (var item in Model)
+                {
+                    <a class="col-lg-5 courseDiv @item.Path" href="@Url.Action("Index", "Course", new {courseId = @item.Id, courseName = @item.Title})">
+                        <img src=@item.ImageUrl alt="">
+                        <span class="courseDivHeader">@item.Title</span>
+                        <span class="courseDivFooter">@item.NumberOfMovies Movies</span>
+                    </a>
+                }
+            </div>
+        </div>*@
+
+    <div id="Discussion" hidden class="col-lg-12 section-content-course">
+        <div id="Posts" class="container">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <section class="comment-list">
+                        <!-- First Comment -->
+                        @foreach (var item in Model.ListOfPosts)
+                        {
+                            <article class="row marginTop">
+
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <header class="text-left">
+                                                <span><b>@item.Author</b> on</span><time class="comment-date"><i class="fa fa-clock-o"></i> @item.Created</time>
+                                            </header>
+                                            <div class="comment-post">
+                                                <p>
+                                                    @item.Body
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </article>
+                        }
+                        @using (Html.BeginForm("Index", "Course", new { courseId = @Model.CourseId }, FormMethod.Post))
+                        {
+                            <div class="well">
+                                <h4>Leave a Comment:</h4>
+                                <div class="form-group">
+                                    @Html.TextAreaFor(x => x.Text, new { @class = "form-control", @rows = 5, @style = "-moz-min-width:100%;-ms-min-width:100%;-o-min-width:100%;-webkit-min-width:100%;min-width:100%" })
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add comment</button>
+                            </div>
+                        }
+                    </section>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
 @if ((bool)System.Web.HttpContext.Current.Session["logged"])
 {
     <button type="button" class="btn btn-primary btn-lg marginTop" style="margin-left: 15px" data-toggle="modal" data-target="#myModal">Add movie</button>
@@ -45,15 +126,15 @@
                 @using (Html.BeginForm("AddMovie", "Admin", FormMethod.Post, new { role = "form" }))
                 {
                     <div class="modal-header form-group">
-                            <label class="form-control-label">Video Title</label>
-                            @Html.TextBoxFor(x => x.NewMovie.Title, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.NewMovie.Title)
+                        <label class="form-control-label">Video Title</label>
+                        @Html.TextBoxFor(x => x.NewMovie.Title, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.NewMovie.Title)
                     </div>
 
                     <div class="modal-header form-group">
-                            <label class="form-control-label">Video Url</label>
-                            @Html.TextBoxFor(x => x.NewMovie.VideoUrl, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.NewMovie.VideoUrl)
+                        <label class="form-control-label">Video Url</label>
+                        @Html.TextBoxFor(x => x.NewMovie.VideoUrl, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.NewMovie.VideoUrl)
                     </div>
 
                     <div class="modal-header">
@@ -86,47 +167,3 @@
     </div>
                             }
 
-
-<button class="col-lg-12" id="ButtonPosts">Comments (@Model.ListOfPosts.Count)</button>
-<div id="Posts" class="container" style="display:none;">
-    <div class="row">
-
-        <div class="col-md-12">
-            <section class="comment-list">
-                <!-- First Comment -->
-                @foreach (var item in Model.ListOfPosts)
-                {
-                    <article class="row marginTop">
-
-                        <div class="col-md-12 col-sm-12">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <header class="text-left">
-                                        <span><b>@item.Author</b> on</span><time class="comment-date"><i class="fa fa-clock-o"></i> @item.Created</time>
-                                    </header>
-                                    <div class="comment-post">
-                                        <p>
-                                            @item.Body
-                                        </p>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </article>
-                }
-                @using (Html.BeginForm("Index", "Course", new { courseId = @Model.CourseId }, FormMethod.Post))
-                {
-                    <div class="well">
-                        <h4>Leave a Comment:</h4>
-                        <div class="form-group">
-                            @Html.TextAreaFor(x => x.Text, new { @class = "form-control", @rows = 5, @style = "-moz-min-width:100%;-ms-min-width:100%;-o-min-width:100%;-webkit-min-width:100%;min-width:100%" })
-                        </div>
-                        <button type="submit" class="btn btn-primary">Add comment</button>
-                    </div>
-                }
-            </section>
-        </div>
-    </div>
-</div>

@@ -3,27 +3,23 @@
 @model List<Course>
 
 <div class="col-lg-12">
-    <h3 style="color: #f2f2f2" class="col-lg-2"> <span>Paths</span></h3>
-
-    <ul class="list-inline" style="color: #f2f2f2">
-        <li><h4>All</h4></li>
-        <li><h4>Back-End Developer</h4></li>
-        <li><h4>Front-End Developer</h4></li>
+    <h3><span class="pathDescription">Paths</span></h3>
+    <ul class="list-inline col-lg-offset-1" style="color: #aaa;">
+        <li class="pathLi divLink selected"><h4>All</h4></li>
+        <li class="pathLi divLink"><h4>Back-End</h4></li>
+        <li class="pathLi divLink"><h4>Front-End</h4></li>
     </ul>
 </div>
-
-<div class="col-lg-12" style="background-color: #181818">
+<div style="clear: both"></div>
+<div class="col-lg-12">
     <div class="marginTop">
         @foreach (var item in Model)
         {
-            <div class="col-lg-5 courseDiv">
-                <a href="@Url.Action("Index", "Course", new {courseId = @item.Id, courseName = @item.Title})">
-                    <img src=@item.ImageUrl alt="">
-                    <span class="courseDivHeader">@item.Title</span>
-                    <span class="courseDivFooter">@item.NumberOfMovies Movies</span>
-                </a>
-
-            </div>
+            <a class="col-lg-5 courseDiv @item.Path" href="@Url.Action("Index", "Course", new {courseId = @item.Id, courseName = @item.Title})">
+                <img src=@item.ImageUrl alt="">
+                <span class="courseDivHeader">@item.Title</span>
+                <span class="courseDivFooter">@item.NumberOfMovies Movies</span>
+            </a>
         }
     </div>
 

@@ -1,4 +1,5 @@
 ﻿using E_LearningWeb.Models;
+using System;
 using System.Collections.Generic;
 
 namespace E_LearningWeb.Services
@@ -12,6 +13,7 @@ namespace E_LearningWeb.Services
         List<Movie> GetMoviesFromCourse(List<Movie> movies, int id);
         List<Course> CountMovies(List<Course> courses, List<Movie> movies);
         Movie GetMovieInfo(int id);
+        String GetCourseDescription(int id);
         bool AddVote(int movieId, double rating);
         bool DeleteMovie(int id);
         bool UpdateMovie(Movie movie);
