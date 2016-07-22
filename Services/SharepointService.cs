@@ -9,28 +9,26 @@ namespace E_LearningWeb.Services
 {
     public class SharepointService : ISharepointService
     {
-        private SharePointContext spContext;
-        private ClientContext clientContext;
+        private readonly ClientContext _clientContext;
         public SharepointService()
         {
-            //spContext = (SharePointContext)System.Web.HttpContext.Current.Session["SharepointContext"];
-            clientContext = (ClientContext)System.Web.HttpContext.Current.Session["ClientContext"];
+            _clientContext = (ClientContext)System.Web.HttpContext.Current.Session["ClientContext"];
         }
 
         private List GetSharepointListByTitle(string nameOfList)
         {
-            var web = clientContext.Web;
-            clientContext.Load(web.Lists);
-            clientContext.ExecuteQuery();
-            return clientContext.Web.Lists.GetByTitle(nameOfList);
+            var web = _clientContext.Web;
+            _clientContext.Load(web.Lists);
+            _clientContext.ExecuteQuery();
+            return _clientContext.Web.Lists.GetByTitle(nameOfList);
         }
 
         private ListItemCollection GetAllItems(List contextList)
         {
             CamlQuery query = CamlQuery.CreateAllItemsQuery();
             ListItemCollection items = contextList.GetItems(query);
-            clientContext.Load(items);
-            clientContext.ExecuteQuery();
+            _clientContext.Load(items);
+            _clientContext.ExecuteQuery();
             return items;
         }
 
@@ -45,7 +43,7 @@ namespace E_LearningWeb.Services
         public List<Course> GetCourses()
         {
             var listOfCourses = new List<Course>();
-            if (clientContext == null) return listOfCourses;
+            if (_clientContext == null) return listOfCourses;
 
             var contextList = GetSharepointListByTitle("Courses");
             var items = GetAllItems(contextList);
@@ -64,7 +62,7 @@ namespace E_LearningWeb.Services
         public List<Movie> GetAllMovies()
         {
             var listOfMovies = new List<Movie>();
-            if (clientContext == null) return listOfMovies;
+            if (_clientContext == null) return listOfMovies;
             var contextList = GetSharepointListByTitle("Movies");
             var items = GetAllItems(contextList);
 
@@ -85,28 +83,31 @@ namespace E_LearningWeb.Services
             return movies.Where(x => x.CourseId == id).ToList();
         }
 
-        public List<Question> GetQuestions()
+        public List<Question> GetQuestions(int courseId)
         {
             var listOfQuestions = new List<Question>();
-            if (clientContext == null) return listOfQuestions;
+            if (_clientContext == null) return listOfQuestions;
             var contextList = GetSharepointListByTitle("Questions");
             var items = GetAllItems(contextList);
 
             foreach (var item in items)
             {
-                listOfQuestions.Add(new Question()
+                if (Int32.Parse(item["wm0t"].ToString()) == courseId)
                 {
-                    Text = item["emrq"].ToString(),
-                    Answers = new List<string>()
+                    listOfQuestions.Add(new Question()
+                    {
+                        Text = item["emrq"].ToString(),
+                        Answers = new List<string>()
                         {
                             item["igug"].ToString(),
                             item["_x0066_nv6"].ToString(),
                             item["_x0065_es5"].ToString()
                         },
-                    CorrectAnswer = Int32.Parse(item["t2vj"].ToString()),
-                    TestId = Int32.Parse(item["wm0t"].ToString()),
-                    Id = item.Id
-                });
+                        CorrectAnswer = Int32.Parse(item["t2vj"].ToString()),
+                        TestId = Int32.Parse(item["wm0t"].ToString()),
+                        Id = item.Id
+                    });
+                }
             }
 
             return listOfQuestions;
@@ -146,7 +147,7 @@ namespace E_LearningWeb.Services
         public List<Post> GetDiscussionPosts(string courseId)
         {
             var listOfPosts = new List<Post>();
-            if (clientContext == null) return listOfPosts;
+            if (_clientContext == null) return listOfPosts;
             var contextList = GetSharepointListByTitle("Discussion");
             var items = GetAllItems(contextList);
             int id = 0;
@@ -197,9 +198,8 @@ namespace E_LearningWeb.Services
             listItem["Body"] = text;
             listItem["ParentItemID"] = id;
             listItem.Update();
-            clientContext.ExecuteQuery();
+            _clientContext.ExecuteQuery();
             return true;
-
         }
 
         public bool AddVote(int movieId, double rating)
@@ -214,7 +214,7 @@ namespace E_LearningWeb.Services
                     listItem["snyt"] = Int32.Parse(listItem["snyt"].ToString()) + 1; // Liczba głosów + 1
                     listItem["envb"] = Double.Parse(listItem["envb"].ToString()) + rating; // Dodanie głosu
                     listItem.Update();
-                    clientContext.ExecuteQuery();
+                    _clientContext.ExecuteQuery();
                     return true;
                 }
             }
@@ -234,7 +234,7 @@ namespace E_LearningWeb.Services
                 {
                     ListItem itemDelete = listItem;
                     itemDelete.DeleteObject();
-                    clientContext.ExecuteQuery();
+                    _clientContext.ExecuteQuery();
                     return true;
                 }
             }
@@ -254,7 +254,7 @@ namespace E_LearningWeb.Services
                     listItem["meuv"] = movie.VideoUrl;
                     listItem["b9dk"] = movie.CourseId;
                     listItem.Update();
-                    clientContext.ExecuteQuery();
+                    _clientContext.ExecuteQuery();
                     return true;
                 }
             }
@@ -278,7 +278,7 @@ namespace E_LearningWeb.Services
             listItem["snyt"] = 0;
 
             listItem.Update();
-            clientContext.ExecuteQuery();
+            _clientContext.ExecuteQuery();
 
             return true;
         }

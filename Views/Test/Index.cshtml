@@ -1,7 +1,7 @@
 ﻿@using Microsoft.Ajax.Utilities
 @model E_LearningWeb.ViewModels.TestViewModel
-<button type="button" class="btn btn-default btn-lg buttonTest marginTop col-lg-12" data-toggle="modal" data-target="#myModal" value="1">C# Collections and Generics</button>
-<button type="button" class="btn btn-default btn-lg buttonTest marginTop col-lg-12" data-toggle="modal" data-target="#myModal" value="2">C# Functional Programming</button>
+<button type="button" class="btn btn-default btn-lg buttonTest marginTop col-lg-12" data-toggle="modal" data-target="#myModal">C# Collections and Generics</button>
+<button type="button" class="btn btn-default btn-lg buttonTest marginTop col-lg-12" data-toggle="modal" data-target="#myModal">C# Functional Programming</button>
 
 <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -56,7 +56,6 @@
     var selectedAnswer;
     var count = 0;
     $(".buttonTest").click(function () {
-        testId = $(this).val();
         if (count % 2 == 1) {
             $(".labelAnswer").removeClass("goodAnswer badAnswer");
             count = 0;
@@ -68,7 +67,6 @@
 
             <text>
         itemId = @item.TestId;
-        if (testId == itemId) {
             listOfPosts.push({
                 text: "@HttpUtility.JavaScriptStringEncode(item.Text)",
                 answers: [
@@ -78,7 +76,7 @@
                 correctAnswer: "@item.CorrectAnswer",
                 id: @item.Id,
             });
-        }
+        
         </text>
         }
         $("#QuestionText").text(listOfPosts[iterator].text);

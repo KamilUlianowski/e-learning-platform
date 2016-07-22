@@ -1,37 +1,38 @@
 ﻿@model E_LearningWeb.ViewModels.TestViewModel
 
-<div class="col-lg-12 summaryWindow container">
-    <h3 class="col-lg-12">
-        <span class="glyphicon glyphicon-ok-sign"></span> You got @Model.CorrectAnswers questions correct
-        @Html.ActionLink("Exit to Couser Page", "ListOfCourses"
-            , "Course", new object {}, new {@class = "summaryWindowReturn col-lg-offset-4"})
-    </h3>
-    <div class="col-lg-3">
+<div class="col-lg-12">
+    <div class="col-sm-10 summaryWindow">
+        <h3>
+            <span class="glyphicon glyphicon-ok-sign"></span> You got @Model.CorrectAnswers questions correct
+            @Html.ActionLink("Exit to Couser Page", "ListOfCourses"
+            , "Course", new object { }, new { @class = "summaryWindowReturn col-lg-offset-4" })
+        </h3>
     </div>
+    <div class="col-lg-10">
+        <h4 style="margin-top: 20px; color: #aaaaaa">Incorrect Questions</h4>
+        @foreach (var item in Model.ListOfQuestions)
+        {
+            <div class="marginTop answer img-rounded">
+                <h3 class="col-lg-12">
+                    <b>@item.Text</b>
+                </h3>
+                @for (int i = 0; i < item.Answers.Count; i++)
+                {
+                    if (i == item.CorrectAnswer)
+                    {
+                        <h4 class="col-lg-12"><span class="glyphicon glyphicon-ok" style="color: chartreuse"></span> <label class="label label label-default">@item.Answers[i]</label></h4>
+                    }
+                    else if (i == item.SelectedAnswer)
+                    {
+                        <h4 class="col-lg-12"><span class="glyphicon glyphicon-remove "></span> <label class="label label-danger ">@item.Answers[i]</label></h4>
+                    }
+                    else
+                    {
+                        <h4 class="col-lg-12"><span class="glyphicon glyphicon-remove"></span> <label class="label label-default ">@item.Answers[i]</label></h4>
 
-</div>
-<div>
-    <h4 style="margin-top: 20px; color: #aaaaaa">Incorrect Questions</h4>
-    @foreach (var item in Model.ListOfQuestions)
-    {
-        <div class="container marginTop answer img-rounded">
-            <h3 class="col-lg-12"><b>@item.Text</b></h3>
-            @for (int i = 0; i < item.Answers.Count; i++)
-            {
-                if (i == item.CorrectAnswer)
-                {
-                    <h4><span class="glyphicon glyphicon-ok" style="color:chartreuse"></span> <label class="label label label-default col-lg-12">@item.Answers[i]</label></h4>
+                    }
                 }
-                else if (i == item.SelectedAnswer)
-                {
-                    <h4><span class="glyphicon glyphicon-remove"></span> <label class="label label-danger col-lg-12">@item.Answers[i]</label></h4>
-                }
-                else
-                {
-                    <h4><span class="glyphicon glyphicon-remove"></span> <label class="label label-default col-lg-12">@item.Answers[i]</label></h4>
-
-                }
-            }
-        </div>
-    }
+            </div>
+        }
+    </div>
 </div>

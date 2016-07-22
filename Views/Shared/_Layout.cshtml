@@ -4,8 +4,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    <link rel="stylesheet" type="text/css" href="/Content/star-rating-svg.css">
-    <script src="/Scripts/jquery.star-rating-svg.js"></script>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -14,19 +12,14 @@
     <div id="wrapper">
         <div id="sidebar">
             <div class="container">
-                <div class="white divLink" onclick="window.location = '/Home/Index'">
+                @*<div class="white divLink" onclick="window.location = '/Home/Index'">
                     <h3 class="divLink">
                         <span class="glyphicon glyphicon-home"></span> <label class="divLink itemText">Home</label>
                     </h3>
-                </div>
+                </div>*@
                 <div class="white divLink" onclick="window.location = '/Course/ListOfCourses'">
                     <h3 class="divLink">
                         <span class="glyphicon glyphicon glyphicon-play-circle"></span> <label class="divLink itemText">Courses</label>
-                    </h3>
-                </div>
-                <div class="white divLink" onclick="window.location = '/Test/Index'">
-                    <h3 class="divLink">
-                        <span class="glyphicon glyphicon-eye-open"></span> <label class="divLink itemText">Tests</label>
                     </h3>
                 </div>
                 <div class="white divLink" onclick="window.location='/Admin/Index'">
@@ -49,7 +42,7 @@
                 <p class="greyColor">&copy; @DateTime.Now.Year - My ASP.NET Application</p>
             </footer>
         </div>*@
-
+    @Scripts.Render("~/bundles/rateit")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/metro-ui")

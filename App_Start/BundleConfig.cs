@@ -7,9 +7,11 @@ namespace E_LearningWeb
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Add(new ScriptBundle("~/bundles/rateit").Include(
+               "~/Scripts/jquery.rateit.js",
+                "~/Scripts/jquery.star-rating-svg.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                "~/Scripts/jquery.rateit.js",
-                "~/Scripts/jquery.star-rating-svg.js",
                         "~/Scripts/jquery-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(

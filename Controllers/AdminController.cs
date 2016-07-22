@@ -1,6 +1,7 @@
 ﻿using E_LearningWeb.Models;
 using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
+using Microsoft.SharePoint.Client;
 using System.Web.Mvc;
 
 namespace E_LearningWeb.Controllers
@@ -43,7 +44,19 @@ namespace E_LearningWeb.Controllers
 
         public ActionResult Index()
         {
+            Session.Add("logged", GetUserPermissions((ClientContext)Session["ClientContext"]));
             return View();
+        }
+
+
+        private bool GetUserPermissions(ClientContext clientContext)
+        {
+            BasePermissions bp = new BasePermissions();
+            bp.Set(PermissionKind.ManageWeb);
+            ClientResult<bool> manageWeb = clientContext.Web.DoesUserHavePermissions(bp);
+            clientContext.ExecuteQuery();
+
+            return manageWeb.Value;
         }
     }
 }

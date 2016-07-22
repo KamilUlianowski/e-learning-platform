@@ -1,6 +1,6 @@
 ﻿@model E_LearningWeb.ViewModels.CourseViewModel
 
-<section class="nav nav-pills nav-stacked col-lg-8 course-section" id="ListOfMovies">
+<section class="nav nav-pills nav-stacked col-lg-10 course-section" id="ListOfMovies">
     <ul class="list-inline ul-content-course">
         <li id="LiMovies" class="selected li-movies divLink">Table of contents</li>
         <li id="LiDescription" class="li-movies divLink">Description</li>
@@ -14,26 +14,21 @@
             <a class="col-lg-8 movie-row" href="@Url.Action("Index", "Video", new {videoUrl = @item.VideoUrl})">
                 <h3 class="movie-row"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>   <span>@item.Title</span></h3>
             </a>
-            <div id="@item.Id" class="rateit col-lg-2" style="margin-top: 20px" data-rateit-value="@item.Rating" data-rateit-ispreset="true"></div>
-            <div class="col-lg-1 marginTop ">
+            <div id="@item.Id" class="rateit-stars col-lg-2" style="margin-top: 20px" data-rateit-value="@item.Rating" data-rateit-ispreset="true"></div>
+            <div class="col-lg-1 marginTop  ">
                 @if ((bool)System.Web.HttpContext.Current.Session["logged"])
                 {
                     <span>
-                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("UpdateMovie", "Admin", new {id = @item.Id, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </button>
-                    </span>
-                }
-            </div>
-            <div class="col-lg-1 marginTop ">
-                @if ((bool)System.Web.HttpContext.Current.Session["logged"])
-                {
-                    <span>
-                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("DeleteMovie", "Admin", new {id = @item.Id, courseId = @item.CourseId, SPHostUrl = System.Web.HttpContext.Current.Session["SharepointContext"]}))'">
+                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("DeleteMovie", "Admin", new {id = @item.Id, courseId = @item.CourseId})'">
                             <span class="glyphicon glyphicon-remove"></span>
                         </button>
                     </span>
                 }
+            </div>
+        }@if ((bool)System.Web.HttpContext.Current.Session["logged"])
+        {
+            <div class="col-lg-5">
+                <button type="button" class="btn btn-default btn-lg marginTop" data-toggle="modal" data-target="#myModal">Add movie</button>
             </div>
         }
     </div>
@@ -42,31 +37,18 @@
     </div>
 
     <div id="LearningCheck" hidden class="col-lg-12 section-content-course">
-        <div class="col-lg-9">
+        <div class="col-lg-8">
             <h3 class="learning-check-text">
                 <span> Check your learning of key course concepts.</span>
             </h3>
             <h4 class="learning-check-text">
                 <span>  Learning checks are not timed and only you can see the results.</span>
             </h4>
-        </div>
-        <div class="col-lg-3" style="margin-top: 32px;">
-            @Html.ActionLink("Try practice questions", "Index", new { controller = "Test" }, new { @class = "a-learning-check" })
+        </div>i
+        <div class="col-lg-4" style="margin-top: 32px;">
+            <a data-toggle="modal" data-target="#myModalTest" class="buttonTest a-learning-check">Try practice questions</a>
         </div>
     </div>
-    @*<div class="col-lg-12">
-            <div class="marginTop">
-                @foreach (var item in Model)
-                {
-                    <a class="col-lg-5 courseDiv @item.Path" href="@Url.Action("Index", "Course", new {courseId = @item.Id, courseName = @item.Title})">
-                        <img src=@item.ImageUrl alt="">
-                        <span class="courseDivHeader">@item.Title</span>
-                        <span class="courseDivFooter">@item.NumberOfMovies Movies</span>
-                    </a>
-                }
-            </div>
-        </div>*@
-
     <div id="Discussion" hidden class="col-lg-12 section-content-course">
         <div id="Posts" class="container">
             <div class="row">
@@ -93,7 +75,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </article>
                         }
                         @using (Html.BeginForm("Index", "Course", new { courseId = @Model.CourseId }, FormMethod.Post))
@@ -110,60 +91,167 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 </section>
 @if ((bool)System.Web.HttpContext.Current.Session["logged"])
 {
-    <button type="button" class="btn btn-primary btn-lg marginTop" style="margin-left: 15px" data-toggle="modal" data-target="#myModal">Add movie</button>
+    <div class="col-lg-12">
+        @*<div class="col-lg-2">
+                <button type="button" class="btn btn-default btn-lg marginTop" data-toggle="modal" data-target="#myModal">Add movie</button>
+            </div>*@
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
 
-    <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    @using (Html.BeginForm("AddMovie", "Admin", FormMethod.Post, new { role = "form" }))
+                    {
+                        <div class="modal-header form-group">
+                            <label class="form-control-label">Video Title</label>
+                            @Html.TextBoxFor(x => x.NewMovie.Title, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.NewMovie.Title)
+                        </div>
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                @using (Html.BeginForm("AddMovie", "Admin", FormMethod.Post, new { role = "form" }))
-                {
-                    <div class="modal-header form-group">
-                        <label class="form-control-label">Video Title</label>
-                        @Html.TextBoxFor(x => x.NewMovie.Title, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(x => x.NewMovie.Title)
-                    </div>
+                        <div class="modal-header form-group">
+                            <label class="form-control-label">Video Url</label>
+                            @Html.TextBoxFor(x => x.NewMovie.VideoUrl, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.NewMovie.VideoUrl)
+                        </div>
 
-                    <div class="modal-header form-group">
-                        <label class="form-control-label">Video Url</label>
-                        @Html.TextBoxFor(x => x.NewMovie.VideoUrl, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(x => x.NewMovie.VideoUrl)
-                    </div>
+                        <div class="modal-header">
+                            <label class="form-control-label">Course</label>
+                            @{
+                                var selectList = new SelectList(
+                                    new List<SelectListItem>
+                                    {
+                                        new SelectListItem {Text = "C#", Value = "1"},
+                                        new SelectListItem {Text = "Java", Value = "2"},
+                                        new SelectListItem {Text = "AngularJs", Value = "3"},
+                                        new SelectListItem {Text = "CSS", Value = "4"},
+                                        new SelectListItem {Text = "HTML5", Value = "5"},
+                                        new SelectListItem {Text = "JavaScript", Value = "6"},
+                                        new SelectListItem {Text = "Node.js", Value = "7"},
 
-                    <div class="modal-header">
-                        <label class="form-control-label">Course</label>
-                        @{
-                            var selectList = new SelectList(
-                                new List<SelectListItem>
-                                {
-                                    new SelectListItem {Text = "C#", Value = "1"},
-                                    new SelectListItem {Text = "Java", Value = "2"},
-                                    new SelectListItem {Text = "AngularJs", Value = "3"},
-                                    new SelectListItem {Text = "CSS", Value = "4"},
-                                    new SelectListItem {Text = "HTML5", Value = "5"},
-                                    new SelectListItem {Text = "JavaScript", Value = "6"},
-                                    new SelectListItem {Text = "Node.js", Value = "7"},
-
-                                }, "Value", "Text");
-                        }
-
-                        @Html.DropDownListFor(m => m.CourseId, new SelectList(selectList, "Value", "Text", @Model.CourseId), new { @class = "form-control" })
-                    </div>
-
-                    <div class="form-group modal-header">
-                        <input type="submit" class="btn btn-primary" value="Add">
-                    </div>
-
+                                    }, "Value", "Text");
                             }
+
+                            @Html.DropDownListFor(m => m.CourseId, new SelectList(selectList, "Value", "Text", @Model.CourseId), new { @class = "form-control" })
+                        </div>
+
+                        <div class="form-group modal-header">
+                            <input type="submit" class="btn btn-primary" value="Add">
+                        </div>
+
+                                }
+                </div>
             </div>
         </div>
     </div>
-                            }
+                                }
 
+<div id="myModalTest" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="container">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 id="QuestionText" class="modal-title" style="margin-top: 30px"></h3>
+                </div>
+                <div class="modal-body">
+                    <div class="question">
+                        <div class="radio">
+                            <h3>
+                                <input type="radio" id="answer0" name="optradio" value=0><label class="labelAnswer" for="answer0" title="0"></label>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="radio">
+                            <h3>
+                                <input type="radio" id="answer1" name="optradio" value=1><label class="labelAnswer" for="answer1" title="1"></label>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="radio">
+                            <h3>
+                                <input type="radio" id="answer2" name="optradio" value=2><label class="labelAnswer" for="answer2" title="2"></label>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="ConfirmButton2" type="button" class="btn btn-default">Select</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script type='text/javascript'>
+    var iterator = 0;
+    var correctAnswers = 0;
+    var listOfPosts = [];
+    var incorectAnswers = [];
+    var selectedAnswer;
+    var count = 0;
+    $(".buttonTest").click(function () {
+        if (count % 2 == 1) {
+            $(".labelAnswer").removeClass("goodAnswer badAnswer");
+            count = 0;
+        }
+        iterator = 0;
+        listOfPosts = [];
+        @foreach (var item in Model.ListOfQuestions)
+        {
+            <text>
+        listOfPosts.push({
+            text: "@HttpUtility.JavaScriptStringEncode(item.Text)",
+            answers: [
+                "@HttpUtility.JavaScriptStringEncode(item.Answers[0])", "@HttpUtility.JavaScriptStringEncode(item.Answers[1])",
+                "@HttpUtility.JavaScriptStringEncode(item.Answers[2])"
+            ],
+            correctAnswer: "@item.CorrectAnswer",
+            id: @item.Id,
+        });
+        </text>
+        }
+        $("#QuestionText").text(listOfPosts[iterator].text);
+        $('label[for=answer0]').text(listOfPosts[iterator].answers[0]);
+        $('label[for=answer1]').text(listOfPosts[iterator].answers[1]);
+        $('label[for=answer2]').text(listOfPosts[iterator].answers[2]);
+    });
+    $("#ConfirmButton2").click(function () {
+        count++;
+
+        if (count % 2 == 0) {
+            if (iterator < listOfPosts.length) {
+                $(".labelAnswer ").removeClass("goodAnswer badAnswer");
+                $("#ConfirmButton2").text("Selected");
+                $("#QuestionText").text(listOfPosts[iterator].text);
+                $('label[for=answer0]').text(listOfPosts[iterator].answers[0]);
+                $('label[for=answer1]').text(listOfPosts[iterator].answers[1]);
+                $('label[for=answer2]').text(listOfPosts[iterator].answers[2]);
+            } else {
+                window.location = "/Test/Result?correctAnswers=" + correctAnswers + "/" + listOfPosts.length+"&incorrectAnswersId=" + incorectAnswers + "&courseId=" + @Model.CourseId;
+            }
+
+        } else {
+            selectedAnswer = $('input[type=radio]:checked').val();
+            if (selectedAnswer == listOfPosts[iterator].correctAnswer) {
+                correctAnswers++;
+            } else {
+                incorectAnswers.push(listOfPosts[iterator].id, selectedAnswer);
+                $('label[title=' + selectedAnswer + ']').addClass("badAnswer");
+            }
+            $("#ConfirmButton2").text("Next");
+            $('label[title=' + listOfPosts[iterator].correctAnswer + ']').addClass("goodAnswer");
+            iterator++;
+        }
+    });
+
+</script>
