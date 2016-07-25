@@ -2,8 +2,8 @@
     $(this).toggleClass('active');
 });
 
-$("#sidebar").css("width", 60);
-$("#sidebar").hover(
+$("#Sidebar").css("width", 60);
+$("#Sidebar").hover(
     function () {
         $(this).animate({ width: '200' }, 200);
         $(".item-text").show();
@@ -28,21 +28,21 @@ $(".pathLi").click(function() {
 $("#LiMovies").click(function () {
     $(".li-movies").removeClass("selected");
     $(this).addClass("selected");
-    $(".section-content-course").hide();
+    $(".section-Content-course").hide();
     $("#TableOfContent").show();
 });
 
 $("#LiDescription").click(function () {
     $(".li-movies").removeClass("selected");
     $(this).addClass("selected");
-    $(".section-content-course").hide();
+    $(".section-Content-course").hide();
     $("#Description").show();
 });
 
 $("#LiDiscussion").click(function () {
     $(".li-movies").removeClass("selected");
     $(this).addClass("selected");
-    $(".section-content-course").hide();
+    $(".section-Content-course").hide();
     $("#Discussion").show();
 });
 
@@ -50,7 +50,7 @@ $("#LiDiscussion").click(function () {
 $("#LiTest").click(function () {
     $(".li-movies").removeClass("selected");
     $(this).addClass("selected");
-    $(".section-content-course").hide();
+    $(".section-Content-course").hide();
     $("#LearningCheck").show();
 });
 
@@ -63,10 +63,4 @@ $('div[title=1]').click(function() {
 
 $('div[title=2]').click(function() {
     $("#answer2").prop("checked", true);
-});
-
-$window.resize(function() {
-    if ($window.width() < 514) {
-        return $html.addClass('mobile');
-    }
 });

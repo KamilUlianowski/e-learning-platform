@@ -5,7 +5,7 @@ namespace E_LearningWeb.Controllers
     public class HomeController : Controller
     {
 
-        [SharePointContextFilter]
+       [SharePointContextFilter]
         public ActionResult Index()
         {
             InitializeSession();

@@ -71,7 +71,7 @@ window.matchMedia = window.matchMedia || (function(doc, undefined){
 		links			= head.getElementsByTagName( "link" ),
 		requestQueue	= [],
 		
-		//loop stylesheets, send text content to translate
+		//loop stylesheets, send text Content to translate
 		ripCSS			= function(){
 			var sheets 	= links,
 				sl 		= sheets.length,

@@ -66,7 +66,7 @@ a.summary-window-return {
 }
 
 
-/* Set padding to keep content from hitting the edges */
+/* Set padding to keep Content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
@@ -171,7 +171,7 @@ textarea {
     margin-top: 6px;
 }
 
-#button-post {
+#ButtonPost {
     margin-top: 30px;
     font-size: 30px;
     margin-left: 20px;
@@ -232,11 +232,11 @@ textarea {
         margin-top: 5px;
     }
 
-#wrapper {
+#Wrapper {
     overflow: hidden;
 }
 
-#sidebar {
+#Sidebar {
     position: absolute;
     width: 250px;
     height: 100%;
@@ -246,7 +246,7 @@ textarea {
     z-index: 9999999;
 }
 
-#content {
+#Content {
     margin: 0 0 0 110px;
     overflow: hidden;
 }
@@ -331,7 +331,7 @@ html {
     padding-bottom: 20px;
 }
 
-#list-of-movies {
+#SectionMovies {
     margin-right: 20px;
 }
 

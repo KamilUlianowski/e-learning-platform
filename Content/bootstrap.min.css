@@ -73,8 +73,8 @@ dfn {
 
 hr {
     height: 0;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
+    -moz-box-sizing: Content-box;
+    box-sizing: Content-box;
 }
 
 mark {
@@ -166,9 +166,9 @@ input[type="checkbox"], input[type="radio"] {
 }
 
 input[type="search"] {
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
+    -webkit-box-sizing: Content-box;
+    -moz-box-sizing: Content-box;
+    box-sizing: Content-box;
     -webkit-appearance: textfield;
 }
 

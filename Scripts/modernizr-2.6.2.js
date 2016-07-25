@@ -352,7 +352,7 @@ window.Modernizr = (function( window, document, undefined ) {
     // non-standard but works in WebKit and IE (but not Gecko or Opera),
     // we explicitly reject properties with dashes so that authors
     // developing in WebKit or IE first don't end up with
-    // browser-specific content by accident.
+    // browser-specific Content by accident.
 
     function testProps( props, prefixed ) {
         for ( var i in props ) {
@@ -720,11 +720,11 @@ window.Modernizr = (function( window, document, undefined ) {
     };
     /*>>fontface*/
 
-    // CSS generated content detection
+    // CSS generated Content detection
     tests['generatedcontent'] = function() {
         var bool;
 
-        injectElementWithStyles(['#',mod,'{font:0/0 a}#',mod,':after{content:"',smile,'";visibility:hidden;font:3px/1 a}'].join(''), function( node ) {
+        injectElementWithStyles(['#',mod,'{font:0/0 a}#',mod,':after{Content:"',smile,'";visibility:hidden;font:3px/1 a}'].join(''), function( node ) {
           bool = node.offsetHeight >= 3;
         });
 
@@ -734,7 +734,7 @@ window.Modernizr = (function( window, document, undefined ) {
 
 
     // These tests evaluate support of the video/audio elements, as well as
-    // testing what types of content they support.
+    // testing what types of Content they support.
     //
     // We're using the Boolean constructor here, so that we can extend the value
     // e.g.  Modernizr.video     // true
@@ -857,10 +857,10 @@ window.Modernizr = (function( window, document, undefined ) {
         return !!document.createElementNS && /SVGAnimate/.test(toString.call(document.createElementNS(ns.svg, 'animate')));
     };
 
-    // This test is only for clip paths in SVG proper, not clip paths on HTML content
+    // This test is only for clip paths in SVG proper, not clip paths on HTML Content
     // demo: srufaculty.sru.edu/david.dailey/svg/newstuff/clipPath4.svg
 
-    // However read the comments to dig into applying SVG clippaths to HTML content here:
+    // However read the comments to dig into applying SVG clippaths to HTML Content here:
     //   github.com/Modernizr/Modernizr/issues/213#issuecomment-1149491
     tests['svgclippaths'] = function() {
         return !!document.createElementNS && /SVGClipPath/.test(toString.call(document.createElementNS(ns.svg, 'clipPath')));

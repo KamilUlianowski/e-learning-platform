@@ -1609,7 +1609,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 		assert(function( div ) {
 			// Select is set to empty string on purpose
 			// This is to test IE's treatment of not explicitly
-			// setting a boolean content attribute,
+			// setting a boolean Content attribute,
 			// since its presence should be enough
 			// http://bugs.jquery.com/ticket/12359
 			div.innerHTML = "<select><option selected=''></option></select>";
@@ -2308,7 +2308,7 @@ Expr = Sizzle.selectors = {
 		// Contents
 		"empty": function( elem ) {
 			// http://www.w3.org/TR/selectors/#empty-pseudo
-			// :empty is only affected by element nodes and content nodes(including text(3), cdata(4)),
+			// :empty is only affected by element nodes and Content nodes(including text(3), cdata(4)),
 			//   not comment, processing instructions, or others
 			// Thanks to Diego Perini for the nodeName shortcut
 			//   Greater than "@" means alpha characters (specifically not starting with "#" or "?")
@@ -3364,7 +3364,7 @@ jQuery.support = (function( support ) {
 	support.tbody = !div.getElementsByTagName("tbody").length;
 
 	// Make sure that link elements get serialized correctly by innerHTML
-	// This requires a wrapper element in IE
+	// This requires a Wrapper element in IE
 	support.htmlSerialize = !!div.getElementsByTagName("link").length;
 
 	// Get the style information from getAttribute
@@ -3466,9 +3466,9 @@ jQuery.support = (function( support ) {
 		support[ i + "Bubbles" ] = eventName in window || div.attributes[ eventName ].expando === false;
 	}
 
-	div.style.backgroundClip = "content-box";
+	div.style.backgroundClip = "Content-box";
 	div.cloneNode( true ).style.backgroundClip = "";
-	support.clearCloneStyle = div.style.backgroundClip === "content-box";
+	support.clearCloneStyle = div.style.backgroundClip === "Content-box";
 
 	// Support: IE<9
 	// Iteration over object's inherited properties before its own.
@@ -3480,7 +3480,7 @@ jQuery.support = (function( support ) {
 	// Run tests that need a body at doc ready
 	jQuery(function() {
 		var container, marginDiv, tds,
-			divReset = "padding:0;margin:0;border:0;display:block;box-sizing:content-box;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;",
+			divReset = "padding:0;margin:0;border:0;display:block;box-sizing:Content-box;-moz-box-sizing:Content-box;-webkit-box-sizing:Content-box;",
 			body = document.getElementsByTagName("body")[0];
 
 		if ( !body ) {
@@ -6198,7 +6198,7 @@ jQuery.fn.extend({
 			}),
 			i = 0;
 
-		// Make the changes, replacing each context element with the new content
+		// Make the changes, replacing each context element with the new Content
 		this.domManip( arguments, function( elem ) {
 			var next = args[ i++ ],
 				parent = args[ i++ ];
@@ -6211,10 +6211,10 @@ jQuery.fn.extend({
 				jQuery( this ).remove();
 				parent.insertBefore( elem, next );
 			}
-		// Allow new content to include elements from the context set
+		// Allow new Content to include elements from the context set
 		}, true );
 
-		// Force removal if there was no new content (e.g., from empty arguments)
+		// Force removal if there was no new Content (e.g., from empty arguments)
 		return i ? this : this.remove();
 	},
 
@@ -6582,7 +6582,7 @@ jQuery.extend({
 
 					tmp.innerHTML = wrap[1] + elem.replace( rxhtmlTag, "<$1></$2>" ) + wrap[2];
 
-					// Descend through wrappers to the right content
+					// Descend through wrappers to the right Content
 					j = wrap[0];
 					while ( j-- ) {
 						tmp = tmp.lastChild;
@@ -7195,7 +7195,7 @@ function setPositiveNumber( elem, value, subtract ) {
 }
 
 function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
-	var i = extra === ( isBorderBox ? "border" : "content" ) ?
+	var i = extra === ( isBorderBox ? "border" : "Content" ) ?
 		// If we already have the right measurement, avoid augmentation
 		4 :
 		// Otherwise initialize for horizontal or vertical properties
@@ -7210,8 +7210,8 @@ function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
 		}
 
 		if ( isBorderBox ) {
-			// border-box includes padding, so remove it if we want content
-			if ( extra === "content" ) {
+			// border-box includes padding, so remove it if we want Content
+			if ( extra === "Content" ) {
 				val -= jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
 			}
 
@@ -7220,10 +7220,10 @@ function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
 				val -= jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
 			}
 		} else {
-			// at this point, extra isn't content, so add padding
+			// at this point, extra isn't Content, so add padding
 			val += jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
 
-			// at this point, extra isn't content nor padding, so add border
+			// at this point, extra isn't Content nor padding, so add border
 			if ( extra !== "padding" ) {
 				val += jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
 			}
@@ -7269,7 +7269,7 @@ function getWidthOrHeight( elem, name, extra ) {
 		augmentWidthOrHeight(
 			elem,
 			name,
-			extra || ( isBorderBox ? "border" : "content" ),
+			extra || ( isBorderBox ? "border" : "Content" ),
 			valueIsBorderBox,
 			styles
 		)
@@ -7967,7 +7967,7 @@ jQuery.extend({
 					return this;
 				},
 
-				// Overrides response content-type header
+				// Overrides response Content-type header
 				overrideMimeType: function( type ) {
 					if ( !state ) {
 						s.mimeType = type;
@@ -8054,14 +8054,14 @@ jQuery.extend({
 		// Uppercase the type
 		s.type = s.type.toUpperCase();
 
-		// Determine if request has content
+		// Determine if request has Content
 		s.hasContent = !rnoContent.test( s.type );
 
 		// Save the URL in case we're toying with the If-Modified-Since
 		// and/or If-None-Match header later on
 		cacheURL = s.url;
 
-		// More options handling for requests with no content
+		// More options handling for requests with no Content
 		if ( !s.hasContent ) {
 
 			// If data is available, append data to url
@@ -8213,7 +8213,7 @@ jQuery.extend({
 					}
 				}
 
-				// if no content
+				// if no Content
 				if ( status === 204 || s.type === "HEAD" ) {
 					statusText = "nocontent";
 
@@ -8304,7 +8304,7 @@ jQuery.each( [ "get", "post" ], function( i, method ) {
 });
 
 /* Handles responses to an ajax request:
- * - finds the right dataType (mediates between content-type and expected dataType)
+ * - finds the right dataType (mediates between Content-type and expected dataType)
  * - returns the corresponding response
  */
 function ajaxHandleResponses( s, jqXHR, responses ) {
@@ -8312,7 +8312,7 @@ function ajaxHandleResponses( s, jqXHR, responses ) {
 		contents = s.contents,
 		dataTypes = s.dataTypes;
 
-	// Remove auto dataType and get content-type in the process
+	// Remove auto dataType and get Content-type in the process
 	while( dataTypes[ 0 ] === "*" ) {
 		dataTypes.shift();
 		if ( ct === undefined ) {
@@ -8320,7 +8320,7 @@ function ajaxHandleResponses( s, jqXHR, responses ) {
 		}
 	}
 
-	// Check if we're dealing with a known content-type
+	// Check if we're dealing with a known Content-type
 	if ( ct ) {
 		for ( type in contents ) {
 			if ( contents[ type ] && contents[ type ].test( ct ) ) {

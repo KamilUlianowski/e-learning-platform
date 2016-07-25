@@ -12,6 +12,7 @@ namespace E_LearningWeb.Controllers
     {
         private readonly ISharepointService _sharepointService;
         private List<Question> _questions;
+        private string _answers;
 
         public TestController(ISharepointService sharepointService)
         {
@@ -26,15 +27,20 @@ namespace E_LearningWeb.Controllers
             return View(testViewModel);
         }
 
-        public ActionResult Result(string correctAnswers, string incorrectAnswersId, int courseId)
+        public ActionResult Result(string correctAnswers, int courseId)
         {
             _questions = _sharepointService.GetQuestions(courseId);
-            GetIncorrectQuestions(incorrectAnswersId);
+            GetIncorrectQuestions(_answers);
             return View(new TestViewModel()
             {
                 CorrectAnswers = correctAnswers,
-                ListOfQuestions = GetIncorrectQuestions(incorrectAnswersId)
+                ListOfQuestions = GetIncorrectQuestions(_answers)
             });
+        }
+
+        public void SaveAnswers(string answers)
+        {
+            _answers = answers;
         }
 
         public List<Question> GetIncorrectQuestions(string incorrectQuestionId)

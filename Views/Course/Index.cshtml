@@ -1,5 +1,5 @@
 ﻿@model E_LearningWeb.ViewModels.CourseViewModel
-<section style="background-image: url(https://s.pluralsight.com/learner/ab1f264000bfb145cfa246fde77e831f.jpg); min-height: 400px;" class="col-lg-8 col-lg-offset-2 bottom-border">
+<section id="SectionImage" style="background-image: url(https://s.pluralsight.com/learner/ab1f264000bfb145cfa246fde77e831f.jpg); min-height: 400px;" class="col-lg-8 col-lg-offset-2 bottom-border">
     <h1 class="col-lg-8" style="color: #ffffff">Getting Started with @Model.SpecificCourse.Title</h1>
     <h4 class="col-lg-8" style="color: #ffffff">by @Model.SpecificCourse.Author</h4>
     <h4 class="col-lg-8" style="color: #ffffff">@Model.SpecificCourse.ShortDescription</h4>
@@ -10,9 +10,9 @@
     </div>
     <div></div>
 </section>
-<section class="nav nav-pills nav-stacked col-lg-8 course-section col-lg-offset-2" id="list-of-movies">
+<section class="nav nav-pills nav-stacked col-lg-8 course-section col-lg-offset-2" id="SectionMovies">
     <ul class="list-inline ul-content-course">
-        <li id="LiMovies" class="selected li-movies div-link">Table of contents</li>
+        <li id="LiMovies" class="selected li-movies div-link">Table of Contents</li>
         <li id="LiDescription" class="li-movies div-link">Description</li>
         <li id="LiDiscussion" class="li-movies div-link">Discussion</li>
         <li id="LiTest" class="li-movies div-link">Learning Check</li>
@@ -24,7 +24,9 @@
             <a class="col-lg-8 movie-row" href="@Url.Action("Index", "Video", new {videoUrl = @item.VideoUrl})">
                 <h3 class="movie-row"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>   <span>@item.Title</span></h3>
             </a>
-            <div id="@item.Id" class="my-rating jq-stars col-lg-2" style="margin-top: 20px"></div>
+            <div class="col-lg-2" style="margin-top: 20px;">
+                <div id="@item.Id" class="my-rating jq-stars"></div>
+            </div>
             <div class="col-lg-1 matgin-top  ">
                 @if ((bool)System.Web.HttpContext.Current.Session["logged"])
                 {
@@ -123,7 +125,7 @@
         <div id="myModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
 
-                <!-- Modal content-->
+                <!-- Modal Content-->
                 <div class="modal-content">
                     @using (Html.BeginForm("AddMovie", "Admin", FormMethod.Post, new { role = "form" }))
                     {
@@ -172,7 +174,7 @@
 
 <div id="myModalTest" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
+        <!-- Modal Content-->
         <div class="modal-content">
             <div class="container">
                 <div class="modal-header">
@@ -265,7 +267,7 @@
             });
             </text>
                 }
-            $("#questionNumber").text("Question " + iterator+1 + " of " + listOfPosts.length);
+            $("#questionNumber").text("Question " + (iterator+1) + " of " + listOfPosts.length);
             $("#QuestionText").text(listOfPosts[iterator].text);
             $('label[for=answer0]').text(listOfPosts[iterator].answers[0]);
             $('label[for=answer1]').text(listOfPosts[iterator].answers[1]);
@@ -282,9 +284,19 @@
                     $('label[for=answer0]').text(listOfPosts[iterator].answers[0]);
                     $('label[for=answer1]').text(listOfPosts[iterator].answers[1]);
                     $('label[for=answer2]').text(listOfPosts[iterator].answers[2]);
-                    $("#questionNumber").text("Question " + iterator+1 + " of " + listOfPosts.length);
+                    $("#questionNumber").text("Question " + (iterator+1) + " of " + listOfPosts.length);
                 } else {
-                    window.location = "/Test/Result?correctAnswers=" + correctAnswers + "/" + listOfPosts.length + "&incorrectAnswersId=" + incorectAnswers + "&courseId=" + @Model.SpecificCourse.Id;
+                        $.ajax({
+                            type: "POST",
+                            url: "/Test/SaveAnswers",
+                            data: { answers: incorectAnswers },
+                            success: function(msg) {
+                                window.location = "/Test/Result?correctAnswers=" + correctAnswers + "/" + listOfPosts.length + "&courseId=" + @Model.SpecificCourse.Id;
+                            },
+                            error: function(e) {
+                                alert("Something is wrong");
+                            }
+                        });
                 }
 
             } else if ($('input[type=radio]:checked').val()) {
