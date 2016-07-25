@@ -9,7 +9,7 @@ namespace E_LearningWeb.Controllers
         public ActionResult Index()
         {
             InitializeSession();
-            return View();
+            return RedirectToAction("ListOfCourses", "Course");
         }
 
 

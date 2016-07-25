@@ -1,11 +1,19 @@
 ﻿@model E_LearningWeb.ViewModels.CourseViewModel
-
-<section class="nav nav-pills nav-stacked col-lg-10 course-section" id="ListOfMovies">
+<div style="background-image: url(https://s.pluralsight.com/learner/ab1f264000bfb145cfa246fde77e831f.jpg); min-height: 450px;" class="col-lg-8 col-lg-offset-2 bottom-border">
+    <h1 class="col-lg-8" style="color: #ffffff">Getting Started with Asynchronous Programming in .NET</h1>
+    <h4 class="col-lg-8" style="color: #ffffff">by Filip Ekberg</h4>
+    <h4 class="col-lg-8" style="color: #ffffff">Learn how to get started with Asynchronous Programming in .NET</h4>
+    <div class="col-lg-5">
+        <button class="button-star-course" ><span class="glyphicon glyphicon-play"></span>  Start Course  </button>
+    </div>
+    <div></div>
+</div>
+<section class="nav nav-pills nav-stacked col-lg-8 course-section col-lg-offset-2" id="list-of-movies">
     <ul class="list-inline ul-content-course">
-        <li id="LiMovies" class="selected li-movies divLink">Table of contents</li>
-        <li id="LiDescription" class="li-movies divLink">Description</li>
-        <li id="LiDiscussion" class="li-movies divLink">Discussion</li>
-        <li id="LiTest" class="li-movies divLink">Learning Check</li>
+        <li id="LiMovies" class="selected li-movies div-link">Table of contents</li>
+        <li id="LiDescription" class="li-movies div-link">Description</li>
+        <li id="LiDiscussion" class="li-movies div-link">Discussion</li>
+        <li id="LiTest" class="li-movies div-link">Learning Check</li>
     </ul>
     <div id="TableOfContent" class="col-lg-12 section-content-course">
         @foreach (var item in Model.ListOfMovies)
@@ -15,17 +23,17 @@
                 <h3 class="movie-row"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>   <span>@item.Title</span></h3>
             </a>
             <div id="@item.Id" class="my-rating jq-stars col-lg-2" style="margin-top: 20px"></div>
-            <div class="col-lg-1 marginTop  ">
+            <div class="col-lg-1 matgin-top  ">
                 @if ((bool)System.Web.HttpContext.Current.Session["logged"])
                 {
                     <span>
                         <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("UpdateMovie", "Admin", new {id = @item.Id})'">
-                            <span class="glyphicon glyphicon-remove"></span>
+                            <span class="glyphicon glyphicon-edit"></span>
                         </button>
                     </span>
                 }
             </div>
-            <div class="col-lg-1 marginTop  ">
+            <div class="col-lg-1 matgin-top  ">
                 @if ((bool)System.Web.HttpContext.Current.Session["logged"])
                 {
                     <span>
@@ -35,20 +43,11 @@
                     </span>
                 }
             </div>
-            <div class="col-lg-1 marginTop  ">
-                @if ((bool)System.Web.HttpContext.Current.Session["logged"])
-                {
-                    <span>
-                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("DeleteMovie", "Admin", new {id = @item.Id, courseId = @item.CourseId})'">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                    </span>
-                }
-            </div>
+    
         }@if ((bool)System.Web.HttpContext.Current.Session["logged"])
         {
             <div class="col-lg-5">
-                <button type="button" class="btn btn-default btn-lg marginTop" data-toggle="modal" data-target="#myModal">Add movie</button>
+                <button type="button" class="btn btn-default btn-lg matgin-top" data-toggle="modal" data-target="#myModal">Add movie</button>
             </div>
         }
     </div>
@@ -66,7 +65,7 @@
             </h4>
         </div>i
         <div class="col-lg-4" style="margin-top: 32px;">
-            <a data-toggle="modal" data-target="#myModalTest" class="buttonTest a-learning-check divLink">Try practice questions</a>
+            <a data-toggle="modal" data-target="#myModalTest" class="buttonTest a-learning-check div-link">Try practice questions</a>
         </div>
     </div>
     <div id="Discussion" hidden class="col-lg-12 section-content-course">
@@ -78,7 +77,7 @@
                         <!-- First Comment -->
                         @foreach (var item in Model.ListOfPosts)
                         {
-                            <article class="row marginTop">
+                            <article class="row matgin-top">
 
                                 <div class="col-md-12 col-sm-12">
                                     <div class="panel panel-default">
@@ -117,7 +116,7 @@
 {
     <div class="col-lg-12">
         @*<div class="col-lg-2">
-                <button type="button" class="btn btn-default btn-lg marginTop" data-toggle="modal" data-target="#myModal">Add movie</button>
+                <button type="button" class="btn btn-default btn-lg matgin-top" data-toggle="modal" data-target="#myModal">Add movie</button>
             </div>*@
         <div id="myModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -175,25 +174,27 @@
         <div class="modal-content">
             <div class="container">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div class="modal-window-text-header">
+                        <div id="questionNumber" class="text-right"></div>
+                    </div>
                     <h3 id="QuestionText" class="modal-title" style="margin-top: 30px"></h3>
                 </div>
                 <div class="modal-body">
-                    <div class="question" title="0">
+                    <div class="question div-link" title="0">
                         <div class="radio">
                             <h3>
                                 <input type="radio" id="answer0" name="optradio" value=0><label for="answer0" title="0"></label>
                             </h3>
                         </div>
                     </div>
-                    <div class="question"  title="1">
+                    <div class="question div-link"  title="1">
                         <div class="radio">
                             <h3>
                                 <input type="radio" id="answer1" name="optradio" value=1><label for="answer1" title="1"></label>
                             </h3>
                         </div>
                     </div>
-                        <div class="question" title="2">
+                        <div class="question div-link" title="2">
                             <div class="radio">
                                 <h3>
                                     <input type="radio" id="answer2" name="optradio" value=2><label for="answer2" title="2"></label>
@@ -243,7 +244,7 @@
             var count = 1;
             $(".buttonTest").click(function() {
                 if (count % 2 == 1) {
-                    $(".question").removeClass("goodAnswer badAnswer");
+                    $(".question").removeClass("good-answer bad-answer");
                     count = 1;
                 }
                 iterator = 0;
@@ -262,6 +263,7 @@
                 });
                 </text>
                 }
+                $("#questionNumber").text("Question " + iterator + " of " + listOfPosts.length);
                 $("#QuestionText").text(listOfPosts[iterator].text);
                 $('label[for=answer0]').text(listOfPosts[iterator].answers[0]);
                 $('label[for=answer1]').text(listOfPosts[iterator].answers[1]);
@@ -272,12 +274,13 @@
                     count++;
                     $('input[type=radio]:checked').attr('checked', false);
                     if (iterator < listOfPosts.length) {
-                        $(".question ").removeClass("goodAnswer badAnswer");
+                        $(".question ").removeClass("good-answer bad-answer");
                         $("#ConfirmButton2").text("Selected");
                         $("#QuestionText").text(listOfPosts[iterator].text);
                         $('label[for=answer0]').text(listOfPosts[iterator].answers[0]);
                         $('label[for=answer1]').text(listOfPosts[iterator].answers[1]);
                         $('label[for=answer2]').text(listOfPosts[iterator].answers[2]);
+                        $("#questionNumber").text("Question " + iterator + " of " + listOfPosts.length);
                     } else {
                         window.location = "/Test/Result?correctAnswers=" + correctAnswers + "/" + listOfPosts.length + "&incorrectAnswersId=" + incorectAnswers + "&courseId=" + @Model.CourseId;
                     }
@@ -289,11 +292,12 @@
                         correctAnswers++;
                     } else {
                         incorectAnswers.push(listOfPosts[iterator].id, selectedAnswer);
-                        $('div[title=' + selectedAnswer + ']').addClass("badAnswer");
+                        $('div[title=' + selectedAnswer + ']').addClass("bad-answer");
                     }
                     $("#ConfirmButton2").text("Next");
-                    $('div[title=' + listOfPosts[iterator].correctAnswer + ']').addClass("goodAnswer");
+                    $('div[title=' + listOfPosts[iterator].correctAnswer + ']').addClass("good-answer");
                     iterator++;
+
                 }
             });
         

@@ -1,7 +1,7 @@
 ﻿@using Microsoft.Ajax.Utilities
 @model E_LearningWeb.ViewModels.TestViewModel
-<button type="button" class="btn btn-default btn-lg buttonTest marginTop col-lg-12" data-toggle="modal" data-target="#myModal">C# Collections and Generics</button>
-<button type="button" class="btn btn-default btn-lg buttonTest marginTop col-lg-12" data-toggle="modal" data-target="#myModal">C# Functional Programming</button>
+<button type="button" class="btn btn-default btn-lg buttonTest matgin-top col-lg-12" data-toggle="modal" data-target="#myModal">C# Collections and Generics</button>
+<button type="button" class="btn btn-default btn-lg buttonTest matgin-top col-lg-12" data-toggle="modal" data-target="#myModal">C# Functional Programming</button>
 
 <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -57,7 +57,7 @@
     var count = 0;
     $(".buttonTest").click(function () {
         if (count % 2 == 1) {
-            $(".labelAnswer").removeClass("goodAnswer badAnswer");
+            $(".labelAnswer").removeClass("good-answer bad-answer");
             count = 0;
         }
         iterator = 0;
@@ -89,7 +89,7 @@
 
         if (count % 2 == 0) {
             if (iterator < listOfPosts.length) {
-                $(".labelAnswer ").removeClass("goodAnswer badAnswer");
+                $(".labelAnswer ").removeClass("good-answer bad-answer");
                 $("#ConfirmButton2").text("Selected");
                 $("#QuestionText").text(listOfPosts[iterator].text);
                 $('label[for=answer0]').text(listOfPosts[iterator].answers[0]);
@@ -105,10 +105,10 @@
                 correctAnswers++;
             } else {
                 incorectAnswers.push(listOfPosts[iterator].id, selectedAnswer);
-                $('label[title=' + selectedAnswer + ']').addClass("badAnswer");
+                $('label[title=' + selectedAnswer + ']').addClass("bad-answer");
             }
             $("#ConfirmButton2").text("Next");
-            $('label[title=' + listOfPosts[iterator].correctAnswer + ']').addClass("goodAnswer");
+            $('label[title=' + listOfPosts[iterator].correctAnswer + ']').addClass("good-answer");
             iterator++;
         }
 

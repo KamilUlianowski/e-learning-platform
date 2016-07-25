@@ -1,39 +1,38 @@
 ﻿@model E_LearningWeb.Models.Movie
 
-@using (Html.BeginForm("UpdateMovie", "Admin", FormMethod.Post, new { @class = "marginTop", role = "form" }))
+@using (Html.BeginForm("UpdateMovie", "Admin", FormMethod.Post, new { @class = "matgin-top", role = "form" }))
 {
     <div class="form-group row">
-        <label class="col-sm-2 form-control-label">Video Title</label>
+        <label class="col-sm-2 form-control-label update-text" >Video Title</label>
         <div class="col-sm-10">
             @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
             @Html.ValidationMessageFor(x => x.Title)
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-sm-2 form-control-label">Video Url</label>
+        <label class="col-sm-2 form-control-label update-text" >Video Url</label>
         <div class="col-sm-10">
             @Html.TextBoxFor(x => x.VideoUrl, new { @class = "form-control" })
             @Html.ValidationMessageFor(x => x.VideoUrl)
         </div>
     </div>
 
-    <div class="form-group row">
-        <label class="col-sm-2">Course</label>
+    <div class="form-group row update-text">
+        <label class="col-sm-2" >Course</label>
         <div class="col-sm-10">
             @{
                 var selectList = new SelectList(
-                    new List<SelectListItem>
-                    {
-            new SelectListItem {Text = "C#", Value = "1"},
-            new SelectListItem {Text = "Java", Value = "2"},
-            new SelectListItem {Text = "C++", Value = "3"},
-            new SelectListItem {Text = "Python", Value = "4"},
-            new SelectListItem {Text = "Asp.net", Value = "5"},
-            new SelectListItem {Text = "Spring", Value = "6"},
-            new SelectListItem {Text = "WPF", Value = "7"},
-            new SelectListItem {Text = "WCF", Value = "8"},
+                                    new List<SelectListItem>
+                                    {
+                                        new SelectListItem {Text = "C#", Value = "1"},
+                                        new SelectListItem {Text = "Java", Value = "2"},
+                                        new SelectListItem {Text = "AngularJs", Value = "3"},
+                                        new SelectListItem {Text = "CSS", Value = "4"},
+                                        new SelectListItem {Text = "HTML5", Value = "5"},
+                                        new SelectListItem {Text = "JavaScript", Value = "6"},
+                                        new SelectListItem {Text = "Node.js", Value = "7"},
 
-                    }, "Value", "Text");
+                                    }, "Value", "Text");
             }
 
             @Html.DropDownListFor(m => m.CourseId, selectList, new { @class = "form-control" })

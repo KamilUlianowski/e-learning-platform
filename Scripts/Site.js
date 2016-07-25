@@ -6,7 +6,7 @@ $("#sidebar").css("width", 60);
 $("#sidebar").hover(
     function () {
         $(this).animate({ width: '200' }, 200);
-        $(".itemText").show();
+        $(".item-text").show();
     },
     function () {
         $(this).animate({ width: '60px' }, 200);
@@ -15,15 +15,13 @@ $("#sidebar").hover(
 
 );
 
-
-
 $(".pathLi").click(function() {
     $(".pathLi").removeClass("selected");
     $(this).addClass("selected");
-    $(".courseDiv").hide();
+    $(".course-div").hide();
     $("." + $(this).text()).show();
     if ($(this).text() == "All") {
-        $(".courseDiv").show();
+        $(".course-div").show();
     }
 });
 
@@ -54,4 +52,15 @@ $("#LiTest").click(function () {
     $(this).addClass("selected");
     $(".section-content-course").hide();
     $("#LearningCheck").show();
+});
+
+$('div[title=0]').click(function () {
+    $("#answer0").prop("checked", true);
+});
+$('div[title=1]').click(function() {
+    $("#answer1").prop("checked", true);
+});
+
+$('div[title=2]').click(function() {
+    $("#answer2").prop("checked", true);
 });

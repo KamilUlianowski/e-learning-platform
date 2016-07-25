@@ -9675,7 +9675,7 @@ jQuery.fn.extend({
 		// note: when an element has margin: auto the offsetLeft and marginLeft
 		// are the same in Safari causing offset.left to incorrectly be 0
 		return {
-			top:  offset.top  - parentOffset.top - jQuery.css( elem, "marginTop", true ),
+			top:  offset.top  - parentOffset.top - jQuery.css( elem, "matgin-top", true ),
 			left: offset.left - parentOffset.left - jQuery.css( elem, "marginLeft", true)
 		};
 	},
