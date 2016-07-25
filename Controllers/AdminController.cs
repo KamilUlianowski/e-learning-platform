@@ -24,9 +24,9 @@ namespace E_LearningWeb.Controllers
         [HttpPost]
         public ActionResult AddMovie(CourseViewModel courseViewModel)
         {
-            courseViewModel.NewMovie.CourseId = courseViewModel.CourseId;
+            courseViewModel.NewMovie.CourseId = courseViewModel.SpecificCourse.Id;
             _sharepointService.AddMovie(courseViewModel.NewMovie);
-            return RedirectToAction("Index", "Course", new { courseId = courseViewModel.CourseId });
+            return RedirectToAction("Index", "Course", new { courseId = courseViewModel.SpecificCourse.Id });
         }
 
         [HttpGet]

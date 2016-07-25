@@ -64,3 +64,9 @@ $('div[title=1]').click(function() {
 $('div[title=2]').click(function() {
     $("#answer2").prop("checked", true);
 });
+
+$window.resize(function() {
+    if ($window.width() < 514) {
+        return $html.addClass('mobile');
+    }
+});

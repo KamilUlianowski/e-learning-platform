@@ -15,12 +15,6 @@ namespace E_LearningWeb.Services
             _clientContext = (ClientContext)System.Web.HttpContext.Current.Session["ClientContext"];
         }
 
-        private void ReloadClientContext()
-        {
-            _clientContext = ((SharePointContext)System.Web.HttpContext.Current.Session["SharepointContext"])
-                .CreateAppOnlyClientContextForSPHost();
-        }
-
         private List GetSharepointListByTitle(string nameOfList)
         {
             var web = _clientContext.Web;
@@ -60,7 +54,10 @@ namespace E_LearningWeb.Services
                 Id = Convert.ToInt32(listItem["qgjk"]),
                 Description = listItem["b6yw"].ToString(),
                 ImageUrl = listItem["_x0076_pe2"].ToString(),
-                Path = listItem["i2ll"].ToString()
+                Path = listItem["i2ll"].ToString(),
+                ShortDescription = listItem["_x0062_r91"].ToString(),
+                Author = listItem["yyid"].ToString()
+
             }));
             return listOfCourses;
         }
@@ -138,16 +135,23 @@ namespace E_LearningWeb.Services
             return movie;
         }
 
-        public string GetCourseDescription(int id)
+        public Course GetCourse(int id)
         {
+            var course = new Course();
             var contextList = GetSharepointListByTitle("Courses");
             var items = GetAllItems(contextList);
 
             foreach (var item in items.Where(item => Convert.ToInt32(item["qgjk"]) == id))
             {
-                return item["b6yw"].ToString();
+                course.Title = item["Title"].ToString();
+                course.Id = Convert.ToInt32(item["qgjk"]);
+                course.Description = item["b6yw"].ToString();
+                course.ImageUrl = item["_x0076_pe2"].ToString();
+                course.Path = item["i2ll"].ToString();
+                course.ShortDescription = item["_x0062_r91"].ToString();
+                course.Author = item["yyid"].ToString();
             }
-            return String.Empty;
+            return course;
         }
 
         public List<Post> GetDiscussionPosts(string courseId)
