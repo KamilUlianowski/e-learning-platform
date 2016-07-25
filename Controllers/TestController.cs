@@ -3,6 +3,7 @@ using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -12,7 +13,7 @@ namespace E_LearningWeb.Controllers
     {
         private readonly ISharepointService _sharepointService;
         private List<Question> _questions;
-        private string _answers;
+        private static string _answers;
 
         public TestController(ISharepointService sharepointService)
         {
@@ -27,14 +28,15 @@ namespace E_LearningWeb.Controllers
             return View(testViewModel);
         }
 
-        public ActionResult Result(string correctAnswers, int courseId)
+        public ActionResult Result(string correctAnswers, string incorrectAnswers, int courseId)
         {
+            Debug.Write(incorrectAnswers);
             _questions = _sharepointService.GetQuestions(courseId);
-            GetIncorrectQuestions(_answers);
             return View(new TestViewModel()
             {
+                testtesttest = incorrectAnswers,
                 CorrectAnswers = correctAnswers,
-                ListOfQuestions = GetIncorrectQuestions(_answers)
+                ListOfQuestions = GetIncorrectQuestions(incorrectAnswers)
             });
         }
 
@@ -45,7 +47,6 @@ namespace E_LearningWeb.Controllers
 
         public List<Question> GetIncorrectQuestions(string incorrectQuestionId)
         {
-
             try
             {
                 var incorrectQuestoins = new List<Question>();
@@ -60,7 +61,6 @@ namespace E_LearningWeb.Controllers
             }
             catch (Exception)
             {
-                RedirectToAction("Index", "Test");
                 return new List<Question>();
             }
         }

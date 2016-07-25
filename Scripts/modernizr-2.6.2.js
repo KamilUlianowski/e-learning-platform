@@ -85,7 +85,7 @@ window.Modernizr = (function( window, document, undefined ) {
     /*>>domprefixes*/
     // Following spec is to expose vendor-specific style properties as:
     //   elem.style.WebkitBorderRadius
-    // and the following would be incorrect:
+    // and the following would be incorrectAnswers:
     //   elem.style.webkitBorderRadius
 
     // Webkit ghosts their properties in lowercase but Opera & Moz do not.

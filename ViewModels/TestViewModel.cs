@@ -7,6 +7,7 @@ namespace E_LearningWeb.ViewModels
     {
         public List<Question> ListOfQuestions { get; set; }
         public string CorrectAnswers { get; set; }
+        public string testtesttest { get; set; }
         public TestViewModel()
         {
 

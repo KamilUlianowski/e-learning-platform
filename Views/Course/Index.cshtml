@@ -1,5 +1,5 @@
 ﻿@model E_LearningWeb.ViewModels.CourseViewModel
-<section id="SectionImage" style="background-image: url(https://s.pluralsight.com/learner/ab1f264000bfb145cfa246fde77e831f.jpg); min-height: 400px;" class="col-lg-8 col-lg-offset-2 bottom-border">
+<section id="SectionImage" style="background-image: url(https://s.pluralsight.com/learner/ab1f264000bfb145cfa246fde77e831f.jpg); min-height: 400px;" class="bottom-border">
     <h1 class="col-lg-8" style="color: #ffffff">Getting Started with @Model.SpecificCourse.Title</h1>
     <h4 class="col-lg-8" style="color: #ffffff">by @Model.SpecificCourse.Author</h4>
     <h4 class="col-lg-8" style="color: #ffffff">@Model.SpecificCourse.ShortDescription</h4>
@@ -10,7 +10,7 @@
     </div>
     <div></div>
 </section>
-<section class="nav nav-pills nav-stacked col-lg-8 course-section col-lg-offset-2" id="SectionMovies">
+<section class="nav nav-pills nav-stacked course-section " id="SectionMovies">
     <ul class="list-inline ul-content-course">
         <li id="LiMovies" class="selected li-movies div-link">Table of Contents</li>
         <li id="LiDescription" class="li-movies div-link">Description</li>
@@ -286,17 +286,20 @@
                     $('label[for=answer2]').text(listOfPosts[iterator].answers[2]);
                     $("#questionNumber").text("Question " + (iterator+1) + " of " + listOfPosts.length);
                 } else {
-                        $.ajax({
+                    window.location = "/Test/Result?correctAnswers=" + correctAnswers + " of " + listOfPosts.length + "&incorrectAnswers=" + incorectAnswers + "&courseId=" + @Model.SpecificCourse.Id;
+                        @*$.ajax({
                             type: "POST",
                             url: "/Test/SaveAnswers",
-                            data: { answers: incorectAnswers },
+                            data: { answers: "2,2" },
                             success: function(msg) {
+                                alert(incorrectAnswers);
+                                alert(msg);
                                 window.location = "/Test/Result?correctAnswers=" + correctAnswers + "/" + listOfPosts.length + "&courseId=" + @Model.SpecificCourse.Id;
                             },
                             error: function(e) {
                                 alert("Something is wrong");
                             }
-                        });
+                        });*@
                 }
 
             } else if ($('input[type=radio]:checked').val()) {
