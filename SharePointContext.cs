@@ -476,7 +476,7 @@ namespace E_LearningWeb
             }
 
             SharePointContext spContext = LoadSharePointContext(httpContext);
-
+            
             if (spContext == null || !ValidateSharePointContext(spContext, httpContext))
             {
                 spContext = CreateSharePointContext(httpContext.Request);
@@ -535,7 +535,7 @@ namespace E_LearningWeb
         /// <param name="httpContext">The HTTP context.</param>
         protected abstract void SaveSharePointContext(SharePointContext spContext, HttpContextBase httpContext);
     }
-
+   
     #region ACS
 
     /// <summary>

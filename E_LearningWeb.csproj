@@ -233,6 +233,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\delete.gif" />
     <Content Include="Content\rateit.css" />
+    <Content Include="Content\star-rating-svg.css" />
     <Content Include="Content\star.gif" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -240,6 +241,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="bundleconfig.json" />
     <None Include="Properties\PublishProfiles\elearningplatform - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -248,6 +251,7 @@
     <Content Include="Scripts\jquery.rateit.min.js" />
     <Content Include="Scripts\jquery.rateit.min.js.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.star-rating-svg.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />

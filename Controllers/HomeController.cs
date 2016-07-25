@@ -17,6 +17,7 @@ namespace E_LearningWeb.Controllers
         {
             var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
             var clientContext = spContext.CreateAppOnlyClientContextForSPHost();
+            Session.Add("SharepointContext", spContext);
             Session.Add("ClientContext", clientContext);
             clientContext = spContext.CreateUserClientContextForSPHost();
             Session.Add("logged", false);

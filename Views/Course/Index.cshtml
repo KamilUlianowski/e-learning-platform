@@ -14,7 +14,27 @@
             <a class="col-lg-8 movie-row" href="@Url.Action("Index", "Video", new {videoUrl = @item.VideoUrl})">
                 <h3 class="movie-row"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>   <span>@item.Title</span></h3>
             </a>
-            <div id="@item.Id" class="rateit-stars col-lg-2" style="margin-top: 20px" data-rateit-value="@item.Rating" data-rateit-ispreset="true"></div>
+            <div id="@item.Id" class="my-rating jq-stars col-lg-2" style="margin-top: 20px"></div>
+            <div class="col-lg-1 marginTop  ">
+                @if ((bool)System.Web.HttpContext.Current.Session["logged"])
+                {
+                    <span>
+                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("UpdateMovie", "Admin", new {id = @item.Id})'">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </span>
+                }
+            </div>
+            <div class="col-lg-1 marginTop  ">
+                @if ((bool)System.Web.HttpContext.Current.Session["logged"])
+                {
+                    <span>
+                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("DeleteMovie", "Admin", new {id = @item.Id, courseId = @item.CourseId})'">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </span>
+                }
+            </div>
             <div class="col-lg-1 marginTop  ">
                 @if ((bool)System.Web.HttpContext.Current.Session["logged"])
                 {
@@ -46,7 +66,7 @@
             </h4>
         </div>i
         <div class="col-lg-4" style="margin-top: 32px;">
-            <a data-toggle="modal" data-target="#myModalTest" class="buttonTest a-learning-check">Try practice questions</a>
+            <a data-toggle="modal" data-target="#myModalTest" class="buttonTest a-learning-check divLink">Try practice questions</a>
         </div>
     </div>
     <div id="Discussion" hidden class="col-lg-12 section-content-course">
@@ -159,28 +179,27 @@
                     <h3 id="QuestionText" class="modal-title" style="margin-top: 30px"></h3>
                 </div>
                 <div class="modal-body">
-                    <div class="question">
+                    <div class="question" title="0">
                         <div class="radio">
                             <h3>
-                                <input type="radio" id="answer0" name="optradio" value=0><label class="labelAnswer" for="answer0" title="0"></label>
+                                <input type="radio" id="answer0" name="optradio" value=0><label for="answer0" title="0"></label>
                             </h3>
                         </div>
                     </div>
-                    <div class="question">
+                    <div class="question"  title="1">
                         <div class="radio">
                             <h3>
-                                <input type="radio" id="answer1" name="optradio" value=1><label class="labelAnswer" for="answer1" title="1"></label>
+                                <input type="radio" id="answer1" name="optradio" value=1><label for="answer1" title="1"></label>
                             </h3>
                         </div>
                     </div>
-                    <div class="question">
-                        <div class="radio">
-                            <h3>
-                                <input type="radio" id="answer2" name="optradio" value=2><label class="labelAnswer" for="answer2" title="2"></label>
-                            </h3>
-                        </div>
+                        <div class="question" title="2">
+                            <div class="radio">
+                                <h3>
+                                    <input type="radio" id="answer2" name="optradio" value=2><label for="answer2" title="2"></label>
+                                </h3>
+                            </div>
                     </div>
-                </div>
                 <div class="modal-footer">
                     <button id="ConfirmButton2" type="button" class="btn btn-default">Select</button>
                 </div>
@@ -191,67 +210,91 @@
 </div>
 
 @Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/rateit")
 
 <script type='text/javascript'>
-    var iterator = 0;
-    var correctAnswers = 0;
-    var listOfPosts = [];
-    var incorectAnswers = [];
-    var selectedAnswer;
-    var count = 0;
-    $(".buttonTest").click(function () {
-        if (count % 2 == 1) {
-            $(".labelAnswer").removeClass("goodAnswer badAnswer");
-            count = 0;
+    
+    @foreach(var item in Model.ListOfMovies)
+    {
+        <text>
+    $("#@item.Id").starRating({
+        initialRating: @item.Rating,
+        strokeColor: '#894A00',
+        strokeWidth: 10,
+        starSize: 25,
+        callback: function(currentRating, $el) {
+            $.ajax({
+                type: "POST",
+                url: "/Course/AddVote",
+                data: { movieId: @item.Id, rating: currentRating },
+                success: function(msg) {
+                },
+                error: function(e) {
+                }
+            });
         }
-        iterator = 0;
-        listOfPosts = [];
-        @foreach (var item in Model.ListOfQuestions)
-        {
-            <text>
-        listOfPosts.push({
-            text: "@HttpUtility.JavaScriptStringEncode(item.Text)",
-            answers: [
-                "@HttpUtility.JavaScriptStringEncode(item.Answers[0])", "@HttpUtility.JavaScriptStringEncode(item.Answers[1])",
-                "@HttpUtility.JavaScriptStringEncode(item.Answers[2])"
-            ],
-            correctAnswer: "@item.CorrectAnswer",
-            id: @item.Id,
-        });
-        </text>
-        }
-        $("#QuestionText").text(listOfPosts[iterator].text);
-        $('label[for=answer0]').text(listOfPosts[iterator].answers[0]);
-        $('label[for=answer1]').text(listOfPosts[iterator].answers[1]);
-        $('label[for=answer2]').text(listOfPosts[iterator].answers[2]);
-    });
-    $("#ConfirmButton2").click(function () {
-        count++;
-
-        if (count % 2 == 0) {
-            if (iterator < listOfPosts.length) {
-                $(".labelAnswer ").removeClass("goodAnswer badAnswer");
-                $("#ConfirmButton2").text("Selected");
+    }); </text>
+    }
+            var iterator = 0;
+            var correctAnswers = 0;
+            var listOfPosts = [];
+            var incorectAnswers = [];
+            var selectedAnswer;
+            var count = 1;
+            $(".buttonTest").click(function() {
+                if (count % 2 == 1) {
+                    $(".question").removeClass("goodAnswer badAnswer");
+                    count = 1;
+                }
+                iterator = 0;
+                listOfPosts = [];
+                @foreach (var item in Model.ListOfQuestions)
+                {
+                    <text>
+                listOfPosts.push({
+                    text: "@HttpUtility.JavaScriptStringEncode(item.Text)",
+                    answers: [
+                        "@HttpUtility.JavaScriptStringEncode(item.Answers[0])", "@HttpUtility.JavaScriptStringEncode(item.Answers[1])",
+                        "@HttpUtility.JavaScriptStringEncode(item.Answers[2])"
+                    ],
+                    correctAnswer: "@item.CorrectAnswer",
+                    id: @item.Id,
+                });
+                </text>
+                }
                 $("#QuestionText").text(listOfPosts[iterator].text);
                 $('label[for=answer0]').text(listOfPosts[iterator].answers[0]);
                 $('label[for=answer1]').text(listOfPosts[iterator].answers[1]);
                 $('label[for=answer2]').text(listOfPosts[iterator].answers[2]);
-            } else {
-                window.location = "/Test/Result?correctAnswers=" + correctAnswers + "/" + listOfPosts.length+"&incorrectAnswersId=" + incorectAnswers + "&courseId=" + @Model.CourseId;
-            }
+            });
+            $("#ConfirmButton2").click(function() {
+                if (count % 2 == 0) {
+                    count++;
+                    $('input[type=radio]:checked').attr('checked', false);
+                    if (iterator < listOfPosts.length) {
+                        $(".question ").removeClass("goodAnswer badAnswer");
+                        $("#ConfirmButton2").text("Selected");
+                        $("#QuestionText").text(listOfPosts[iterator].text);
+                        $('label[for=answer0]').text(listOfPosts[iterator].answers[0]);
+                        $('label[for=answer1]').text(listOfPosts[iterator].answers[1]);
+                        $('label[for=answer2]').text(listOfPosts[iterator].answers[2]);
+                    } else {
+                        window.location = "/Test/Result?correctAnswers=" + correctAnswers + "/" + listOfPosts.length + "&incorrectAnswersId=" + incorectAnswers + "&courseId=" + @Model.CourseId;
+                    }
 
-        } else {
-            selectedAnswer = $('input[type=radio]:checked').val();
-            if (selectedAnswer == listOfPosts[iterator].correctAnswer) {
-                correctAnswers++;
-            } else {
-                incorectAnswers.push(listOfPosts[iterator].id, selectedAnswer);
-                $('label[title=' + selectedAnswer + ']').addClass("badAnswer");
-            }
-            $("#ConfirmButton2").text("Next");
-            $('label[title=' + listOfPosts[iterator].correctAnswer + ']').addClass("goodAnswer");
-            iterator++;
-        }
-    });
-
-</script>
+                } else if ($('input[type=radio]:checked').val()) {
+                    count++;
+                    selectedAnswer = $('input[type=radio]:checked').val();
+                    if (selectedAnswer == listOfPosts[iterator].correctAnswer) {
+                        correctAnswers++;
+                    } else {
+                        incorectAnswers.push(listOfPosts[iterator].id, selectedAnswer);
+                        $('div[title=' + selectedAnswer + ']').addClass("badAnswer");
+                    }
+                    $("#ConfirmButton2").text("Next");
+                    $('div[title=' + listOfPosts[iterator].correctAnswer + ']').addClass("goodAnswer");
+                    iterator++;
+                }
+            });
+        
+        </script></div>

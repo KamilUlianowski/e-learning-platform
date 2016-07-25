@@ -9,10 +9,16 @@ namespace E_LearningWeb.Services
 {
     public class SharepointService : ISharepointService
     {
-        private readonly ClientContext _clientContext;
+        private ClientContext _clientContext;
         public SharepointService()
         {
             _clientContext = (ClientContext)System.Web.HttpContext.Current.Session["ClientContext"];
+        }
+
+        private void ReloadClientContext()
+        {
+            _clientContext = ((SharePointContext)System.Web.HttpContext.Current.Session["SharepointContext"])
+                .CreateAppOnlyClientContextForSPHost();
         }
 
         private List GetSharepointListByTitle(string nameOfList)
@@ -179,28 +185,43 @@ namespace E_LearningWeb.Services
 
         public bool AddPost(string text, string courseId)
         {
-            var contextList = GetSharepointListByTitle("Discussion");
-            var items = GetAllItems(contextList);
-            int id = 0;
-            foreach (var item in items)
+            var spContext = ((SharePointContext)System.Web.HttpContext.Current.Session["SharepointContext"]);
+            using (var clientContext = spContext.CreateUserClientContextForSPHost())
             {
-                if (item["CourseId"] != null)
+                if (clientContext != null)
                 {
-                    var course = item["CourseId"].ToString();
-                    if (string.Equals(course, courseId))
+                    var web = clientContext.Web;
+                    clientContext.Load(web.Lists);
+                    clientContext.ExecuteQuery();
+                    var contextList = clientContext.Web.Lists.GetByTitle("Discussion");
+                    if (contextList == null) return true;
+                    CamlQuery query = CamlQuery.CreateAllItemsQuery();
+                    ListItemCollection items = contextList.GetItems(query);
+                    clientContext.Load(items);
+                    clientContext.ExecuteQuery();
+                    int id = 0;
+                    foreach (var item in items)
                     {
-                        id = Int32.Parse(item["ID"].ToString());
+                        if (item["CourseId"] != null)
+                        {
+                            var course = item["CourseId"].ToString();
+                            if (string.Equals(course, courseId))
+                            {
+                                id = Int32.Parse(item["ID"].ToString());
+                            }
+                        }
                     }
+                    ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
+                    ListItem listItem = contextList.AddItem(itemCreateInfo);
+                    listItem["Body"] = text;
+                    listItem["ParentItemID"] = id;
+                    listItem.Update();
+                    clientContext.ExecuteQuery();
                 }
             }
-            ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
-            ListItem listItem = contextList.AddItem(itemCreateInfo);
-            listItem["Body"] = text;
-            listItem["ParentItemID"] = id;
-            listItem.Update();
-            _clientContext.ExecuteQuery();
             return true;
         }
+
 
         public bool AddVote(int movieId, double rating)
         {

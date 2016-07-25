@@ -53,7 +53,6 @@ namespace E_LearningWeb.Controllers
             return RedirectToAction("Index", "Course", new { courseId = courseId });
         }
 
-        [HttpPost]
         public bool AddVote(int movieId, double rating)
         {
             return _sharepointService.AddVote(movieId, rating);
