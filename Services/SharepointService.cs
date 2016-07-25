@@ -116,6 +116,27 @@ namespace E_LearningWeb.Services
             return listOfQuestions;
         }
 
+        public List<TestResult> GetTestsResults(int userId)
+        {
+            var listOfSolvedTests = new List<TestResult>();
+            if (_clientContext == null) return listOfSolvedTests;
+            var contextList = GetSharepointListByTitle("SolvedTests");
+            var items = GetAllItems(contextList);
+            foreach (var item in items)
+            {
+                listOfSolvedTests.Add(new TestResult()
+                {
+                    CourseName = item["Title"].ToString(),
+                    UserId = Int32.Parse(item["elvy"].ToString()),
+                    Result = (item["i4lh"].ToString()),
+                    CourseId = Int32.Parse(item["f8dk"].ToString()),
+                    DateOfTest = Convert.ToDateTime(item["Created"].ToString())
+                });
+            }
+            return listOfSolvedTests.Where(x => x.UserId == userId).ToList();
+
+        }
+
         public Movie GetMovieInfo(int id)
         {
             var movie = new Movie();
@@ -154,7 +175,24 @@ namespace E_LearningWeb.Services
             return course;
         }
 
-        public List<Post> GetDiscussionPosts(string courseId)
+        public int GetUserId()
+        {
+            var spContext = ((SharePointContext)System.Web.HttpContext.Current.Session["SharepointContext"]);
+            using (var clientContext = spContext.CreateUserClientContextForSPHost())
+            {
+                if (clientContext != null)
+                {
+                    var web = clientContext.Web;
+                    clientContext.Load(web.CurrentUser);
+                    clientContext.ExecuteQuery();
+                    return clientContext.Web.CurrentUser.Id;
+                }
+            }
+            return 0;
+        }
+
+        public
+            List<Post> GetDiscussionPosts(string courseId)
         {
             var listOfPosts = new List<Post>();
             if (_clientContext == null) return listOfPosts;
@@ -223,6 +261,20 @@ namespace E_LearningWeb.Services
                     clientContext.ExecuteQuery();
                 }
             }
+            return true;
+        }
+
+        public bool AddResultOfTest(TestResult testResult)
+        {
+            var contextList = GetSharepointListByTitle("SolvedTests");
+            ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
+            ListItem listItem = contextList.AddItem(itemCreateInfo);
+            listItem["Title"] = testResult.CourseName;
+            listItem["elvy"] = testResult.UserId;
+            listItem["i4lh"] = testResult.Result;
+            listItem["f8dk"] = testResult.CourseId;
+            listItem.Update();
+            _clientContext.ExecuteQuery();
             return true;
         }
 

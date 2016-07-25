@@ -413,3 +413,24 @@ html {
     position: absolute;
     margin-top: 40px;    
 }
+
+.result-history {
+    background-color: #222222;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.result-history-header {
+    color: #d3d3d3;
+    font-size: 16px;
+    padding: 15px 0 15px 0px;
+}
+
+.single-result {
+    color: #aaa5a1;
+    font-size: 13px;    
+}
+
+.mini-border-bottom {
+    border-bottom: 2px solid #e5e5e5;
+}

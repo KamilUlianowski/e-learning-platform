@@ -3,7 +3,6 @@ using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -30,14 +29,27 @@ namespace E_LearningWeb.Controllers
 
         public ActionResult Result(string correctAnswers, string incorrectAnswers, int courseId)
         {
-            Debug.Write(incorrectAnswers);
+            var testResult = new TestResult()
+            {
+                CourseId = courseId,
+                Result = correctAnswers,
+                UserId = _sharepointService.GetUserId(),
+                CourseName = _sharepointService.GetCourse(courseId).Title
+            };
+
+            _sharepointService.AddResultOfTest(testResult);
             _questions = _sharepointService.GetQuestions(courseId);
             return View(new TestViewModel()
             {
-                testtesttest = incorrectAnswers,
                 CorrectAnswers = correctAnswers,
                 ListOfQuestions = GetIncorrectQuestions(incorrectAnswers)
             });
+        }
+
+        public ActionResult ResultHistory()
+        {
+            var results = _sharepointService.GetTestsResults(_sharepointService.GetUserId());
+            return View(results);
         }
 
         public void SaveAnswers(string answers)
