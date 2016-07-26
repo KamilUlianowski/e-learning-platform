@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using static System.Int32;
 
 namespace E_LearningWeb.Controllers
 {
@@ -35,7 +34,7 @@ namespace E_LearningWeb.Controllers
             Session.Add("MaxMovieId", allMovies.Max(x => x.Id) + 1);
             CourseViewModel courseViewModel = new CourseViewModel()
             {
-                SpecificCourse= _sharepointService.GetCourse(Int32.Parse(courseId)),
+                SpecificCourse = _sharepointService.GetCourse(Int32.Parse(courseId)),
                 ListOfQuestions = _sharepointService.GetQuestions(Int32.Parse(courseId)),
                 ListOfPosts = _sharepointService.GetDiscussionPosts(courseId),
                 ListOfMovies = _sharepointService.GetMoviesFromCourse(allMovies, Int32.Parse(courseId))

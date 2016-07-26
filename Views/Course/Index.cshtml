@@ -1,8 +1,8 @@
 ﻿@model E_LearningWeb.ViewModels.CourseViewModel
-<section id="SectionImage" style="background-image: url(https://s.pluralsight.com/learner/ab1f264000bfb145cfa246fde77e831f.jpg); min-height: 400px;" class="bottom-border">
-    <h1 class="col-lg-8" style="color: #ffffff">Getting Started with @Model.SpecificCourse.Title</h1>
-    <h4 class="col-lg-8" style="color: #ffffff">by @Model.SpecificCourse.Author</h4>
-    <h4 class="col-lg-8" style="color: #ffffff">@Model.SpecificCourse.ShortDescription</h4>
+<section id="SectionImage">
+    <h1 class="col-lg-8 section-image-text" >Getting Started with @Model.SpecificCourse.Title</h1>
+    <h4 class="col-lg-8 section-image-text" >by @Model.SpecificCourse.Author</h4>
+    <h4 class="col-lg-8 section-image-text" >@Model.SpecificCourse.ShortDescription</h4>
     <div class="col-lg-5">
         <button class="button-star-course" onclick="location.href = '@Url.Action("Index", "Video", new {videoUrl = @Model.ListOfMovies[0].VideoUrl})'">
             <span class="glyphicon glyphicon-play"></span>  Start Course
@@ -24,7 +24,7 @@
             <a class="col-lg-8 movie-row" href="@Url.Action("Index", "Video", new {videoUrl = @item.VideoUrl})">
                 <h3><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>   <span>@item.Title</span></h3>
             </a>
-            <div class="col-lg-2" style="margin-top: 20px;">
+            <div class="col-lg-2 stars">
                 <div id="@item.Id" class="my-rating jq-stars"></div>
             </div>
             <div class="col-lg-1 matgin-top  ">

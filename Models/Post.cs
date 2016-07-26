@@ -1,4 +1,6 @@
-﻿namespace E_LearningWeb.Models
+﻿using System;
+
+namespace E_LearningWeb.Models
 {
     public class Post
     {
@@ -10,14 +12,14 @@
         {
             get
             {
-                int start = _body.IndexOf("<p>") + 3;
+                int start = _body.IndexOf("<p>", StringComparison.Ordinal) + 3;
                 if (start == 2)
                 {
-                    start = _body.IndexOf(">") + 1;
+                    start = _body.IndexOf(">", StringComparison.Ordinal) + 1;
                 }
                 string help = _body.Substring(start, _body.Length - start);
 
-                int end = help.IndexOf("<");
+                int end = help.IndexOf("<", StringComparison.Ordinal);
                 return help.Substring(0, end);
             }
             set { _body = value; }

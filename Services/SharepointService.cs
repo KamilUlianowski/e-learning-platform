@@ -25,6 +25,7 @@ namespace E_LearningWeb.Services
 
         private ListItemCollection GetAllItems(List contextList)
         {
+            if (_clientContext == null) return null;
             var query = CamlQuery.CreateAllItemsQuery();
             var items = contextList.GetItems(query);
             _clientContext.Load(items);
@@ -140,6 +141,7 @@ namespace E_LearningWeb.Services
         public Movie GetMovieInfo(int id)
         {
             var movie = new Movie();
+            if (_clientContext == null) return movie;
             var contextList = GetSharepointListByTitle("Movies");
             var items = GetAllItems(contextList);
 
@@ -159,6 +161,7 @@ namespace E_LearningWeb.Services
         public Course GetCourse(int id)
         {
             var course = new Course();
+            if (_clientContext == null) return course;
             var contextList = GetSharepointListByTitle("Courses");
             var items = GetAllItems(contextList);
 
@@ -178,6 +181,7 @@ namespace E_LearningWeb.Services
         public int GetUserId()
         {
             var spContext = ((SharePointContext)System.Web.HttpContext.Current.Session["SharepointContext"]);
+            if (spContext == null) return 0;
             using (var clientContext = spContext.CreateUserClientContextForSPHost())
             {
                 if (clientContext != null)
@@ -228,6 +232,7 @@ namespace E_LearningWeb.Services
         public bool AddPost(string text, string courseId)
         {
             var spContext = ((SharePointContext)System.Web.HttpContext.Current.Session["SharepointContext"]);
+            if (spContext == null) return false;
             using (var clientContext = spContext.CreateUserClientContextForSPHost())
             {
                 if (clientContext != null)
@@ -259,13 +264,15 @@ namespace E_LearningWeb.Services
                     listItem["ParentItemID"] = id;
                     listItem.Update();
                     clientContext.ExecuteQuery();
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
 
         public bool AddResultOfTest(TestResult testResult)
         {
+            if (_clientContext == null) return false;
             var contextList = GetSharepointListByTitle("SolvedTests");
             ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
             ListItem listItem = contextList.AddItem(itemCreateInfo);
@@ -281,6 +288,7 @@ namespace E_LearningWeb.Services
 
         public bool AddVote(int movieId, double rating)
         {
+            if (_clientContext == null) return false;
             var contextList = GetSharepointListByTitle("Movies");
             var items = GetAllItems(contextList);
 
@@ -301,7 +309,7 @@ namespace E_LearningWeb.Services
 
         public bool DeleteMovie(int id)
         {
-
+            if (_clientContext == null) return false;
             var contextList = GetSharepointListByTitle("Movies");
             var items = GetAllItems(contextList);
 
@@ -320,6 +328,7 @@ namespace E_LearningWeb.Services
 
         public bool UpdateMovie(Movie movie)
         {
+            if (_clientContext == null) return false;
             var contextList = GetSharepointListByTitle("Movies");
             var items = GetAllItems(contextList);
 
@@ -340,6 +349,7 @@ namespace E_LearningWeb.Services
 
         public bool AddMovie(Movie movie)
         {
+            if (_clientContext == null) return false;
             var contextList = GetSharepointListByTitle("Movies");
             string id = GetVideoId(movie.VideoUrl);
             string embedUrl =
@@ -362,13 +372,14 @@ namespace E_LearningWeb.Services
 
         public List<Course> CountMoviesInCourse(List<Course> courses, List<Movie> movies)
         {
+
             foreach (var item in movies)
             {
                 var firstOrDefault = courses.FirstOrDefault(x => x.Id == item.CourseId);
                 if (firstOrDefault != null)
                     firstOrDefault.NumberOfMovies++;
             }
-            return courses;
+            return courses; // Zwraca kursy z ich liczbą filmów
         }
     }
 }
