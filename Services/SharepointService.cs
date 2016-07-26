@@ -1,9 +1,9 @@
 ﻿using E_LearningWeb.Models;
+using E_LearningWeb.ViewModels;
 using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace E_LearningWeb.Services
 {
@@ -31,14 +31,6 @@ namespace E_LearningWeb.Services
             _clientContext.Load(items);
             _clientContext.ExecuteQuery();
             return items;
-        }
-
-        private string GetVideoId(string link)
-        {
-            var youtubeMatch =
-             new Regex(@"youtu(?:\.be|be\.com)/(?:.*v(?:/|=)|(?:.*/)?)([a-zA-Z0-9-_]+)")
-             .Match(link);
-            return youtubeMatch.Success ? youtubeMatch.Groups[1].Value : string.Empty;
         }
 
         public List<Course> GetCourses()
@@ -131,7 +123,7 @@ namespace E_LearningWeb.Services
                     UserId = Int32.Parse(item["elvy"].ToString()),
                     Result = (item["i4lh"].ToString()),
                     CourseId = Int32.Parse(item["f8dk"].ToString()),
-                    DateOfTest = Convert.ToDateTime(item["Created"].ToString())
+                    DateOfTest = (Convert.ToDateTime(item["Created"].ToString()).AddHours(2))
                 });
             }
             return listOfSolvedTests.Where(x => x.UserId == userId).ToList();
@@ -285,6 +277,16 @@ namespace E_LearningWeb.Services
             return true;
         }
 
+        public bool CheckIfTheUserHasPermissions()
+        {
+            if (_clientContext == null) return false;
+            BasePermissions bp = new BasePermissions();
+            bp.Set(PermissionKind.ManageWeb);
+            ClientResult<bool> manageWeb = _clientContext.Web.DoesUserHavePermissions(bp);
+            _clientContext.ExecuteQuery();
+
+            return manageWeb.Value;
+        }
 
         public bool AddVote(int movieId, double rating)
         {
@@ -326,7 +328,7 @@ namespace E_LearningWeb.Services
             return false;
         }
 
-        public bool UpdateMovie(Movie movie)
+        public bool UpdateMovie(NewMovieViewModel movie)
         {
             if (_clientContext == null) return false;
             var contextList = GetSharepointListByTitle("Movies");
@@ -347,11 +349,11 @@ namespace E_LearningWeb.Services
             return false;
         }
 
-        public bool AddMovie(Movie movie)
+        public bool AddMovie(NewMovieViewModel movie)
         {
             if (_clientContext == null) return false;
             var contextList = GetSharepointListByTitle("Movies");
-            string id = GetVideoId(movie.VideoUrl);
+            string id = DataConversionService.GetVideoId(movie.VideoUrl);
             string embedUrl =
             "https://www.youtube.com/embed/" + id;
 

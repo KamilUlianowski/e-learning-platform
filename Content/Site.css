@@ -467,3 +467,7 @@ html {
 .div-clear {
     clear: both;
 }
+
+.validation-text {
+    color: #ffffff;
+}

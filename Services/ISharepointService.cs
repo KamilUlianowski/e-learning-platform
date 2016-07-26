@@ -1,4 +1,5 @@
 ﻿using E_LearningWeb.Models;
+using E_LearningWeb.ViewModels;
 using System.Collections.Generic;
 
 namespace E_LearningWeb.Services
@@ -17,10 +18,11 @@ namespace E_LearningWeb.Services
         int GetUserId();
         bool AddVote(int movieId, double rating);
         bool DeleteMovie(int id);
-        bool UpdateMovie(Movie movie);
-        bool AddMovie(Movie movie);
+        bool UpdateMovie(NewMovieViewModel movie);
+        bool AddMovie(NewMovieViewModel movie);
         bool AddPost(string text, string courseId);
         bool AddResultOfTest(TestResult testResult);
+        bool CheckIfTheUserHasPermissions();
 
 
     }

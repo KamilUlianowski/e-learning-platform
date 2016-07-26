@@ -1,7 +1,5 @@
-﻿using E_LearningWeb.Models;
-using E_LearningWeb.Services;
+﻿using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
-using Microsoft.SharePoint.Client;
 using System.Web.Mvc;
 
 namespace E_LearningWeb.Controllers
@@ -24,19 +22,29 @@ namespace E_LearningWeb.Controllers
         [HttpPost]
         public ActionResult AddMovie(CourseViewModel courseViewModel)
         {
-            courseViewModel.NewMovie.CourseId = courseViewModel.SpecificCourse.Id;
+            if (!ModelState.IsValid)
+                return RedirectToAction("ListOfCourses", "Course");
+
             _sharepointService.AddMovie(courseViewModel.NewMovie);
-            return RedirectToAction("Index", "Course", new { courseId = courseViewModel.SpecificCourse.Id });
+            return RedirectToAction("Index", "Course", new { courseId = courseViewModel.NewMovie.CourseId });
         }
 
         [HttpGet]
         public ActionResult UpdateMovie(int id)
         {
-            return View(_sharepointService.GetMovieInfo(id));
+            var movie = _sharepointService.GetMovieInfo(id);
+            var newMovieViewModel = new NewMovieViewModel()
+            {
+                Id = movie.Id,
+                CourseId = movie.CourseId,
+                Title = movie.Title,
+                VideoUrl = movie.VideoUrl
+            };
+            return View(newMovieViewModel);
         }
 
         [HttpPost]
-        public ActionResult UpdateMovie(Movie movie)
+        public ActionResult UpdateMovie(NewMovieViewModel movie)
         {
             _sharepointService.UpdateMovie(movie);
             return RedirectToAction("Index", "Course", new { courseId = movie.CourseId });
@@ -44,19 +52,8 @@ namespace E_LearningWeb.Controllers
 
         public ActionResult Index()
         {
-            Session.Add("logged", GetUserPermissions((ClientContext)Session["ClientContext"]));
+            Session.Add("logged", _sharepointService.CheckIfTheUserHasPermissions());
             return View();
-        }
-
-
-        private bool GetUserPermissions(ClientContext clientContext)
-        {
-            BasePermissions bp = new BasePermissions();
-            bp.Set(PermissionKind.ManageWeb);
-            ClientResult<bool> manageWeb = clientContext.Web.DoesUserHavePermissions(bp);
-            clientContext.ExecuteQuery();
-
-            return manageWeb.Value;
         }
     }
 }

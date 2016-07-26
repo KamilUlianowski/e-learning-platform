@@ -1,8 +1,6 @@
-﻿using E_LearningWeb.Models;
-using E_LearningWeb.Services;
+﻿using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -11,7 +9,6 @@ namespace E_LearningWeb.Controllers
     public class CourseController : Controller
     {
         private readonly ISharepointService _sharepointService;
-        private List<Question> _questions;
 
         public CourseController(ISharepointService sharepointService)
         {
@@ -39,7 +36,6 @@ namespace E_LearningWeb.Controllers
                 ListOfPosts = _sharepointService.GetDiscussionPosts(courseId),
                 ListOfMovies = _sharepointService.GetMoviesFromCourse(allMovies, Int32.Parse(courseId))
             };
-            _questions = courseViewModel.ListOfQuestions;
 
             return View(courseViewModel);
         }
@@ -51,6 +47,7 @@ namespace E_LearningWeb.Controllers
             return RedirectToAction("Index", "Course", new { courseId = courseId });
         }
 
+        [HttpPost]
         public bool AddVote(int movieId, double rating)
         {
             return _sharepointService.AddVote(movieId, rating);

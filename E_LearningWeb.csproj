@@ -221,11 +221,14 @@
     <Compile Include="Models\Test.cs" />
     <Compile Include="Models\TestResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DataConversionService.cs" />
     <Compile Include="Services\ISharepointService.cs" />
     <Compile Include="Services\SharepointService.cs" />
     <Compile Include="SharePointContext.cs" />
     <Compile Include="TokenHelper.cs" />
+    <Compile Include="Validators\YoutubeUrl.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
+    <Compile Include="ViewModels\NewMovieViewModel.cs" />
     <Compile Include="ViewModels\TestViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

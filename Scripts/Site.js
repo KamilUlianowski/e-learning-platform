@@ -72,3 +72,18 @@ $('div[title=1]').click(function () {
 $('div[title=2]').click(function () {
     $("#Answer2").prop("checked", true);
 });
+
+function validateYouTubeUrl() {
+    var url = $('.youtube-url').val();
+    if (url != undefined || url != '') {
+        var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+        var match = url.match(regExp);
+        if (match && match[2].length == 11) {
+            $(".youtube-url-validator").text("");
+            $('.add-movie-button').attr("disabled", false);
+        } else {
+            $(".youtube-url-validator").text("This is not valid youtube url");
+            $('.add-movie-button').attr("disabled", true);
+        }
+    }
+}

@@ -119,9 +119,6 @@
 @if ((bool)System.Web.HttpContext.Current.Session["logged"])
 {
     <div class="col-lg-12">
-        @*<div class="col-lg-2">
-                <button type="button" class="btn btn-default btn-lg matgin-top" data-toggle="modal" data-target="#MyModal">Add movie</button>
-            </div>*@
         <div id="MyModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
 
@@ -137,8 +134,8 @@
 
                         <div class="modal-header form-group">
                             <label class="form-control-label">Video Url</label>
-                            @Html.TextBoxFor(x => x.NewMovie.VideoUrl, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.NewMovie.VideoUrl)
+                            @Html.TextBoxFor(x => x.NewMovie.VideoUrl, new {@class = "form-control youtube-url", @onchange = "validateYouTubeUrl()" })
+                            <p class="youtube-url-validator"></p>
                         </div>
 
                         <div class="modal-header">
@@ -158,11 +155,11 @@
                                     }, "Value", "Text");
                             }
 
-                            @Html.DropDownListFor(m => m.SpecificCourse.Id, new SelectList(selectList, "Value", "Text", @Model.SpecificCourse.Id), new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.NewMovie.CourseId, new SelectList(selectList, "Value", "Text", @Model.NewMovie.CourseId), new { @class = "form-control" })
                         </div>
 
                         <div class="form-group modal-header">
-                            <input type="submit" class="btn btn-primary" value="Add">
+                            <input type="submit" class="btn btn-primary add-movie-button" value="Add" onclick="validateYouTubeUrl()">
                         </div>
 
                                 }
@@ -214,9 +211,8 @@
         </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/rateit")
-
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/rateit")
     <script type='text/javascript'>
 
     @foreach(var item in Model.ListOfMovies)
@@ -255,7 +251,8 @@
             listOfPosts = [];
             @foreach (var item in Model.ListOfQuestions)
                 {
-                    <text>
+                    
+                <text>
             listOfPosts.push({
                 text: "@HttpUtility.JavaScriptStringEncode(item.Text)",
                 answers: [
