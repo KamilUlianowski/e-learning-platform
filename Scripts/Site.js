@@ -63,12 +63,12 @@ $("#LiTest").click(function () {
 });
 
 $('div[title=0]').click(function () {
-    $("#answer0").prop("checked", true);
+    $("#Answer0").prop("checked", true);
 });
 $('div[title=1]').click(function () {
-    $("#answer1").prop("checked", true);
+    $("#Answer1").prop("checked", true);
 });
 
 $('div[title=2]').click(function () {
-    $("#answer2").prop("checked", true);
+    $("#Answer2").prop("checked", true);
 });

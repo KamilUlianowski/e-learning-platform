@@ -323,6 +323,7 @@ html {
     .movie-row:hover {
         text-decoration: none;
         background-color: #333331;
+        color: white;
     }
 
 .course-section {

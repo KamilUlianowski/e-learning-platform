@@ -24,7 +24,7 @@ namespace E_LearningWeb.Controllers
         {
             var listOfCourses = _sharepointService.GetCourses();
             var listOfMovies = _sharepointService.GetAllMovies();
-            listOfCourses = _sharepointService.CountMovies(listOfCourses, listOfMovies);
+            listOfCourses = _sharepointService.CountMoviesInCourse(listOfCourses, listOfMovies);
             return View(listOfCourses);
         }
 

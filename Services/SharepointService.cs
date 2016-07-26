@@ -9,7 +9,7 @@ namespace E_LearningWeb.Services
 {
     public class SharepointService : ISharepointService
     {
-        private ClientContext _clientContext;
+        private readonly ClientContext _clientContext;
         public SharepointService()
         {
             _clientContext = (ClientContext)System.Web.HttpContext.Current.Session["ClientContext"];
@@ -25,8 +25,8 @@ namespace E_LearningWeb.Services
 
         private ListItemCollection GetAllItems(List contextList)
         {
-            CamlQuery query = CamlQuery.CreateAllItemsQuery();
-            ListItemCollection items = contextList.GetItems(query);
+            var query = CamlQuery.CreateAllItemsQuery();
+            var items = contextList.GetItems(query);
             _clientContext.Load(items);
             _clientContext.ExecuteQuery();
             return items;
@@ -360,7 +360,7 @@ namespace E_LearningWeb.Services
             return true;
         }
 
-        public List<Course> CountMovies(List<Course> courses, List<Movie> movies)
+        public List<Course> CountMoviesInCourse(List<Course> courses, List<Movie> movies)
         {
             foreach (var item in movies)
             {
