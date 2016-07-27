@@ -7,10 +7,12 @@ namespace E_LearningWeb.Controllers
     public class AdminController : Controller
     {
         private readonly ISharepointService _sharepointService;
+        private readonly IAzureSqlService _azureSqlService;
 
-        public AdminController(ISharepointService sharepointService)
+        public AdminController(ISharepointService sharepointService, IAzureSqlService azureSqlService)
         {
             _sharepointService = sharepointService;
+            _azureSqlService = azureSqlService;
         }
 
         public ActionResult DeleteMovie(int id, int courseId)
@@ -24,7 +26,7 @@ namespace E_LearningWeb.Controllers
         {
             if (!ModelState.IsValid)
                 return RedirectToAction("ListOfCourses", "Course");
-
+            _azureSqlService.AddMovie(courseViewModel.NewMovie);
             _sharepointService.AddMovie(courseViewModel.NewMovie);
             return RedirectToAction("Index", "Course", new { courseId = courseViewModel.NewMovie.CourseId });
         }

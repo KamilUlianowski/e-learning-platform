@@ -9,12 +9,14 @@ namespace E_LearningWeb.Controllers
     public class TestController : Controller
     {
         private readonly ISharepointService _sharepointService;
+        private readonly IAzureSqlService _azureSqlService;
         private List<Question> _questions;
         private static string _answers;
 
-        public TestController(ISharepointService sharepointService)
+        public TestController(ISharepointService sharepointService, IAzureSqlService azureSqlService)
         {
             _sharepointService = sharepointService;
+            _azureSqlService = azureSqlService;
         }
 
         public ActionResult Index(int courseId)
@@ -49,7 +51,7 @@ namespace E_LearningWeb.Controllers
 
         public ActionResult ResultHistory()
         {
-            var results = _sharepointService.GetTestsResults(_sharepointService.GetUserId());
+            var results = _azureSqlService.GetTestsResults(_sharepointService.GetUserId());
             return View(results);
         }
 

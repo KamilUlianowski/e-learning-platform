@@ -5,9 +5,10 @@ using System.Web;
 
 namespace E_LearningWeb.Models
 {
-    public class Test
+    public class Answer
     {
+        public string Text { get; set; }
         public int Id { get; set; }
-        public List<Question> Questions { get; set; } 
+        public int QuestionId { get; set; }
     }
 }

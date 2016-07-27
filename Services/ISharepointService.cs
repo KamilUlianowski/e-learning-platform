@@ -10,8 +10,8 @@ namespace E_LearningWeb.Services
         List<Post> GetDiscussionPosts(string courseId);
         List<Movie> GetAllMovies();
         List<Question> GetQuestions(int courseId);
+        List<Question> GetAllQuestions();
         List<Movie> GetMoviesFromCourse(List<Movie> movies, int id);
-        List<Course> CountMoviesInCourse(List<Course> courses, List<Movie> movies);
         List<TestResult> GetTestsResults(int userId);
         Movie GetMovieInfo(int id);
         Course GetCourse(int id);

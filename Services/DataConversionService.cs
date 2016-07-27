@@ -35,5 +35,17 @@ namespace E_LearningWeb.Services
              .Match(link);
             return youtubeMatch.Success ? youtubeMatch.Groups[1].Value : string.Empty;
         }
+
+        public static List<Course> CountMoviesInCourse(List<Course> courses, List<Movie> movies)
+        {
+
+            foreach (var item in movies)
+            {
+                var firstOrDefault = courses.FirstOrDefault(x => x.Id == item.CourseId);
+                if (firstOrDefault != null)
+                    firstOrDefault.NumberOfMovies++;
+            }
+            return courses; // Zwraca kursy z ich liczbą filmów
+        }
     }
 }

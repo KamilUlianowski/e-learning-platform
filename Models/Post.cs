@@ -4,6 +4,8 @@ namespace E_LearningWeb.Models
 {
     public class Post
     {
+        public string Id { get; set; }
+
         public string Author { get; set; }
 
         private string _body;

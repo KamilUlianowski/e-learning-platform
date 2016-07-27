@@ -74,6 +74,33 @@ namespace E_LearningWeb.Services
             return listOfMovies;
         }
 
+        public List<Question> GetAllQuestions()
+        {
+            var listOfQuestions = new List<Question>();
+            if (_clientContext == null) return listOfQuestions;
+            var contextList = GetSharepointListByTitle("Questions");
+            var items = GetAllItems(contextList);
+
+            foreach (var item in items)
+            {
+                listOfQuestions.Add(new Question()
+                {
+                    Text = item["emrq"].ToString(),
+                    Answers = new List<Answer>()
+                        {
+                            new Answer() {Text = item["igug"].ToString()},
+                            new Answer() {Text = item["_x0066_nv6"].ToString()},
+                           new Answer() {Text =  item["_x0065_es5"].ToString()}
+                        },
+                    CorrectAnswer = Int32.Parse(item["t2vj"].ToString()),
+                    TestId = Int32.Parse(item["wm0t"].ToString())
+
+                });
+            }
+            return listOfQuestions;
+
+        }
+
         public List<Movie> GetMoviesFromCourse(List<Movie> movies, int id)
         {
             return movies.Where(x => x.CourseId == id).ToList();
@@ -93,11 +120,11 @@ namespace E_LearningWeb.Services
                     listOfQuestions.Add(new Question()
                     {
                         Text = item["emrq"].ToString(),
-                        Answers = new List<string>()
+                        Answers = new List<Answer>()
                         {
-                            item["igug"].ToString(),
-                            item["_x0066_nv6"].ToString(),
-                            item["_x0065_es5"].ToString()
+                            new Answer() {Text = item["igug"].ToString()},
+                            new Answer() {Text = item["_x0066_nv6"].ToString()},
+                           new Answer() {Text =  item["_x0065_es5"].ToString()}
                         },
                         CorrectAnswer = Int32.Parse(item["t2vj"].ToString()),
                         TestId = Int32.Parse(item["wm0t"].ToString()),
@@ -370,18 +397,6 @@ namespace E_LearningWeb.Services
             _clientContext.ExecuteQuery();
 
             return true;
-        }
-
-        public List<Course> CountMoviesInCourse(List<Course> courses, List<Movie> movies)
-        {
-
-            foreach (var item in movies)
-            {
-                var firstOrDefault = courses.FirstOrDefault(x => x.Id == item.CourseId);
-                if (firstOrDefault != null)
-                    firstOrDefault.NumberOfMovies++;
-            }
-            return courses; // Zwraca kursy z ich liczbą filmów
         }
     }
 }

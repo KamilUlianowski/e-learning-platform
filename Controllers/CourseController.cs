@@ -1,7 +1,6 @@
 ﻿using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
 using System;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace E_LearningWeb.Controllers
@@ -9,32 +8,32 @@ namespace E_LearningWeb.Controllers
     public class CourseController : Controller
     {
         private readonly ISharepointService _sharepointService;
+        private readonly IAzureSqlService _azureSqlService;
 
-        public CourseController(ISharepointService sharepointService)
+        public CourseController(ISharepointService sharepointService, IAzureSqlService azureSqlService)
         {
             _sharepointService = sharepointService;
+            _azureSqlService = azureSqlService;
         }
 
         [HttpGet]
         public ActionResult ListOfCourses()
         {
-            var listOfCourses = _sharepointService.GetCourses();
-            var listOfMovies = _sharepointService.GetAllMovies();
-            listOfCourses = _sharepointService.CountMoviesInCourse(listOfCourses, listOfMovies);
+            var listOfCourses = _azureSqlService.GetAllCourses();
+            var listOfMovies = _azureSqlService.GetAllMovies();
+            listOfCourses = DataConversionService.CountMoviesInCourse(listOfCourses, listOfMovies);
             return View(listOfCourses);
         }
 
         [HttpGet]
         public ActionResult Index(string courseId)
         {
-            var allMovies = _sharepointService.GetAllMovies();
-            Session.Add("MaxMovieId", allMovies.Max(x => x.Id) + 1);
             CourseViewModel courseViewModel = new CourseViewModel()
             {
-                SpecificCourse = _sharepointService.GetCourse(Int32.Parse(courseId)),
-                ListOfQuestions = _sharepointService.GetQuestions(Int32.Parse(courseId)),
-                ListOfPosts = _sharepointService.GetDiscussionPosts(courseId),
-                ListOfMovies = _sharepointService.GetMoviesFromCourse(allMovies, Int32.Parse(courseId))
+                SpecificCourse = _azureSqlService.GetCourse(Int32.Parse(courseId)),
+                ListOfQuestions = _azureSqlService.GetQuestions(Int32.Parse(courseId)),
+                ListOfMovies = _azureSqlService.GetMoviesFromCourse(Int32.Parse(courseId)),
+                ListOfPosts = _sharepointService.GetDiscussionPosts(courseId)
             };
 
             return View(courseViewModel);
@@ -50,7 +49,7 @@ namespace E_LearningWeb.Controllers
         [HttpPost]
         public bool AddVote(int movieId, double rating)
         {
-            return _sharepointService.AddVote(movieId, rating);
+            return _azureSqlService.AddVote(movieId, rating);
         }
     }
 }

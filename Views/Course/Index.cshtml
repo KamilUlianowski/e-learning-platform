@@ -256,8 +256,8 @@
             listOfPosts.push({
                 text: "@HttpUtility.JavaScriptStringEncode(item.Text)",
                 answers: [
-                    "@HttpUtility.JavaScriptStringEncode(item.Answers[0])", "@HttpUtility.JavaScriptStringEncode(item.Answers[1])",
-                    "@HttpUtility.JavaScriptStringEncode(item.Answers[2])"
+                    "@HttpUtility.JavaScriptStringEncode(item.Answers[0].Text)", "@HttpUtility.JavaScriptStringEncode(item.Answers[1].Text)",
+                    "@HttpUtility.JavaScriptStringEncode(item.Answers[2].Text)"
                 ],
                 correctAnswer: "@item.CorrectAnswer",
                 id: @item.Id,
