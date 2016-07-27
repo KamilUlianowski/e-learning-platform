@@ -17,7 +17,7 @@ namespace E_LearningWeb.Controllers
 
         public ActionResult DeleteMovie(int id, int courseId)
         {
-            _sharepointService.DeleteMovie(id);
+            _azureSqlService.DeleteMovie(id);
             return RedirectToAction("Index", "Course", new { courseId = courseId });
         }
 
@@ -27,14 +27,13 @@ namespace E_LearningWeb.Controllers
             if (!ModelState.IsValid)
                 return RedirectToAction("ListOfCourses", "Course");
             _azureSqlService.AddMovie(courseViewModel.NewMovie);
-            _sharepointService.AddMovie(courseViewModel.NewMovie);
             return RedirectToAction("Index", "Course", new { courseId = courseViewModel.NewMovie.CourseId });
         }
 
         [HttpGet]
         public ActionResult UpdateMovie(int id)
         {
-            var movie = _sharepointService.GetMovieInfo(id);
+            var movie = _azureSqlService.GetSingleMovie(id);
             var newMovieViewModel = new NewMovieViewModel()
             {
                 Id = movie.Id,
@@ -48,7 +47,7 @@ namespace E_LearningWeb.Controllers
         [HttpPost]
         public ActionResult UpdateMovie(NewMovieViewModel movie)
         {
-            _sharepointService.UpdateMovie(movie);
+            _azureSqlService.UpdateMovie(movie);
             return RedirectToAction("Index", "Course", new { courseId = movie.CourseId });
         }
 

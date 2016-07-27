@@ -39,7 +39,7 @@ namespace E_LearningWeb.Services
         {
             using (var ctx = new ElearningDbContext())
             {
-                var questions = ctx.Questions.Include(x => x.Answers).ToList();
+                var questions = ctx.Questions.Include(x => x.Answers).Where(x => x.CourseId == courseId).ToList();
                 return questions;
             }
         }
@@ -59,6 +59,15 @@ namespace E_LearningWeb.Services
             {
                 var course = ctx.Courses.FirstOrDefault(x => x.Id == id);
                 return course;
+            }
+        }
+
+        public Movie GetSingleMovie(int id)
+        {
+            using (var ctx = new ElearningDbContext())
+            {
+                var movie = ctx.Movies.FirstOrDefault(x => x.Id == id);
+                return movie;
             }
         }
 
@@ -94,6 +103,48 @@ namespace E_LearningWeb.Services
             }
 
             return true;
+        }
+
+        public bool DeleteMovie(int movieId)
+        {
+            using (var ctx = new ElearningDbContext())
+            {
+                var movie = ctx.Movies.FirstOrDefault(x => x.Id == movieId);
+                if (movie != null)
+                {
+                    ctx.Movies.Remove(movie);
+                    ctx.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public bool UpdateMovie(NewMovieViewModel newMovie)
+        {
+            using (var ctx = new ElearningDbContext())
+            {
+                var updateMovie = ctx.Movies.FirstOrDefault(x => x.Id == newMovie.Id);
+                if (updateMovie != null)
+                {
+                    updateMovie.CourseId = newMovie.CourseId;
+                    updateMovie.Title = newMovie.Title;
+                    updateMovie.VideoUrl = newMovie.VideoUrl;
+                    ctx.SaveChanges();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool AddResultOfTest(TestResult testResult)
+        {
+            using (var ctx = new ElearningDbContext())
+            {
+                ctx.TestResults.Add(testResult);
+                ctx.SaveChanges();
+                return true;
+            }
         }
     }
 }

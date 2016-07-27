@@ -1,15 +1,14 @@
 ﻿using E_LearningWeb.Models;
-using E_LearningWeb.ViewModels;
 using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace E_LearningWeb.Services
 {
     public class SharepointService : ISharepointService
     {
         private readonly ClientContext _clientContext;
+
         public SharepointService()
         {
             _clientContext = (ClientContext)System.Web.HttpContext.Current.Session["ClientContext"];
@@ -31,170 +30,6 @@ namespace E_LearningWeb.Services
             _clientContext.Load(items);
             _clientContext.ExecuteQuery();
             return items;
-        }
-
-        public List<Course> GetCourses()
-        {
-            var listOfCourses = new List<Course>();
-            if (_clientContext == null) return listOfCourses;
-
-            var contextList = GetSharepointListByTitle("Courses");
-            var items = GetAllItems(contextList);
-
-            listOfCourses.AddRange(items.Select(listItem => new Course()
-            {
-                Title = listItem["Title"].ToString(),
-                Id = Convert.ToInt32(listItem["qgjk"]),
-                Description = listItem["b6yw"].ToString(),
-                ImageUrl = listItem["_x0076_pe2"].ToString(),
-                Path = listItem["i2ll"].ToString(),
-                ShortDescription = listItem["_x0062_r91"].ToString(),
-                Author = listItem["yyid"].ToString()
-
-            }));
-            return listOfCourses;
-        }
-
-        public List<Movie> GetAllMovies()
-        {
-            var listOfMovies = new List<Movie>();
-            if (_clientContext == null) return listOfMovies;
-            var contextList = GetSharepointListByTitle("Movies");
-            var items = GetAllItems(contextList);
-
-            listOfMovies.AddRange(items.Select(listItem => new Movie()
-            {
-                CourseId = Convert.ToInt32(listItem["b9dk"]),
-                VideoUrl = listItem["meuv"].ToString(),
-                SumOfVotes = Double.Parse(listItem["envb"].ToString()),
-                Title = listItem["Title"].ToString(),
-                Id = Convert.ToInt32(listItem["jkyq"]),
-                NumberOfVotes = Convert.ToInt32(listItem["snyt"].ToString())
-            }));
-            return listOfMovies;
-        }
-
-        public List<Question> GetAllQuestions()
-        {
-            var listOfQuestions = new List<Question>();
-            if (_clientContext == null) return listOfQuestions;
-            var contextList = GetSharepointListByTitle("Questions");
-            var items = GetAllItems(contextList);
-
-            foreach (var item in items)
-            {
-                listOfQuestions.Add(new Question()
-                {
-                    Text = item["emrq"].ToString(),
-                    Answers = new List<Answer>()
-                        {
-                            new Answer() {Text = item["igug"].ToString()},
-                            new Answer() {Text = item["_x0066_nv6"].ToString()},
-                           new Answer() {Text =  item["_x0065_es5"].ToString()}
-                        },
-                    CorrectAnswer = Int32.Parse(item["t2vj"].ToString()),
-                    TestId = Int32.Parse(item["wm0t"].ToString())
-
-                });
-            }
-            return listOfQuestions;
-
-        }
-
-        public List<Movie> GetMoviesFromCourse(List<Movie> movies, int id)
-        {
-            return movies.Where(x => x.CourseId == id).ToList();
-        }
-
-        public List<Question> GetQuestions(int courseId)
-        {
-            var listOfQuestions = new List<Question>();
-            if (_clientContext == null) return listOfQuestions;
-            var contextList = GetSharepointListByTitle("Questions");
-            var items = GetAllItems(contextList);
-
-            foreach (var item in items)
-            {
-                if (Int32.Parse(item["wm0t"].ToString()) == courseId)
-                {
-                    listOfQuestions.Add(new Question()
-                    {
-                        Text = item["emrq"].ToString(),
-                        Answers = new List<Answer>()
-                        {
-                            new Answer() {Text = item["igug"].ToString()},
-                            new Answer() {Text = item["_x0066_nv6"].ToString()},
-                           new Answer() {Text =  item["_x0065_es5"].ToString()}
-                        },
-                        CorrectAnswer = Int32.Parse(item["t2vj"].ToString()),
-                        TestId = Int32.Parse(item["wm0t"].ToString()),
-                        Id = item.Id
-                    });
-                }
-            }
-
-            return listOfQuestions;
-        }
-
-        public List<TestResult> GetTestsResults(int userId)
-        {
-            var listOfSolvedTests = new List<TestResult>();
-            if (_clientContext == null) return listOfSolvedTests;
-            var contextList = GetSharepointListByTitle("SolvedTests");
-            var items = GetAllItems(contextList);
-            foreach (var item in items)
-            {
-                listOfSolvedTests.Add(new TestResult()
-                {
-                    CourseName = item["Title"].ToString(),
-                    UserId = Int32.Parse(item["elvy"].ToString()),
-                    Result = (item["i4lh"].ToString()),
-                    CourseId = Int32.Parse(item["f8dk"].ToString()),
-                    DateOfTest = (Convert.ToDateTime(item["Created"].ToString()).AddHours(2))
-                });
-            }
-            return listOfSolvedTests.Where(x => x.UserId == userId).ToList();
-
-        }
-
-        public Movie GetMovieInfo(int id)
-        {
-            var movie = new Movie();
-            if (_clientContext == null) return movie;
-            var contextList = GetSharepointListByTitle("Movies");
-            var items = GetAllItems(contextList);
-
-            foreach (ListItem listItem in items)
-            {
-                if (Convert.ToInt32(listItem["jkyq"]) == id)
-                {
-                    movie.Title = listItem["Title"].ToString();
-                    movie.VideoUrl = listItem["meuv"].ToString();
-                    movie.CourseId = Convert.ToInt32(listItem["b9dk"].ToString());
-                    return movie;
-                }
-            }
-            return movie;
-        }
-
-        public Course GetCourse(int id)
-        {
-            var course = new Course();
-            if (_clientContext == null) return course;
-            var contextList = GetSharepointListByTitle("Courses");
-            var items = GetAllItems(contextList);
-
-            foreach (var item in items.Where(item => Convert.ToInt32(item["qgjk"]) == id))
-            {
-                course.Title = item["Title"].ToString();
-                course.Id = Convert.ToInt32(item["qgjk"]);
-                course.Description = item["b6yw"].ToString();
-                course.ImageUrl = item["_x0076_pe2"].ToString();
-                course.Path = item["i2ll"].ToString();
-                course.ShortDescription = item["_x0062_r91"].ToString();
-                course.Author = item["yyid"].ToString();
-            }
-            return course;
         }
 
         public int GetUserId()
@@ -289,21 +124,6 @@ namespace E_LearningWeb.Services
             return false;
         }
 
-        public bool AddResultOfTest(TestResult testResult)
-        {
-            if (_clientContext == null) return false;
-            var contextList = GetSharepointListByTitle("SolvedTests");
-            ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
-            ListItem listItem = contextList.AddItem(itemCreateInfo);
-            listItem["Title"] = testResult.CourseName;
-            listItem["elvy"] = testResult.UserId;
-            listItem["i4lh"] = testResult.Result;
-            listItem["f8dk"] = testResult.CourseId;
-            listItem.Update();
-            _clientContext.ExecuteQuery();
-            return true;
-        }
-
         public bool CheckIfTheUserHasPermissions()
         {
             if (_clientContext == null) return false;
@@ -313,90 +133,6 @@ namespace E_LearningWeb.Services
             _clientContext.ExecuteQuery();
 
             return manageWeb.Value;
-        }
-
-        public bool AddVote(int movieId, double rating)
-        {
-            if (_clientContext == null) return false;
-            var contextList = GetSharepointListByTitle("Movies");
-            var items = GetAllItems(contextList);
-
-            foreach (ListItem listItem in items)
-            {
-                if (Convert.ToInt32(listItem["jkyq"]) == movieId)
-                {
-                    listItem["snyt"] = Int32.Parse(listItem["snyt"].ToString()) + 1; // Liczba głosów + 1
-                    listItem["envb"] = Double.Parse(listItem["envb"].ToString()) + rating; // Dodanie głosu
-                    listItem.Update();
-                    _clientContext.ExecuteQuery();
-                    return true;
-                }
-            }
-            return false;
-
-        }
-
-        public bool DeleteMovie(int id)
-        {
-            if (_clientContext == null) return false;
-            var contextList = GetSharepointListByTitle("Movies");
-            var items = GetAllItems(contextList);
-
-            foreach (ListItem listItem in items)
-            {
-                if (Convert.ToInt32(listItem["jkyq"]) == id)
-                {
-                    ListItem itemDelete = listItem;
-                    itemDelete.DeleteObject();
-                    _clientContext.ExecuteQuery();
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public bool UpdateMovie(NewMovieViewModel movie)
-        {
-            if (_clientContext == null) return false;
-            var contextList = GetSharepointListByTitle("Movies");
-            var items = GetAllItems(contextList);
-
-            foreach (ListItem listItem in items)
-            {
-                if (Convert.ToInt32(listItem["jkyq"]) == movie.Id)
-                {
-                    listItem["Title"] = movie.Title;
-                    listItem["meuv"] = movie.VideoUrl;
-                    listItem["b9dk"] = movie.CourseId;
-                    listItem.Update();
-                    _clientContext.ExecuteQuery();
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public bool AddMovie(NewMovieViewModel movie)
-        {
-            if (_clientContext == null) return false;
-            var contextList = GetSharepointListByTitle("Movies");
-            string id = DataConversionService.GetVideoId(movie.VideoUrl);
-            string embedUrl =
-            "https://www.youtube.com/embed/" + id;
-
-            ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
-            ListItem listItem = contextList.AddItem(itemCreateInfo);
-            listItem["Title"] = movie.Title;
-            listItem["meuv"] = embedUrl;
-            listItem["b9dk"] = movie.CourseId;
-            listItem["jkyq"] = Int32.Parse(System.Web.HttpContext.Current.Session["MaxMovieId"].ToString()) + 1;
-            listItem["envb"] = 0;
-            listItem["snyt"] = 0;
-
-            listItem.Update();
-            _clientContext.ExecuteQuery();
-
-            return true;
         }
     }
 }

@@ -12,8 +12,12 @@ namespace E_LearningWeb.Services
         List<Question> GetQuestions(int courseId);
         List<Movie> GetMoviesFromCourse(int courseId);
         Course GetCourse(int id);
+        Movie GetSingleMovie(int id);
         bool AddMovie(NewMovieViewModel movie);
         bool AddVote(int movieId, double rating);
+        bool DeleteMovie(int movieId);
+        bool UpdateMovie(NewMovieViewModel movie);
+        bool AddResultOfTest(TestResult testResult);
 
     }
 }

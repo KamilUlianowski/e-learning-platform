@@ -1,6 +1,7 @@
 ﻿using E_LearningWeb.Models;
 using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -23,7 +24,7 @@ namespace E_LearningWeb.Controllers
         {
             var testViewModel = new TestViewModel
             {
-                ListOfQuestions = _sharepointService.GetQuestions(courseId)
+                ListOfQuestions = _azureSqlService.GetQuestions(courseId)
             };
             _questions = testViewModel.ListOfQuestions;
             return View(testViewModel);
@@ -36,11 +37,12 @@ namespace E_LearningWeb.Controllers
                 CourseId = courseId,
                 Result = correctAnswers,
                 UserId = _sharepointService.GetUserId(),
-                CourseName = _sharepointService.GetCourse(courseId).Title
+                CourseName = _azureSqlService.GetCourse(courseId).Title,
+                DateOfTest = DateTime.Now
             };
 
-            _sharepointService.AddResultOfTest(testResult);
-            _questions = _sharepointService.GetQuestions(courseId);
+            _azureSqlService.AddResultOfTest(testResult);
+            _questions = _azureSqlService.GetQuestions(courseId);
 
             return View(new TestViewModel()
             {
