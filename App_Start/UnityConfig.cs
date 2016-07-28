@@ -1,6 +1,9 @@
+using E_LearningWeb.Models;
+using E_LearningWeb.Repositories;
 using E_LearningWeb.Services;
 using Microsoft.Practices.Unity;
 using System;
+using System.Data.Entity;
 
 namespace E_LearningWeb.App_Start
 {
@@ -39,6 +42,8 @@ namespace E_LearningWeb.App_Start
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<ISharepointService, SharepointService>();
             container.RegisterType<IAzureSqlService, AzureSqlService>();
+            container.RegisterType<DbContext, ElearningDbContext>();
+            container.RegisterType<IUnitOfWork, UnitOfWork>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using E_LearningWeb.Services;
+﻿using E_LearningWeb.Repositories;
+using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
 using System;
 using System.Linq;
@@ -10,18 +11,21 @@ namespace E_LearningWeb.Controllers
     {
         private readonly ISharepointService _sharepointService;
         private readonly IAzureSqlService _azureSqlService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CourseController(ISharepointService sharepointService, IAzureSqlService azureSqlService)
+        public CourseController(ISharepointService sharepointService, IAzureSqlService azureSqlService, IUnitOfWork unitOfWork)
         {
             _sharepointService = sharepointService;
             _azureSqlService = azureSqlService;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
         public ActionResult ListOfCourses()
         {
-            var listOfCourses = _azureSqlService.GetAllCourses().ToList();
-            var listOfMovies = _azureSqlService.GetAllMovies();
+            // var listOfCourses = _azureSqlService.GetAllCourses().ToList();
+            var listOfCourses = _unitOfWork.Courses.GetAll().ToList();
+            var listOfMovies = _unitOfWork.Movies.GetAll().ToList();
             listOfCourses = DataConversionService.CountMoviesInCourse(listOfCourses, listOfMovies);
             return View(listOfCourses);
         }

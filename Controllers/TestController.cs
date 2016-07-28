@@ -1,4 +1,5 @@
 ﻿using E_LearningWeb.Models;
+using E_LearningWeb.Repositories;
 using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
 using System;
@@ -12,13 +13,15 @@ namespace E_LearningWeb.Controllers
     {
         private readonly ISharepointService _sharepointService;
         private readonly IAzureSqlService _azureSqlService;
+        private readonly IUnitOfWork _unitOfWork;
         private List<Question> _questions;
         private static string _answers;
 
-        public TestController(ISharepointService sharepointService, IAzureSqlService azureSqlService)
+        public TestController(ISharepointService sharepointService, IAzureSqlService azureSqlService, IUnitOfWork unitOfWork)
         {
             _sharepointService = sharepointService;
             _azureSqlService = azureSqlService;
+            _unitOfWork = unitOfWork;
         }
 
         public ActionResult Index(int courseId)
@@ -54,7 +57,8 @@ namespace E_LearningWeb.Controllers
 
         public ActionResult ResultHistory()
         {
-            var results = _azureSqlService.GetTestsResults(_sharepointService.GetUserId()).ToList();
+            var results =
+                _azureSqlService.GetTestsResults(_sharepointService.GetUserId()).ToList();
             return View(results);
         }
 
