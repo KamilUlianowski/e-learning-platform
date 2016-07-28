@@ -1,7 +1,6 @@
 ﻿using E_LearningWeb.Repositories;
 using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
-using System;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -31,13 +30,13 @@ namespace E_LearningWeb.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index(string courseId)
+        public ActionResult Index(int courseId)
         {
             CourseViewModel courseViewModel = new CourseViewModel()
             {
-                SpecificCourse = _azureSqlService.GetCourse(Int32.Parse(courseId)),
-                ListOfQuestions = _azureSqlService.GetQuestions(Int32.Parse(courseId)).ToList(),
-                ListOfMovies = _azureSqlService.GetMoviesFromCourse(Int32.Parse(courseId)).ToList(),
+                SpecificCourse = _unitOfWork.Courses.SingleOrDefault(x => x.Id == courseId),
+                ListOfQuestions = _unitOfWork.Questions.GetQuestionsWithAnswers(courseId).ToList(),
+                ListOfMovies = _unitOfWork.Movies.Find(x => x.CourseId == courseId).ToList(),
                 ListOfPosts = _sharepointService.GetDiscussionPosts(courseId)
             };
 

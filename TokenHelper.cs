@@ -147,7 +147,7 @@ namespace E_LearningWeb
         /// Retrieves an access token from ACS to call the source of the specified context token at the specified 
         /// targetHost. The targetHost must be registered for the principal that sent the context token.
         /// </summary>
-        /// <param name="contextToken">Context token issued by the intended access token audience</param>
+        /// <param name="contextToken">MyContext token issued by the intended access token audience</param>
         /// <param name="targetHost">Url authority of the target principal</param>
         /// <returns>An access token with an audience matching the context token's source</returns>
         public static OAuth2AccessTokenResponse GetAccessToken(SharePointContextToken contextToken, string targetHost)
@@ -441,7 +441,7 @@ namespace E_LearningWeb
         /// a client context
         /// </summary>
         /// <param name="targetUrl">Url of the target SharePoint site</param>
-        /// <param name="contextTokenString">Context token received from the target SharePoint site</param>
+        /// <param name="contextTokenString">MyContext token received from the target SharePoint site</param>
         /// <param name="appHostUrl">Url authority of the hosted add-in.  If this is null, the value in the HostedAppHostName
         /// of web.config will be used instead</param>
         /// <returns>A ClientContext ready to call targetUrl with a valid access token</returns>

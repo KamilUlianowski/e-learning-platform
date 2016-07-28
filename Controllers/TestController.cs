@@ -57,8 +57,9 @@ namespace E_LearningWeb.Controllers
 
         public ActionResult ResultHistory()
         {
+            int userId = _sharepointService.GetUserId();
             var results =
-                _azureSqlService.GetTestsResults(_sharepointService.GetUserId()).ToList();
+                _unitOfWork.TestResults.Find(x => x.UserId == userId).ToList();
             return View(results);
         }
 

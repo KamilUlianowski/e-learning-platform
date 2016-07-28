@@ -11,7 +11,8 @@ namespace E_LearningWeb.Services
 
         public SharepointService()
         {
-            _clientContext = (ClientContext)System.Web.HttpContext.Current.Session["ClientContext"];
+            if ((ClientContext)System.Web.HttpContext.Current.Session["ClientContext"] != null)
+                _clientContext = (ClientContext)System.Web.HttpContext.Current.Session["ClientContext"];
         }
 
         private List GetSharepointListByTitle(string nameOfList)
@@ -50,7 +51,7 @@ namespace E_LearningWeb.Services
         }
 
         public
-            List<Post> GetDiscussionPosts(string courseId)
+            List<Post> GetDiscussionPosts(int courseId)
         {
             var listOfPosts = new List<Post>();
             if (_clientContext == null) return listOfPosts;
@@ -62,7 +63,7 @@ namespace E_LearningWeb.Services
                 if (item["CourseId"] != null)
                 {
                     var course = item["CourseId"].ToString();
-                    if (string.Equals(courseId, course))
+                    if (string.Equals(courseId.ToString(), course))
                     {
                         id = Int32.Parse(item["ID"].ToString());
                     }

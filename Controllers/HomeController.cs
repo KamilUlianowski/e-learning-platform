@@ -1,5 +1,4 @@
-﻿using E_LearningWeb.Models;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace E_LearningWeb.Controllers
 {
@@ -17,9 +16,12 @@ namespace E_LearningWeb.Controllers
         private void InitializeSession()
         {
             var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
-            var clientContext = spContext.CreateAppOnlyClientContextForSPHost();
-            Session.Add("SharepointContext", spContext);
-            Session.Add("ClientContext", clientContext);
+            if (spContext != null)
+            {
+                var clientContext = spContext.CreateAppOnlyClientContextForSPHost();
+                Session.Add("SharepointContext", spContext);
+                Session.Add("ClientContext", clientContext);
+            }
             Session.Add("logged", false);
 
         }

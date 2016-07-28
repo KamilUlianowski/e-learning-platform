@@ -6,7 +6,7 @@ namespace E_LearningWeb.Services
 {
     public interface ISharepointService
     {
-        List<Post> GetDiscussionPosts(string courseId);
+        List<Post> GetDiscussionPosts(int courseId);
         int GetUserId();
         bool AddPost(string text, string courseId);
         bool CheckIfTheUserHasPermissions();
