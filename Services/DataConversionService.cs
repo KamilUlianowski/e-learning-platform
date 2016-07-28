@@ -36,7 +36,7 @@ namespace E_LearningWeb.Services
             return youtubeMatch.Success ? youtubeMatch.Groups[1].Value : string.Empty;
         }
 
-        public static List<Course> CountMoviesInCourse(List<Course> courses, List<Movie> movies)
+        public static List<Course> CountMoviesInCourse(IEnumerable<Course> courses, IEnumerable<Movie> movies)
         {
 
             foreach (var item in movies)
@@ -45,7 +45,7 @@ namespace E_LearningWeb.Services
                 if (firstOrDefault != null)
                     firstOrDefault.NumberOfMovies++;
             }
-            return courses; // Zwraca kursy z ich liczbą filmów
+            return courses.ToList(); // Zwraca kursy z ich liczbą filmów
         }
     }
 }

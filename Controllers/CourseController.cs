@@ -1,6 +1,7 @@
 ﻿using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
 using System;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace E_LearningWeb.Controllers
@@ -19,7 +20,7 @@ namespace E_LearningWeb.Controllers
         [HttpGet]
         public ActionResult ListOfCourses()
         {
-            var listOfCourses = _azureSqlService.GetAllCourses();
+            var listOfCourses = _azureSqlService.GetAllCourses().ToList();
             var listOfMovies = _azureSqlService.GetAllMovies();
             listOfCourses = DataConversionService.CountMoviesInCourse(listOfCourses, listOfMovies);
             return View(listOfCourses);
@@ -31,8 +32,8 @@ namespace E_LearningWeb.Controllers
             CourseViewModel courseViewModel = new CourseViewModel()
             {
                 SpecificCourse = _azureSqlService.GetCourse(Int32.Parse(courseId)),
-                ListOfQuestions = _azureSqlService.GetQuestions(Int32.Parse(courseId)),
-                ListOfMovies = _azureSqlService.GetMoviesFromCourse(Int32.Parse(courseId)),
+                ListOfQuestions = _azureSqlService.GetQuestions(Int32.Parse(courseId)).ToList(),
+                ListOfMovies = _azureSqlService.GetMoviesFromCourse(Int32.Parse(courseId)).ToList(),
                 ListOfPosts = _sharepointService.GetDiscussionPosts(courseId)
             };
 

@@ -6,11 +6,11 @@ namespace E_LearningWeb.Services
 {
     public interface IAzureSqlService
     {
-        List<Course> GetAllCourses();
-        List<Movie> GetAllMovies();
-        List<TestResult> GetTestsResults(int userId);
-        List<Question> GetQuestions(int courseId);
-        List<Movie> GetMoviesFromCourse(int courseId);
+        IEnumerable<Course> GetAllCourses();
+        IEnumerable<Movie> GetAllMovies();
+        IEnumerable<TestResult> GetTestsResults(int userId);
+        IList<Question> GetQuestions(int courseId);
+        IEnumerable<Movie> GetMoviesFromCourse(int courseId);
         Course GetCourse(int id);
         Movie GetSingleMovie(int id);
         bool AddMovie(NewMovieViewModel movie);

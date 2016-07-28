@@ -8,7 +8,7 @@ namespace E_LearningWeb.Services
 {
     public class AzureSqlService : IAzureSqlService
     {
-        public List<Course> GetAllCourses()
+        public IEnumerable<Course> GetAllCourses()
         {
             using (var ctx = new ElearningDbContext())
             {
@@ -17,7 +17,7 @@ namespace E_LearningWeb.Services
             }
         }
 
-        public List<Movie> GetAllMovies()
+        public IEnumerable<Movie> GetAllMovies()
         {
             using (var ctx = new ElearningDbContext())
             {
@@ -26,7 +26,7 @@ namespace E_LearningWeb.Services
             }
         }
 
-        public List<TestResult> GetTestsResults(int userId)
+        public IEnumerable<TestResult> GetTestsResults(int userId)
         {
             using (var ctx = new ElearningDbContext())
             {
@@ -35,7 +35,7 @@ namespace E_LearningWeb.Services
             }
         }
 
-        public List<Question> GetQuestions(int courseId)
+        public IList<Question> GetQuestions(int courseId)
         {
             using (var ctx = new ElearningDbContext())
             {
@@ -44,7 +44,7 @@ namespace E_LearningWeb.Services
             }
         }
 
-        public List<Movie> GetMoviesFromCourse(int courseId)
+        public IEnumerable<Movie> GetMoviesFromCourse(int courseId)
         {
             using (var ctx = new ElearningDbContext())
             {
