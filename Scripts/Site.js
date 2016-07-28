@@ -23,6 +23,16 @@ $("#Sidebar").hover(
 
 );
 
+$(".search-icon").click(function() {
+    window.location.href = "/Course/Search?searchedText=" + $("#SearchInput").val();
+});
+
+$("#SearchInput").keypress(function (e) {
+    if (e.which == 13) {
+        window.location.href = "/Course/Search?searchedText=" + $("#SearchInput").val();
+    }
+});
+
 $(".pathLi").click(function () {
     $(".pathLi").removeClass("selected");
     $(this).addClass("selected");

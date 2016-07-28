@@ -1,0 +1,51 @@
+﻿@model List<E_LearningWeb.Models.Movie>
+
+<div id="TableOfContent" class="col-lg-12 section-content-course">
+
+    <div class="row" style="margin-left: 15px">
+        <div class="input-group">
+            <span class="input-group-addon mouse-pointer search-icon">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+            <input type="text" class="search-input" placeholder="Search" id="SearchInput" />
+        </div>
+    </div>
+
+    @foreach (var item in Model)
+    {
+
+        <a class="col-lg-10 movie-row" href="@Url.Action("Index", "Video", new {videoUrl = @item.VideoUrl})">
+            <h3><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>   <span>@item.Title</span></h3>
+        </a>
+        <div class="col-lg-2 stars">
+            <div id="@item.Id" class="my-rating jq-stars"></div>
+        </div>
+    }
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/rateit")
+
+<script type='text/javascript'>
+    @foreach (var item in Model)
+    {
+        <text>
+    $("#@item.Id").starRating({
+        initialRating: @item.Rating,
+        strokeColor: '#894A00',
+        strokeWidth: 10,
+        starSize: 25,
+        callback: function(currentRating, $el) {
+            $.ajax({
+                type: "POST",
+                url: "/Course/AddVote",
+                data: { movieId: @item.Id, rating: currentRating },
+                success: function(msg) {
+                },
+                error: function(e) {
+                }
+            });
+        }
+    }); </text>
+    }
+</script>

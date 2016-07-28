@@ -246,7 +246,7 @@ textarea {
 }
 
 #Sidebar {
-    position: absolute;
+    position: fixed;
     width: 250px;
     height: 100%;
     background-color: #222222;
@@ -470,4 +470,31 @@ html {
 
 .validation-text {
     color: #ffffff;
+}
+
+.search-panel {
+    margin-left: 30px;
+}
+
+.mouse-pointer:hover {
+    cursor: pointer;
+}
+
+.mouse-pointer {
+    color: #ffffff !important;
+    background-color: #424242 !important;
+    border: #424242;
+}
+
+.search-input {
+    color: #ffffff;
+    background-color: #424242;
+    border-width: 0px !important;
+    border: none !important;
+    font-size: 20px;
+    padding-right: 100px;
+}
+
+.search-input:focus {
+    outline: none;
 }

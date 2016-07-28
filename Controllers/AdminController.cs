@@ -33,7 +33,7 @@ namespace E_LearningWeb.Controllers
             var newMovie = new Movie()
             {
                 CourseId = courseViewModel.NewMovie.CourseId,
-                VideoUrl = courseViewModel.NewMovie.VideoUrl,
+                VideoUrl = "https://www.youtube.com/embed/" + DataConversionService.GetVideoId(courseViewModel.NewMovie.VideoUrl),
                 Title = courseViewModel.NewMovie.Title
             };
             _unitOfWork.Movies.Add(newMovie);

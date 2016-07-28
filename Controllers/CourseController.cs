@@ -53,5 +53,11 @@ namespace E_LearningWeb.Controllers
             _unitOfWork.Movies.AddVote(movieId, rating);
             _unitOfWork.Complete();
         }
+
+        public ActionResult Search(string searchedText)
+        {
+            var movies = _unitOfWork.Movies.Find(x => x.Title.Contains(searchedText)).ToList();
+            return View(movies);
+        }
     }
 }

@@ -13,13 +13,15 @@ namespace E_LearningWeb.Controllers
     {
         private readonly ISharepointService _sharepointService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAzureSqlService _azureSqlService;
         private List<Question> _questions;
         private static string _answers;
 
-        public TestController(ISharepointService sharepointService, IUnitOfWork unitOfWork)
+        public TestController(ISharepointService sharepointService, IUnitOfWork unitOfWork, IAzureSqlService azureSqlService)
         {
             _sharepointService = sharepointService;
             _unitOfWork = unitOfWork;
+            _azureSqlService = azureSqlService;
         }
 
         public ActionResult Index(int courseId)
@@ -40,11 +42,13 @@ namespace E_LearningWeb.Controllers
                 Result = correctAnswers,
                 UserId = _sharepointService.GetUserId(),
                 CourseName = _unitOfWork.Courses.FirstOrDefault(x => x.Id == courseId).Title,
-                DateOfTest = DateTime.Now
+                DateOfTest = (DateTime.Now).AddHours(2)
             };
+
 
             _unitOfWork.TestResults.Add(testResult);
             _questions = _unitOfWork.Questions.GetQuestionsWithAnswers(courseId).ToList();
+            _unitOfWork.Complete();
 
             return View(new TestViewModel()
             {
