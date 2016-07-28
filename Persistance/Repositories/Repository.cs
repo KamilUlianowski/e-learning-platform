@@ -30,9 +30,9 @@ namespace E_LearningWeb.Repositories
             return Context.Set<T>().Where(predicate).AsEnumerable();
         }
 
-        public T SingleOrDefault(Expression<Func<T, bool>> predicate)
+        public T FirstOrDefault(Expression<Func<T, bool>> predicate)
         {
-            return Context.Set<T>().SingleOrDefault(predicate);
+            return Context.Set<T>().FirstOrDefault(predicate);
         }
 
         public void Add(T entity)

@@ -9,20 +9,17 @@ namespace E_LearningWeb.Controllers
     public class CourseController : Controller
     {
         private readonly ISharepointService _sharepointService;
-        private readonly IAzureSqlService _azureSqlService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CourseController(ISharepointService sharepointService, IAzureSqlService azureSqlService, IUnitOfWork unitOfWork)
+        public CourseController(ISharepointService sharepointService, IUnitOfWork unitOfWork)
         {
             _sharepointService = sharepointService;
-            _azureSqlService = azureSqlService;
             _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
         public ActionResult ListOfCourses()
         {
-            // var listOfCourses = _azureSqlService.GetAllCourses().ToList();
             var listOfCourses = _unitOfWork.Courses.GetAll().ToList();
             var listOfMovies = _unitOfWork.Movies.GetAll().ToList();
             listOfCourses = DataConversionService.CountMoviesInCourse(listOfCourses, listOfMovies);
@@ -34,7 +31,7 @@ namespace E_LearningWeb.Controllers
         {
             CourseViewModel courseViewModel = new CourseViewModel()
             {
-                SpecificCourse = _unitOfWork.Courses.SingleOrDefault(x => x.Id == courseId),
+                SpecificCourse = _unitOfWork.Courses.FirstOrDefault(x => x.Id == courseId),
                 ListOfQuestions = _unitOfWork.Questions.GetQuestionsWithAnswers(courseId).ToList(),
                 ListOfMovies = _unitOfWork.Movies.Find(x => x.CourseId == courseId).ToList(),
                 ListOfPosts = _sharepointService.GetDiscussionPosts(courseId)
@@ -51,9 +48,10 @@ namespace E_LearningWeb.Controllers
         }
 
         [HttpPost]
-        public bool AddVote(int movieId, double rating)
+        public void AddVote(int movieId, double rating)
         {
-            return _azureSqlService.AddVote(movieId, rating);
+            _unitOfWork.Movies.AddVote(movieId, rating);
+            _unitOfWork.Complete();
         }
     }
 }

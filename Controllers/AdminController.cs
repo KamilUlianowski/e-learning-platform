@@ -1,4 +1,6 @@
-﻿using E_LearningWeb.Services;
+﻿using E_LearningWeb.Models;
+using E_LearningWeb.Repositories;
+using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
 using System.Web.Mvc;
 
@@ -7,17 +9,19 @@ namespace E_LearningWeb.Controllers
     public class AdminController : Controller
     {
         private readonly ISharepointService _sharepointService;
-        private readonly IAzureSqlService _azureSqlService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AdminController(ISharepointService sharepointService, IAzureSqlService azureSqlService)
+        public AdminController(ISharepointService sharepointService, IUnitOfWork unitOfWork)
         {
             _sharepointService = sharepointService;
-            _azureSqlService = azureSqlService;
+            _unitOfWork = unitOfWork;
         }
 
         public ActionResult DeleteMovie(int id, int courseId)
         {
-            _azureSqlService.DeleteMovie(id);
+            var movieToDelete = _unitOfWork.Movies.FirstOrDefault(x => x.Id == id);
+            _unitOfWork.Movies.Remove(movieToDelete);
+            _unitOfWork.Complete();
             return RedirectToAction("Index", "Course", new { courseId = courseId });
         }
 
@@ -26,14 +30,21 @@ namespace E_LearningWeb.Controllers
         {
             if (!ModelState.IsValid)
                 return RedirectToAction("ListOfCourses", "Course");
-            _azureSqlService.AddMovie(courseViewModel.NewMovie);
+            var newMovie = new Movie()
+            {
+                CourseId = courseViewModel.NewMovie.CourseId,
+                VideoUrl = courseViewModel.NewMovie.VideoUrl,
+                Title = courseViewModel.NewMovie.Title
+            };
+            _unitOfWork.Movies.Add(newMovie);
+            _unitOfWork.Complete();
             return RedirectToAction("Index", "Course", new { courseId = courseViewModel.NewMovie.CourseId });
         }
 
         [HttpGet]
         public ActionResult UpdateMovie(int id)
         {
-            var movie = _azureSqlService.GetSingleMovie(id);
+            var movie = _unitOfWork.Movies.FirstOrDefault(x => x.Id == id);
             var newMovieViewModel = new NewMovieViewModel()
             {
                 Id = movie.Id,
@@ -47,7 +58,11 @@ namespace E_LearningWeb.Controllers
         [HttpPost]
         public ActionResult UpdateMovie(NewMovieViewModel movie)
         {
-            _azureSqlService.UpdateMovie(movie);
+            var movieToUpdate = _unitOfWork.Movies.FirstOrDefault(x => x.Id == movie.Id);
+            movieToUpdate.CourseId = movie.CourseId;
+            movieToUpdate.VideoUrl = movie.VideoUrl;
+            movieToUpdate.Title = movie.Title;
+            _unitOfWork.Complete();
             return RedirectToAction("Index", "Course", new { courseId = movie.CourseId });
         }
 

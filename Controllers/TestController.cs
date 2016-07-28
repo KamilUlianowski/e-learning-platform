@@ -12,15 +12,13 @@ namespace E_LearningWeb.Controllers
     public class TestController : Controller
     {
         private readonly ISharepointService _sharepointService;
-        private readonly IAzureSqlService _azureSqlService;
         private readonly IUnitOfWork _unitOfWork;
         private List<Question> _questions;
         private static string _answers;
 
-        public TestController(ISharepointService sharepointService, IAzureSqlService azureSqlService, IUnitOfWork unitOfWork)
+        public TestController(ISharepointService sharepointService, IUnitOfWork unitOfWork)
         {
             _sharepointService = sharepointService;
-            _azureSqlService = azureSqlService;
             _unitOfWork = unitOfWork;
         }
 
@@ -28,7 +26,7 @@ namespace E_LearningWeb.Controllers
         {
             var testViewModel = new TestViewModel
             {
-                ListOfQuestions = _azureSqlService.GetQuestions(courseId).ToList()
+                ListOfQuestions = _unitOfWork.Questions.Find(x => x.CourseId == courseId).ToList()
             };
             _questions = testViewModel.ListOfQuestions;
             return View(testViewModel);
@@ -41,12 +39,12 @@ namespace E_LearningWeb.Controllers
                 CourseId = courseId,
                 Result = correctAnswers,
                 UserId = _sharepointService.GetUserId(),
-                CourseName = _azureSqlService.GetCourse(courseId).Title,
+                CourseName = _unitOfWork.Courses.FirstOrDefault(x => x.Id == courseId).Title,
                 DateOfTest = DateTime.Now
             };
 
-            _azureSqlService.AddResultOfTest(testResult);
-            _questions = _azureSqlService.GetQuestions(courseId).ToList();
+            _unitOfWork.TestResults.Add(testResult);
+            _questions = _unitOfWork.Questions.GetQuestionsWithAnswers(courseId).ToList();
 
             return View(new TestViewModel()
             {

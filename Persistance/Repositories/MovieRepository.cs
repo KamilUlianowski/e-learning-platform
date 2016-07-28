@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using E_LearningWeb.Models;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
-using E_LearningWeb.Models;
 
 namespace E_LearningWeb.Repositories
 {
@@ -11,6 +8,19 @@ namespace E_LearningWeb.Repositories
     {
         public MovieRepository(DbContext context) : base(context)
         {
+        }
+
+        public void AddVote(int movieId, double rating)
+        {
+            var selectedMovie = ELearningContext.Movies.SingleOrDefault(x => x.Id == movieId);
+            if (selectedMovie == null) return;
+            selectedMovie.SumOfVotes += rating;
+            selectedMovie.NumberOfVotes++;
+        }
+
+        public ElearningDbContext ELearningContext
+        {
+            get { return Context as ElearningDbContext; }
         }
     }
 }

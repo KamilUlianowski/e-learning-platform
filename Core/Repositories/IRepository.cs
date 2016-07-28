@@ -10,7 +10,7 @@ namespace E_LearningWeb.Repositories
         IEnumerable<T> GetAll();
         IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
 
-        T SingleOrDefault(Expression<Func<T, bool>> predicate);
+        T FirstOrDefault(Expression<Func<T, bool>> predicate);
 
         void Add(T entity);
         void AddRange(IEnumerable<T> entities);
