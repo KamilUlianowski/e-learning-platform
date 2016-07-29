@@ -13,15 +13,13 @@ namespace E_LearningWeb.Controllers
     {
         private readonly ISharepointService _sharepointService;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IAzureSqlService _azureSqlService;
         private List<Question> _questions;
         private static string _answers;
 
-        public TestController(ISharepointService sharepointService, IUnitOfWork unitOfWork, IAzureSqlService azureSqlService)
+        public TestController(ISharepointService sharepointService, IUnitOfWork unitOfWork)
         {
             _sharepointService = sharepointService;
             _unitOfWork = unitOfWork;
-            _azureSqlService = azureSqlService;
         }
 
         public ActionResult Index(int courseId)

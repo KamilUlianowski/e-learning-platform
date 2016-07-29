@@ -41,7 +41,6 @@ namespace E_LearningWeb.App_Start
             // TODO: Register your types here
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<ISharepointService, SharepointService>();
-            container.RegisterType<IAzureSqlService, AzureSqlService>();
             container.RegisterType<DbContext, ElearningDbContext>();
             container.RegisterType<IUnitOfWork, UnitOfWork>();
         }

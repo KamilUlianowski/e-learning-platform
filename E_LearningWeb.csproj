@@ -263,9 +263,7 @@
     <Compile Include="Persistance\Repositories\Repository.cs" />
     <Compile Include="Persistance\Repositories\TestResultsRepository.cs" />
     <Compile Include="Persistance\UnitOfWork.cs" />
-    <Compile Include="Services\AzureSqlService.cs" />
     <Compile Include="Services\DataConversionService.cs" />
-    <Compile Include="Services\IAzureSqlService.cs" />
     <Compile Include="Services\ISharepointService.cs" />
     <Compile Include="Services\SharepointService.cs" />
     <Compile Include="SharePointContext.cs" />

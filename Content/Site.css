@@ -288,10 +288,17 @@ html {
 .course-div {
     background-color: #222222;
     margin: 10px 30px 10px 0;
+    -moz-min-width: 400px;
+    -ms-min-width: 400px;
+    -o-min-width: 400px;
+    -webkit-min-width: 400px;
+    min-width: 400px;
+    min-height: 140px;
 }
 
-    .course-div:hover {
+.course-div:hover {
         background-color: #333331;
+         cursor: pointer;
     }
 
 .course-div-header {
@@ -473,7 +480,7 @@ html {
 }
 
 .search-panel {
-    margin-left: 30px;
+    margin-left: 0px;
 }
 
 .mouse-pointer:hover {
