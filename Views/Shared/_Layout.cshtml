@@ -9,31 +9,35 @@
 
 </head>
 <body>
-    <div id="Wrapper">
-        <div id="Sidebar">
-            <div class="container">
-                <div class="white div-link" onclick="window.location = '/Course/ListOfCourses'">
-                    <h3 class="div-link">
-                        <span class="glyphicon glyphicon-play-circle"></span> <label class="div-link item-text">Courses</label>
-                    </h3>
-                </div>
-                <div class="white div-link" onclick="window.location = '/Admin/Index'">
-                    <h3 class="div-link">
-                        <span class="glyphicon glyphicon-wrench"></span> <label class="div-link item-text">Manage</label>
-                    </h3>
-                </div>
-                <div class="white div-link" onclick="window.location='/Test/ResultHistory'">
-                    <h3 class="div-link">
-                        <span class="glyphicon glyphicon-stats"></span> <label class="div-link item-text">History</label>
-                    </h3>
-                </div>
+<div id="Wrapper">
+    <div id="Sidebar">
+        <div class="container">
+            <div class="white div-link" onclick="window.location = '/Course/ListOfCourses'">
+                <h3 class="div-link">
+                    <span class="glyphicon glyphicon-play-circle"></span> <label class="div-link item-text">Courses</label>
+                </h3>
+            </div>
+            <div class="white div-link" onclick="window.location = '/Admin/Index'">
+                <h3 class="div-link">
+                    <span class="glyphicon glyphicon-wrench"></span> <label class="div-link item-text">Manage</label>
+                </h3>
+            </div>
+            <div class="white div-link" onclick="window.location = '/Test/ResultHistory'">
+                <h3 class="div-link">
+                    <span class="glyphicon glyphicon-eye-open"></span> <label class="div-link item-text">History</label>
+                </h3>
+            </div>
+            <div class="white div-link" onclick="window.location = '/Test/ScoreBoard'">
+                <h3 class="div-link">
+                    <span class="glyphicon glyphicon-stats"></span> <label class="div-link item-text">Score</label>
+                </h3>
             </div>
         </div>
-        <div id="Content">
-             @RenderBody()
-        </div>
     </div>
-
+    <div id="Content">
+        @RenderBody()
+    </div>
+</div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")

@@ -2,6 +2,7 @@
 using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
+using User = E_LearningWeb.Core.Models.User;
 
 namespace E_LearningWeb.Services
 {
@@ -13,6 +14,29 @@ namespace E_LearningWeb.Services
         {
             if ((ClientContext)System.Web.HttpContext.Current.Session["ClientContext"] != null)
                 _clientContext = (ClientContext)System.Web.HttpContext.Current.Session["ClientContext"];
+        }
+
+        public List<User> GetSharepointUsers()
+        {
+            var listOfUsers = new List<User>();
+            if (_clientContext == null) return listOfUsers;
+            var web = _clientContext.Web;
+            _clientContext.Load(web.SiteUsers);
+            _clientContext.ExecuteQuery();
+            var items = web.SiteUsers;
+            foreach (var item in items)
+            {
+                if (string.IsNullOrEmpty(item.Email) == false)
+                {
+                    listOfUsers.Add(new User()
+                    {
+                        Id = item.Id,
+                        Email = item.Email,
+                        Name = item.Title
+                    });
+                }
+            }
+            return listOfUsers;
         }
 
         private List GetSharepointListByTitle(string nameOfList)
@@ -132,7 +156,6 @@ namespace E_LearningWeb.Services
             bp.Set(PermissionKind.ManageWeb);
             ClientResult<bool> manageWeb = _clientContext.Web.DoesUserHavePermissions(bp);
             _clientContext.ExecuteQuery();
-
             return manageWeb.Value;
         }
     }

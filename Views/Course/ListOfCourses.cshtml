@@ -27,7 +27,7 @@
     <div class="matgin-top">
         @foreach (var item in Model)
         {
-            <div class="col-lg-5 course-div @item.Path"
+            <div class="col-lg-5 col-sm-3 course-div @item.Path"
                  onclick="window.location.href=('/Course/Index?courseId=' + @item.Id)">
                 <img src=@item.ImageUrl alt="">
                 <span class="course-div-header">@item.Title</span>

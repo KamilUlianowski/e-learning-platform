@@ -55,6 +55,13 @@ namespace E_LearningWeb.Controllers
             });
         }
 
+        public ActionResult ScoreBoard()
+        {
+            var users = _sharepointService.GetSharepointUsers();
+            users = DataConversionService.GetCorrectAnswerForEachUser(users);
+            return View(users.OrderByDescending(x => x.CorrectAnswers).ToList());
+        }
+
         public ActionResult ResultHistory()
         {
             int userId = _sharepointService.GetUserId();

@@ -4,7 +4,7 @@
 <div class="result-history col-lg-12 container">
     <div class="col-lg-12 result-history-header row">
         <div class="col-lg-5">PAST LEARNING CHECKS</div>
-        <div class="col-lg-offset-5 col-lg-2">RESULTS</div>
+        <div class="col-lg-offset-3 col-lg-2">RESULTS</div>
     </div>
     <div class="result-history-content">
         @foreach (var item in Model)
@@ -12,7 +12,7 @@
             <div class="single-result row">
                 <p class="col-lg-2">@item.DateOfTest</p>
                 <p class="col-lg-2">@item.CourseName</p>
-                <p class="col-lg-2 col-lg-offset-6">@item.Result</p>
+                <p class="col-lg-2 col-lg-offset-4">@item.Result</p>
             </div>
         }
     </div>

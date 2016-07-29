@@ -1,4 +1,6 @@
-﻿using E_LearningWeb.Models;
+﻿using E_LearningWeb.Core.Models;
+using E_LearningWeb.Models;
+using E_LearningWeb.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +48,16 @@ namespace E_LearningWeb.Services
                     firstOrDefault.NumberOfMovies++;
             }
             return courses.ToList(); // Zwraca kursy z ich liczbą filmów
+        }
+
+        public static List<User> GetCorrectAnswerForEachUser(List<User> users)
+        {
+            UnitOfWork unitOfWork = new UnitOfWork(new ElearningDbContext());
+            foreach (var user in users)
+            {
+                user.CorrectAnswers = unitOfWork.TestResults.GetNumberOfCorrectAnswers(user.Id);
+            }
+            return users;
         }
     }
 }

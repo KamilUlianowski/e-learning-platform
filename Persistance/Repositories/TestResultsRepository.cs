@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using E_LearningWeb.Models;
+using System;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
-using E_LearningWeb.Models;
 
 namespace E_LearningWeb.Repositories
 {
@@ -11,6 +9,22 @@ namespace E_LearningWeb.Repositories
     {
         public TestResultsRepository(DbContext context) : base(context)
         {
+        }
+
+        public int GetNumberOfCorrectAnswers(int userId)
+        {
+            var results = ELearningContext.TestResults.Where(x => x.UserId == userId).ToList();
+            var correctAnswers = 0;
+            foreach (var item in results)
+            {
+                correctAnswers += Int32.Parse(item.Result[0].ToString());
+            }
+            return correctAnswers;
+        }
+
+        public ElearningDbContext ELearningContext
+        {
+            get { return Context as ElearningDbContext; }
         }
     }
 }

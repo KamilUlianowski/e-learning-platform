@@ -505,3 +505,21 @@ html {
 .search-input:focus {
     outline: none;
 }
+
+.score-row {
+    margin-left: 100px;
+    color: #ffffff;
+}
+
+#Background {
+    position: relative;
+    background-image:url(http://nightsky.org.uk/night_sky_pics/night_sky_1.jpg);
+    width: 400px;
+    height: 309px;
+}
+
+#Star {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}

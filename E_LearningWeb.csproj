@@ -218,6 +218,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\VideoController.cs" />
+    <Compile Include="Core\Models\User.cs" />
     <Compile Include="Core\Repositories\IQuestionRepository.cs" />
     <Compile Include="Filters\SharePointContextFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -328,6 +329,7 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Test\ResultHistory.cshtml" />
     <Content Include="Views\Course\Search.cshtml" />
+    <Content Include="Views\Test\ScoreBoard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
