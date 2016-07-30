@@ -1,0 +1,39 @@
+﻿@model E_LearningWeb.ViewModels.CourseViewModel
+
+@foreach (var item in Model.ListOfMovies)
+{
+
+    <a class="col-lg-8 movie-row" href="@Url.Action("Index", "Video", new {videoUrl = @item.VideoUrl})">
+        <h3><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>   <span>@item.Title</span></h3>
+    </a>
+            <div class="col-lg-2 stars">
+                <div id="@item.Id" class="my-rating jq-stars"></div>
+            </div>
+            <div class="col-lg-1 matgin-top  ">
+                @if ((bool)System.Web.HttpContext.Current.Session["logged"])
+                {
+                    <span>
+                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("UpdateMovie", "Admin", new {id = @item.Id})'">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </button>
+                    </span>
+                }
+            </div>
+            <div class="col-lg-1 matgin-top  ">
+                @if ((bool)System.Web.HttpContext.Current.Session["logged"])
+                {
+                    <span>
+                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("DeleteMovie", "Admin", new {id = @item.Id, courseId = @item.CourseId})'">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </span>
+                }
+            </div>
+
+}
+@if ((bool)System.Web.HttpContext.Current.Session["logged"])
+{
+    <div class="col-lg-5">
+        <button type="button" class="btn btn-default btn-lg matgin-top" data-toggle="modal" data-target="#MyModal">Add movie</button>
+    </div>
+}

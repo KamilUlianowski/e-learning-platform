@@ -1,6 +1,8 @@
-﻿using E_LearningWeb.Repositories;
+﻿using E_LearningWeb.Models;
+using E_LearningWeb.Repositories;
 using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
+using System;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -44,7 +46,24 @@ namespace E_LearningWeb.Controllers
         public ActionResult Index(string text, string courseId)
         {
             _sharepointService.AddPost(text, courseId);
-            return RedirectToAction("Index", "Course", new { courseId = courseId });
+            return PartialView("Comments");
+        }
+
+        [HttpPost]
+        public ActionResult AddPost(string text, string courseId)
+        {
+            _sharepointService.AddPost(text, courseId);
+            var comments = _sharepointService.GetDiscussionPosts(Int32.Parse(courseId));
+
+            var courseViewModel = new CourseViewModel()
+            {
+                ListOfPosts = comments,
+                SpecificCourse = new Course()
+                {
+                    Id = Int32.Parse(courseId)
+                }
+            };
+            return PartialView("Comments", courseViewModel);
         }
 
         [HttpPost]
@@ -59,5 +78,46 @@ namespace E_LearningWeb.Controllers
             var movies = _unitOfWork.Movies.Find(x => x.Title.Contains(searchedText)).ToList();
             return View(movies);
         }
+
+        [HttpPost]
+        public ActionResult AddMovie(CourseViewModel courseViewModel, int courseId)
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("ListOfCourses", "Course");
+            var newMovie = new Movie()
+            {
+                CourseId = courseViewModel.NewMovie.CourseId,
+                VideoUrl = "https://www.youtube.com/embed/" + DataConversionService.GetVideoId(courseViewModel.NewMovie.VideoUrl),
+                Title = courseViewModel.NewMovie.Title
+            };
+            _unitOfWork.Movies.Add(newMovie);
+            _unitOfWork.Complete();
+            var newCourseViewModel = new CourseViewModel()
+            {
+                ListOfMovies = _unitOfWork.Movies.Find(x => x.CourseId == courseId).ToList()
+            };
+            return PartialView("Movies", newCourseViewModel);
+        }
+
+        public ActionResult DeleteMovie(int id, int courseId)
+        {
+            var movieToDelete = _unitOfWork.Movies.FirstOrDefault(x => x.Id == id);
+            _unitOfWork.Movies.Remove(movieToDelete);
+            _unitOfWork.Complete();
+            return RedirectToAction("Index", "Course", new { courseId = courseId });
+        }
+
+        [HttpPost]
+        public ActionResult UpdateMovie(NewMovieViewModel movie)
+        {
+            var movieToUpdate = _unitOfWork.Movies.FirstOrDefault(x => x.Id == movie.Id);
+            movieToUpdate.CourseId = movie.CourseId;
+            movieToUpdate.VideoUrl = movie.VideoUrl;
+            movieToUpdate.Title = movie.Title;
+            _unitOfWork.Complete();
+            return RedirectToAction("Index", "Course", new { courseId = movie.CourseId });
+        }
+
+
     }
 }

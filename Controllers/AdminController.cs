@@ -2,6 +2,7 @@
 using E_LearningWeb.Repositories;
 using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace E_LearningWeb.Controllers
@@ -25,6 +26,7 @@ namespace E_LearningWeb.Controllers
             return RedirectToAction("Index", "Course", new { courseId = courseId });
         }
 
+
         [HttpPost]
         public ActionResult AddMovie(CourseViewModel courseViewModel)
         {
@@ -38,8 +40,15 @@ namespace E_LearningWeb.Controllers
             };
             _unitOfWork.Movies.Add(newMovie);
             _unitOfWork.Complete();
-            return RedirectToAction("Index", "Course", new { courseId = courseViewModel.NewMovie.CourseId });
+            var newCourseViewModel = new CourseViewModel()
+            {
+                ListOfMovies = _unitOfWork.Movies.Find(x => x.CourseId == courseViewModel.SpecificCourse.Id).ToList()
+            };
+            return PartialView("~/Views/Course/Movies.cshtml", newCourseViewModel);
         }
+
+
+
 
         [HttpGet]
         public ActionResult UpdateMovie(int id)

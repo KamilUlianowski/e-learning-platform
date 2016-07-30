@@ -1,4 +1,16 @@
-﻿if ($(window).width() < 1600) {
+﻿
+
+function onLoginBegin() {
+    $("#modal-overlay").show();
+    $(".spin").show();
+}
+
+function onLoadEnd() {
+    $("#modal-overlay").hide();
+    $(".spin").hide();
+}
+
+if ($(window).width() < 1600) {
     $("#SectionImage").addClass("col-lg-10 col-lg-offset-1");
     $("#SectionMovies").addClass("col-lg-10 col-lg-offset-1");
 } else {

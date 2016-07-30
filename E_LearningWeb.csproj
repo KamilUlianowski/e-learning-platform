@@ -53,6 +53,14 @@
       <HintPath>..\E_Learning\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\E_Learning\packages\Microsoft.AspNet.SignalR.Core.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\E_Learning\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.1\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\E_Learning\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -76,6 +84,18 @@
     </Reference>
     <Reference Include="Microsoft.Online.SharePoint.Client.Tenant, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>..\E_Learning\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.Online.SharePoint.Client.Tenant.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\E_Learning\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\E_Learning\packages\Microsoft.Owin.Host.SystemWeb.2.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\E_Learning\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -132,6 +152,10 @@
     </Reference>
     <Reference Include="Microsoft.SharePoint.Client.WorkflowServices, Version=16.1.3912.1204, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>..\E_Learning\packages\Microsoft.SharePointOnline.CSOM.16.1.3912.1204\lib\net45\Microsoft.SharePoint.Client.WorkflowServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\E_Learning\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -224,6 +248,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hubs\ChatHub.cs" />
+    <Compile Include="Hubs\DiscussionHub.cs" />
     <Compile Include="Migrations\201607271033287_initial.cs" />
     <Compile Include="Migrations\201607271033287_initial.Designer.cs">
       <DependentUpon>201607271033287_initial.cs</DependentUpon>
@@ -268,6 +294,7 @@
     <Compile Include="Services\ISharepointService.cs" />
     <Compile Include="Services\SharepointService.cs" />
     <Compile Include="SharePointContext.cs" />
+    <Compile Include="Startup.cs" />
     <Compile Include="TokenHelper.cs" />
     <Compile Include="Validators\YoutubeUrl.cs" />
     <Compile Include="Core\ViewModels\CourseViewModel.cs" />
@@ -275,10 +302,14 @@
     <Compile Include="Core\ViewModels\TestViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\ajax-loader.gif" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\delete.gif" />
     <Content Include="Content\rateit.css" />
+    <Content Include="Content\Site.min.css">
+      <DependentUpon>Site.css</DependentUpon>
+    </Content>
     <Content Include="Content\star-rating-svg.css" />
     <Content Include="Content\star.gif" />
     <Content Include="favicon.ico" />
@@ -297,7 +328,11 @@
     <Content Include="Scripts\jquery.rateit.min.js" />
     <Content Include="Scripts\jquery.rateit.min.js.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.1.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.1.min.js" />
     <Content Include="Scripts\jquery.star-rating-svg.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -330,6 +365,8 @@
     <Content Include="Views\Test\ResultHistory.cshtml" />
     <Content Include="Views\Course\Search.cshtml" />
     <Content Include="Views\Test\ScoreBoard.cshtml" />
+    <Content Include="Views\Course\Comments.cshtml" />
+    <Content Include="Views\Course\Movies.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

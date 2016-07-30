@@ -1,8 +1,8 @@
 ﻿@model E_LearningWeb.ViewModels.CourseViewModel
 <section id="SectionImage">
-    <h1 class="col-lg-8 section-image-text" >Getting Started with @Model.SpecificCourse.Title</h1>
-    <h4 class="col-lg-8 section-image-text" >by @Model.SpecificCourse.Author</h4>
-    <h4 class="col-lg-8 section-image-text" >@Model.SpecificCourse.ShortDescription</h4>
+    <h1 class="col-lg-8 section-image-text">Getting Started with @Model.SpecificCourse.Title</h1>
+    <h4 class="col-lg-8 section-image-text">by @Model.SpecificCourse.Author</h4>
+    <h4 class="col-lg-8 section-image-text">@Model.SpecificCourse.ShortDescription</h4>
     <div class="col-lg-5">
         <button class="button-star-course" onclick="location.href = '@Url.Action("Index", "Video", new {videoUrl = @Model.ListOfMovies[0].VideoUrl})'">
             <span class="glyphicon glyphicon-play"></span>  Start Course
@@ -18,54 +18,20 @@
         <li id="LiTest" class="li-movies div-link">Learning Check</li>
     </ul>
     <div id="TableOfContent" class="col-lg-12 section-content-course">
-        @foreach (var item in Model.ListOfMovies)
-        {
-
-            <a class="col-lg-8 movie-row" href="@Url.Action("Index", "Video", new {videoUrl = @item.VideoUrl})">
-                <h3><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>   <span>@item.Title</span></h3>
-            </a>
-            <div class="col-lg-2 stars">
-                <div id="@item.Id" class="my-rating jq-stars"></div>
-            </div>
-            <div class="col-lg-1 matgin-top  ">
-                 @if ((bool)System.Web.HttpContext.Current.Session["logged"])
-                {
-                <span>
-                    <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("UpdateMovie", "Admin", new {id = @item.Id})'">
-                        <span class="glyphicon glyphicon-edit"></span>
-                    </button>
-                </span>
-                }
-            </div>
-            <div class="col-lg-1 matgin-top  ">
-                   @if ((bool)System.Web.HttpContext.Current.Session["logged"])
-                {
-                <span>
-                    <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("DeleteMovie", "Admin", new {id = @item.Id, courseId = @item.CourseId})'">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </button>
-                </span>
-                }
-            </div>
-
-        }
-        @if ((bool)System.Web.HttpContext.Current.Session["logged"])
-        {
-            <div class="col-lg-5">
-                <button type="button" class="btn btn-default btn-lg matgin-top" data-toggle="modal" data-target="#MyModal">Add movie</button>
-            </div>
-        }
+        @Html.Partial("Movies")
     </div>
     <div id="Description" hidden class="col-lg-12 section-content-course">
         <p class="description-text">@Model.SpecificCourse.Description</p>
     </div>
-
+    <div id="Discussion" hidden class="col-lg-12 section-content-course">
+        @Html.Partial("Comments")
+    </div>
     <div id="LearningCheck" hidden class="col-lg-12 section-content-course">
         <div class="col-lg-8">
             <h3 class="learning-check-text">
                 <span> Check your learning of key course concepts.</span>
             </h3>
-            <h4 class="learning-check-text">
+            <h4 class="learning-check-text"> 
                 <span>  Learning checks are not timed and only you can see the results.</span>
             </h4>
         </div>i
@@ -73,69 +39,32 @@
             <a data-toggle="modal" data-target="#MyModalTest" class="buttonTest a-learning-check div-link">Try practice questions</a>
         </div>
     </div>
-    <div id="Discussion" hidden class="col-lg-12 section-content-course">
-        <div id="Posts" class="container">
-            <div class="row">
-
-                <div class="col-md-12">
-                    <section class="comment-list">
-                        <!-- First Comment -->
-                        @foreach (var item in Model.ListOfPosts)
-                        {
-                            <article class="row matgin-top">
-
-                                <div class="col-md-12 col-sm-12">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            <header class="text-left">
-                                                <span><b>@item.Author</b> on</span><time class="comment-date"><i class="fa fa-clock-o"></i> @item.Created</time>
-                                            </header>
-                                            <div class="comment-post">
-                                                <p>
-                                                    @item.Body
-                                                </p>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                        }
-                        @using (Html.BeginForm("Index", "Course", new { courseId = @Model.SpecificCourse.Id }, FormMethod.Post))
-                        {
-                            <div class="well">
-                                <h4>Leave a Comment:</h4>
-                                <div class="form-group">
-                                    @Html.TextAreaFor(x => x.Text, new { @class = "form-control", @rows = 5, @style = "-moz-min-width:100%;-ms-min-width:100%;-o-min-width:100%;-webkit-min-width:100%;min-width:100%" })
-                                </div>
-                                <button type="submit" class="btn btn-primary">Add comment</button>
-                            </div>
-                        }
-                    </section>
-                </div>
-            </div>
-        </div>
-    </div>
 </section>
 @if ((bool)System.Web.HttpContext.Current.Session["logged"])
 {
-    <div class="col-lg-12">
-        <div id="MyModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal Content-->
-                <div class="modal-content">
-                    @using (Html.BeginForm("AddMovie", "Admin", FormMethod.Post, new { role = "form" }))
-                    {
-                        <div class="modal-header form-group">
-                            <label class="form-control-label">Video Title</label>
-                            @Html.TextBoxFor(x => x.NewMovie.Title, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.NewMovie.Title)
-                        </div>
+<div class="col-lg-12">
+    <div id="MyModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+             
+                @using (Ajax.BeginForm("AddMovie", "Course", new { courseId = @Model.SpecificCourse.Id }, new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    OnBegin = "onLoginBegin",
+                    OnSuccess = "onLoadEnd",
+                    UpdateTargetId = "TableOfContent"
+                }, new { id = "FormAddMovie" })) // set new Id name for  Form
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="modal-header form-group">
+                        <label class="form-control-label">Video Title</label>
+                        @Html.TextBoxFor(x => x.NewMovie.Title, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.NewMovie.Title)
+                    </div>
 
                         <div class="modal-header form-group">
                             <label class="form-control-label">Video Url</label>
-                            @Html.TextBoxFor(x => x.NewMovie.VideoUrl, new {@class = "form-control youtube-url", @onchange = "validateYouTubeUrl()" })
+                            @Html.TextBoxFor(x => x.NewMovie.VideoUrl, new { @class = "form-control youtube-url", @onchange = "validateYouTubeUrl()" })
                             <p class="youtube-url-validator"></p>
                         </div>
 
@@ -162,12 +91,11 @@
                         <div class="form-group modal-header">
                             <input type="submit" class="btn btn-primary add-movie-button" value="Add" onclick="validateYouTubeUrl()">
                         </div>
-
                                 }
-                </div>
             </div>
         </div>
     </div>
+</div>
                                 }
 
 <div id="MyModalTest" class="modal fade" role="dialog">
@@ -211,81 +139,88 @@
 
         </div>
     </div>
+</div>
 
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/rateit")
-    <script type='text/javascript'>
+<div class="spin" hidden>
+    <img src="~/Content/ajax-loader.gif" />
+</div>
 
-    @foreach(var item in Model.ListOfMovies)
+<div id="modal-overlay" style="display: none">
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/rateit")
+<script type='text/javascript'>
+    @foreach (var item in Model.ListOfMovies)
     {
         <text>
-        $("#@item.Id").starRating({
-            initialRating: @item.Rating,
-            strokeColor: '#894A00',
-            strokeWidth: 10,
-            starSize: 25,
-            callback: function(currentRating, $el) {
-                $.ajax({
-                    type: "POST",
-                    url: "/Course/AddVote",
-                    data: { movieId: @item.Id, rating: currentRating },
-                    success: function(msg) {
-                    },
-                    error: function(e) {
-                    }
-                });
-            }
-        }); </text>
-    }
-        var iterator = 0;
-        var correctAnswers = 0;
-        var listOfPosts = [];
-        var incorectAnswers = [];
-        var selectedAnswer;
-        var count = 1;
-        $(".buttonTest").click(function() {
-            if (count % 2 == 1) {
-                $(".question").removeClass("good-answer bad-answer");
-                count = 1;
-            }
-            iterator = 0;
-            listOfPosts = [];
-            @foreach (var item in Model.ListOfQuestions)
-                {
-                    
-                <text>
-            listOfPosts.push({
-                text: "@HttpUtility.JavaScriptStringEncode(item.Text)",
-                answers: [
-                    "@HttpUtility.JavaScriptStringEncode(item.Answers[0].Text)", "@HttpUtility.JavaScriptStringEncode(item.Answers[1].Text)",
-                    "@HttpUtility.JavaScriptStringEncode(item.Answers[2].Text)"
-                ],
-                correctAnswer: "@item.CorrectAnswer",
-                id: @item.Id,
-            });
-            </text>
+    $("#@item.Id").starRating({
+        initialRating: @item.Rating,
+        strokeColor: '#894A00',
+        strokeWidth: 10,
+        starSize: 25,
+        callback: function(currentRating, $el) {
+            $.ajax({
+                type: "POST",
+                url: "/Course/AddVote",
+                data: { movieId: @item.Id, rating: currentRating },
+                success: function(msg) {
+                },
+                error: function(e) {
                 }
-            $("#QuestionNumber").text("Question " + (iterator+1) + " of " + listOfPosts.length);
-            $("#QuestionText").text(listOfPosts[iterator].text);
-            $('label[for=Answer0]').text(listOfPosts[iterator].answers[0]);
-            $('label[for=Answer1]').text(listOfPosts[iterator].answers[1]);
-            $('label[for=Answer2]').text(listOfPosts[iterator].answers[2]);
+            });
+        }
+    }); </text>
+    }
+    var iterator = 0;
+    var correctAnswers = 0;
+    var listOfPosts = [];
+    var incorectAnswers = [];
+    var selectedAnswer;
+    var count = 1;
+    $(".buttonTest").click(function() {
+        if (count % 2 == 1) {
+            $(".question").removeClass("good-answer bad-answer");
+            count = 1;
+        }
+        iterator = 0;
+        listOfPosts = [];
+        @foreach (var item in Model.ListOfQuestions)
+        {
+
+            <text>
+        listOfPosts.push({
+            text: "@HttpUtility.JavaScriptStringEncode(item.Text)",
+            answers: [
+                "@HttpUtility.JavaScriptStringEncode(item.Answers[0].Text)", "@HttpUtility.JavaScriptStringEncode(item.Answers[1].Text)",
+                "@HttpUtility.JavaScriptStringEncode(item.Answers[2].Text)"
+            ],
+            correctAnswer: "@item.CorrectAnswer",
+            id: @item.Id,
         });
-        $("#ConfirmButton2").click(function() {
-            if (count % 2 == 0) {
-                count++;
-                $('input[type=radio]:checked').attr('checked', false);
-                if (iterator < listOfPosts.length) {
-                    $(".question ").removeClass("good-answer bad-answer");
-                    $("#ConfirmButton2").text("Select");
-                    $("#QuestionText").text(listOfPosts[iterator].text);
-                    $('label[for=Answer0]').text(listOfPosts[iterator].answers[0]);
-                    $('label[for=Answer1]').text(listOfPosts[iterator].answers[1]);
-                    $('label[for=Answer2]').text(listOfPosts[iterator].answers[2]);
-                    $("#QuestionNumber").text("Question " + (iterator+1) + " of " + listOfPosts.length);
-                } else {
-                    window.location = "/Test/Result?correctAnswers=" + correctAnswers + " of " + listOfPosts.length + "&incorrectAnswers=" + incorectAnswers + "&courseId=" + @Model.SpecificCourse.Id;
-                    @*$.ajax({
+        </text>
+        }
+        $("#QuestionNumber").text("Question " + (iterator + 1) + " of " + listOfPosts.length);
+        $("#QuestionText").text(listOfPosts[iterator].text);
+        $('label[for=Answer0]').text(listOfPosts[iterator].answers[0]);
+        $('label[for=Answer1]').text(listOfPosts[iterator].answers[1]);
+        $('label[for=Answer2]').text(listOfPosts[iterator].answers[2]);
+    });
+    $("#ConfirmButton2").click(function() {
+        if (count % 2 == 0) {
+            count++;
+            $('input[type=radio]:checked').attr('checked', false);
+            if (iterator < listOfPosts.length) {
+                $(".question ").removeClass("good-answer bad-answer");
+                $("#ConfirmButton2").text("Select");
+                $("#QuestionText").text(listOfPosts[iterator].text);
+                $('label[for=Answer0]').text(listOfPosts[iterator].answers[0]);
+                $('label[for=Answer1]').text(listOfPosts[iterator].answers[1]);
+                $('label[for=Answer2]').text(listOfPosts[iterator].answers[2]);
+                $("#QuestionNumber").text("Question " + (iterator + 1) + " of " + listOfPosts.length);
+            } else {
+                window.location = "/Test/Result?correctAnswers=" + correctAnswers + " of " + listOfPosts.length + "&incorrectAnswers=" + incorectAnswers + "&courseId=" + @Model.SpecificCourse.Id;
+                @*$.ajax({
                             type: "POST",
                             url: "/Test/SaveAnsw,ers",
                             data: { answers: "incorectAnswers" },
@@ -298,23 +233,22 @@
                                 alert("Something is wrong");
                             }
                         });*@
-                }
-
-            } else if ($('input[type=radio]:checked').val()) {
-                count++;
-                selectedAnswer = $('input[type=radio]:checked').val();
-                if (selectedAnswer == listOfPosts[iterator].correctAnswer) {
-                    correctAnswers++;
-                } else {
-                    incorectAnswers.push(listOfPosts[iterator].id, selectedAnswer);
-                    $('div[title=' + selectedAnswer + ']').addClass("bad-answer");
-                }
-                $("#ConfirmButton2").text("Next");
-                $('div[title=' + listOfPosts[iterator].correctAnswer + ']').addClass("good-answer");
-                iterator++;
-
             }
-        });
 
-    </script>
-</div>
+        } else if ($('input[type=radio]:checked').val()) {
+            count++;
+            selectedAnswer = $('input[type=radio]:checked').val();
+            if (selectedAnswer == listOfPosts[iterator].correctAnswer) {
+                correctAnswers++;
+            } else {
+                incorectAnswers.push(listOfPosts[iterator].id, selectedAnswer);
+                $('div[title=' + selectedAnswer + ']').addClass("bad-answer");
+            }
+            $("#ConfirmButton2").text("Next");
+            $('div[title=' + listOfPosts[iterator].correctAnswer + ']').addClass("good-answer");
+            iterator++;
+
+        }
+    });
+
+</script>

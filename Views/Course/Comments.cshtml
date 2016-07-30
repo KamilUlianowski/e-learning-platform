@@ -1,0 +1,50 @@
+﻿@model E_LearningWeb.ViewModels.CourseViewModel
+
+    <div id="Posts" class="container">
+        <div class="row">
+
+            <div class="col-md-12">
+                <section class="comment-list">
+                    <!-- First Comment -->
+                    @foreach (var item in Model.ListOfPosts)
+                    {
+                        <article class="row matgin-top">
+
+                            <div class="col-md-12 col-sm-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <header class="text-left">
+                                            <span><b>@item.Author</b> on</span><time class="comment-date"><i class="fa fa-clock-o"></i> @item.Created</time>
+                                        </header>
+                                        <div class="comment-post">
+                                            <p>
+                                                @item.Body
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    }
+                    <div class="well">
+                        <h4>Leave a Comment:</h4>
+                        @using (Ajax.BeginForm("AddPost", "Course", new { courseId = @Model.SpecificCourse.Id }, new AjaxOptions
+                        {
+                            HttpMethod = "POST",
+                            OnBegin = "onLoginBegin",
+                            OnSuccess = "onLoadEnd",
+                            UpdateTargetId = "Discussion"
+                        }, new {id = "FormComment"})) // set new Id name for  Form
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                @Html.TextAreaFor(x => x.Text, new {@class = "form-control", @rows = 5, @style = "-moz-min-width:100%;-ms-min-width:100%;-o-min-width:100%;-webkit-min-width:100%;min-width:100%"})
+                            </div>
+                            <input id="AddCommentButton" type="submit" class="btn btn-primary" value="AddComment"/>
+                        }
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>

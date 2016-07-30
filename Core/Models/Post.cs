@@ -22,6 +22,7 @@ namespace E_LearningWeb.Models
                 string help = _body.Substring(start, _body.Length - start);
 
                 int end = help.IndexOf("<", StringComparison.Ordinal);
+                if (end < 0) return string.Empty;
                 return help.Substring(0, end);
             }
             set { _body = value; }
