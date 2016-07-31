@@ -1,13 +1,18 @@
 ﻿
 
-function onLoginBegin() {
+function onLoadBegin() {
     $("#modal-overlay").show();
     $(".spin").show();
 }
 
 function onLoadEnd() {
+    jQuery.noConflict();
     $("#modal-overlay").hide();
     $(".spin").hide();
+    $("#MyModal").modal("toggle");
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
+
 }
 
 if ($(window).width() < 1600) {

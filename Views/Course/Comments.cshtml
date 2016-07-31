@@ -32,7 +32,7 @@
                         @using (Ajax.BeginForm("AddPost", "Course", new { courseId = @Model.SpecificCourse.Id }, new AjaxOptions
                         {
                             HttpMethod = "POST",
-                            OnBegin = "onLoginBegin",
+                            OnBegin = "onLoadBegin",
                             OnSuccess = "onLoadEnd",
                             UpdateTargetId = "Discussion"
                         }, new {id = "FormComment"})) // set new Id name for  Form

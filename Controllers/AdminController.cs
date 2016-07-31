@@ -18,37 +18,6 @@ namespace E_LearningWeb.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public ActionResult DeleteMovie(int id, int courseId)
-        {
-            var movieToDelete = _unitOfWork.Movies.FirstOrDefault(x => x.Id == id);
-            _unitOfWork.Movies.Remove(movieToDelete);
-            _unitOfWork.Complete();
-            return RedirectToAction("Index", "Course", new { courseId = courseId });
-        }
-
-
-        [HttpPost]
-        public ActionResult AddMovie(CourseViewModel courseViewModel)
-        {
-            if (!ModelState.IsValid)
-                return RedirectToAction("ListOfCourses", "Course");
-            var newMovie = new Movie()
-            {
-                CourseId = courseViewModel.NewMovie.CourseId,
-                VideoUrl = "https://www.youtube.com/embed/" + DataConversionService.GetVideoId(courseViewModel.NewMovie.VideoUrl),
-                Title = courseViewModel.NewMovie.Title
-            };
-            _unitOfWork.Movies.Add(newMovie);
-            _unitOfWork.Complete();
-            var newCourseViewModel = new CourseViewModel()
-            {
-                ListOfMovies = _unitOfWork.Movies.Find(x => x.CourseId == courseViewModel.SpecificCourse.Id).ToList()
-            };
-            return PartialView("~/Views/Course/Movies.cshtml", newCourseViewModel);
-        }
-
-
-
 
         [HttpGet]
         public ActionResult UpdateMovie(int id)

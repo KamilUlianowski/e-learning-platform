@@ -50,7 +50,7 @@
                 @using (Ajax.BeginForm("AddMovie", "Course", new { courseId = @Model.SpecificCourse.Id }, new AjaxOptions
                 {
                     HttpMethod = "POST",
-                    OnBegin = "onLoginBegin",
+                    OnBegin = "onLoadBegin",
                     OnSuccess = "onLoadEnd",
                     UpdateTargetId = "TableOfContent"
                 }, new { id = "FormAddMovie" })) // set new Id name for  Form
@@ -89,7 +89,7 @@
                         </div>
 
                         <div class="form-group modal-header">
-                            <input type="submit" class="btn btn-primary add-movie-button" value="Add" onclick="validateYouTubeUrl()">
+                            <input type="submit" class="btn btn-primary add-movie-button" value="Add"  onclick="validateYouTubeUrl()">
                         </div>
                                 }
             </div>
@@ -100,7 +100,6 @@
 
 <div id="MyModalTest" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
-        <!-- Modal Content-->
         <div class="modal-content">
             <div class="container">
                 <div class="modal-header">
@@ -150,28 +149,8 @@
 
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/rateit")
+@Scripts.Render("~/bundles/bootstrap")
 <script type='text/javascript'>
-    @foreach (var item in Model.ListOfMovies)
-    {
-        <text>
-    $("#@item.Id").starRating({
-        initialRating: @item.Rating,
-        strokeColor: '#894A00',
-        strokeWidth: 10,
-        starSize: 25,
-        callback: function(currentRating, $el) {
-            $.ajax({
-                type: "POST",
-                url: "/Course/AddVote",
-                data: { movieId: @item.Id, rating: currentRating },
-                success: function(msg) {
-                },
-                error: function(e) {
-                }
-            });
-        }
-    }); </text>
-    }
     var iterator = 0;
     var correctAnswers = 0;
     var listOfPosts = [];
@@ -220,19 +199,6 @@
                 $("#QuestionNumber").text("Question " + (iterator + 1) + " of " + listOfPosts.length);
             } else {
                 window.location = "/Test/Result?correctAnswers=" + correctAnswers + " of " + listOfPosts.length + "&incorrectAnswers=" + incorectAnswers + "&courseId=" + @Model.SpecificCourse.Id;
-                @*$.ajax({
-                            type: "POST",
-                            url: "/Test/SaveAnsw,ers",
-                            data: { answers: "incorectAnswers" },
-                            success: function(msg) {
-                                alert(incorrectAnswers);
-                                alert(msg);
-                                window.location = "/Test/Result?correctAnswers=" + correctAnswers + "/" + listOfPosts.length + "&courseId=" + @Model.SpecificCourse.Id;
-                            },
-                            error: function(e) {
-                                alert("Something is wrong");
-                            }
-                        });*@
             }
 
         } else if ($('input[type=radio]:checked').val()) {

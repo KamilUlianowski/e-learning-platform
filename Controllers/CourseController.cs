@@ -76,7 +76,11 @@ namespace E_LearningWeb.Controllers
         public ActionResult Search(string searchedText)
         {
             var movies = _unitOfWork.Movies.Find(x => x.Title.Contains(searchedText)).ToList();
-            return View(movies);
+            var courseViewModel = new CourseViewModel()
+            {
+                ListOfMovies = movies
+            };
+            return View(courseViewModel);
         }
 
         [HttpPost]
@@ -99,12 +103,17 @@ namespace E_LearningWeb.Controllers
             return PartialView("Movies", newCourseViewModel);
         }
 
+        [HttpPost]
         public ActionResult DeleteMovie(int id, int courseId)
         {
             var movieToDelete = _unitOfWork.Movies.FirstOrDefault(x => x.Id == id);
             _unitOfWork.Movies.Remove(movieToDelete);
             _unitOfWork.Complete();
-            return RedirectToAction("Index", "Course", new { courseId = courseId });
+            var newCourseViewModel = new CourseViewModel()
+            {
+                ListOfMovies = _unitOfWork.Movies.Find(x => x.CourseId == courseId).ToList()
+            };
+            return PartialView("Movies", newCourseViewModel);
         }
 
         [HttpPost]
