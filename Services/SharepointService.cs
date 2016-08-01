@@ -26,7 +26,7 @@ namespace E_LearningWeb.Services
             var items = web.SiteUsers;
             foreach (var item in items)
             {
-                if (string.IsNullOrEmpty(item.Email) == false)
+                if (!string.IsNullOrEmpty(item.Email))
                 {
                     listOfUsers.Add(new User()
                     {
@@ -44,6 +44,7 @@ namespace E_LearningWeb.Services
             var web = _clientContext.Web;
             _clientContext.Load(web.Lists);
             _clientContext.ExecuteQuery();
+
             return _clientContext.Web.Lists.GetByTitle(nameOfList);
         }
 
@@ -54,6 +55,7 @@ namespace E_LearningWeb.Services
             var items = contextList.GetItems(query);
             _clientContext.Load(items);
             _clientContext.ExecuteQuery();
+
             return items;
         }
 
@@ -65,8 +67,7 @@ namespace E_LearningWeb.Services
             {
                 if (clientContext != null)
                 {
-                    var web = clientContext.Web;
-                    clientContext.Load(web.CurrentUser);
+                    clientContext.Load(clientContext.Web.CurrentUser);
                     clientContext.ExecuteQuery();
                     return clientContext.Web.CurrentUser.Id;
                 }
@@ -74,8 +75,7 @@ namespace E_LearningWeb.Services
             return 0;
         }
 
-        public
-            List<Post> GetDiscussionPosts(int courseId)
+        public List<Post> GetDiscussionPosts(int courseId)
         {
             var listOfPosts = new List<Post>();
             if (_clientContext == null) return listOfPosts;
@@ -87,9 +87,9 @@ namespace E_LearningWeb.Services
                 if (item["CourseId"] != null)
                 {
                     var course = item["CourseId"].ToString();
-                    if (string.Equals(courseId.ToString(), course))
+                    if (string.Equals(courseId.ToString(), course, StringComparison.CurrentCultureIgnoreCase))
                     {
-                        id = Int32.Parse(item["ID"].ToString());
+                        id = int.Parse(item["ID"].ToString());
                     }
                 }
                 if (item["ParentItemID"] != null && Int32.Parse(item["ParentItemID"].ToString()) == id)
@@ -119,12 +119,15 @@ namespace E_LearningWeb.Services
                     var web = clientContext.Web;
                     clientContext.Load(web.Lists);
                     clientContext.ExecuteQuery();
+
                     var contextList = clientContext.Web.Lists.GetByTitle("Discussion");
                     if (contextList == null) return true;
+
                     CamlQuery query = CamlQuery.CreateAllItemsQuery();
                     ListItemCollection items = contextList.GetItems(query);
                     clientContext.Load(items);
                     clientContext.ExecuteQuery();
+
                     int id = 0;
                     foreach (var item in items)
                     {
@@ -137,12 +140,14 @@ namespace E_LearningWeb.Services
                             }
                         }
                     }
+
                     ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
                     ListItem listItem = contextList.AddItem(itemCreateInfo);
                     listItem["Body"] = text;
                     listItem["ParentItemID"] = id;
                     listItem.Update();
                     clientContext.ExecuteQuery();
+
                     return true;
                 }
             }
@@ -152,10 +157,12 @@ namespace E_LearningWeb.Services
         public bool CheckIfTheUserHasPermissions()
         {
             if (_clientContext == null) return false;
+
             BasePermissions bp = new BasePermissions();
             bp.Set(PermissionKind.ManageWeb);
             ClientResult<bool> manageWeb = _clientContext.Web.DoesUserHavePermissions(bp);
             _clientContext.ExecuteQuery();
+
             return manageWeb.Value;
         }
     }

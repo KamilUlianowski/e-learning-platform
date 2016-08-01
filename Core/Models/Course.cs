@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
-
-namespace E_LearningWeb.Models
+﻿namespace E_LearningWeb.Models
 {
     public class Course
     {
@@ -16,5 +10,15 @@ namespace E_LearningWeb.Models
         public int NumberOfMovies { get; set; }
         public string ShortDescription { get; set; }
         public string Author { get; set; }
+
+        public Course(int courseId)
+        {
+            Id = courseId;
+        }
+
+        public Course()
+        {
+            
+        }
     }
 }

@@ -35,13 +35,14 @@
                             OnBegin = "onLoadBegin",
                             OnSuccess = "onLoadEnd",
                             UpdateTargetId = "Discussion"
-                        }, new {id = "FormComment"})) // set new Id name for  Form
+                        }, new { id = "FormComment" })) // set new Id name for  Form
+
                         {
                             @Html.AntiForgeryToken()
                             <div class="form-group">
-                                @Html.TextAreaFor(x => x.Text, new {@class = "form-control", @rows = 5, @style = "-moz-min-width:100%;-ms-min-width:100%;-o-min-width:100%;-webkit-min-width:100%;min-width:100%"})
+                                @Html.TextAreaFor(x => x.Text, new { @class = "form-control", @rows = 5, @style = "-moz-min-width:100%;-ms-min-width:100%;-o-min-width:100%;-webkit-min-width:100%;min-width:100%" })
                             </div>
-                            <input id="AddCommentButton" type="submit" class="btn btn-primary" value="AddComment"/>
+                            <input id="AddCommentButton" type="submit" class="btn btn-primary" value="AddComment" />
                         }
                     </div>
                 </section>

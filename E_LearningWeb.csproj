@@ -248,8 +248,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Hubs\ChatHub.cs" />
-    <Compile Include="Hubs\DiscussionHub.cs" />
     <Compile Include="Migrations\201607271033287_initial.cs" />
     <Compile Include="Migrations\201607271033287_initial.Designer.cs">
       <DependentUpon>201607271033287_initial.cs</DependentUpon>

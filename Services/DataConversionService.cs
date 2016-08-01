@@ -16,10 +16,13 @@ namespace E_LearningWeb.Services
             {
                 var incorrectQuestoins = new List<Question>();
                 var numbers = incorrectQuestionId.Split(',').Select(Int32.Parse).ToList();
+
                 for (int i = 0; i < numbers.Count; i++)
                 {
-                    questions.First(x => x.Id == numbers[i]).SelectedAnswer = numbers[i + 1];
-                    incorrectQuestoins.Add(questions.First(x => x.Id == numbers[i]));
+                    var q = questions.First(x => x.Id == numbers[i]);
+                    q.SelectedAnswer = numbers[i + 1];
+
+                    incorrectQuestoins.Add(q);
                     i++;
                 }
                 return incorrectQuestoins;
@@ -44,6 +47,7 @@ namespace E_LearningWeb.Services
             foreach (var item in movies)
             {
                 var firstOrDefault = courses.FirstOrDefault(x => x.Id == item.CourseId);
+
                 if (firstOrDefault != null)
                     firstOrDefault.NumberOfMovies++;
             }

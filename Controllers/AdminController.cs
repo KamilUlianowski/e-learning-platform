@@ -1,8 +1,6 @@
-﻿using E_LearningWeb.Models;
-using E_LearningWeb.Repositories;
+﻿using E_LearningWeb.Repositories;
 using E_LearningWeb.Services;
 using E_LearningWeb.ViewModels;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace E_LearningWeb.Controllers
@@ -18,29 +16,21 @@ namespace E_LearningWeb.Controllers
             _unitOfWork = unitOfWork;
         }
 
-
         [HttpGet]
         public ActionResult UpdateMovie(int id)
         {
-            var movie = _unitOfWork.Movies.FirstOrDefault(x => x.Id == id);
-            var newMovieViewModel = new NewMovieViewModel()
+            var movie = _unitOfWork.Movies.GetSingleMovie(id);
+            if (movie != null)
             {
-                Id = movie.Id,
-                CourseId = movie.CourseId,
-                Title = movie.Title,
-                VideoUrl = movie.VideoUrl
-            };
-            return View(newMovieViewModel);
+                return View(new NewMovieViewModel(movie));
+            }
+            return RedirectToAction("ListOfCourses", "Course");
         }
 
         [HttpPost]
         public ActionResult UpdateMovie(NewMovieViewModel movie)
         {
-            var movieToUpdate = _unitOfWork.Movies.FirstOrDefault(x => x.Id == movie.Id);
-            movieToUpdate.CourseId = movie.CourseId;
-            movieToUpdate.VideoUrl = movie.VideoUrl;
-            movieToUpdate.Title = movie.Title;
-            _unitOfWork.Complete();
+            _unitOfWork.Movies.UpdateMovie(movie);
             return RedirectToAction("Index", "Course", new { courseId = movie.CourseId });
         }
 

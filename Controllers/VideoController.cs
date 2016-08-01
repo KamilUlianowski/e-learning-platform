@@ -7,11 +7,12 @@ namespace E_LearningWeb.Controllers
     {
         public ActionResult Index(string videoUrl)
         {
-            var exampeMovie = new Movie()
+            var exampleMovie = new Movie()
             {
                 VideoUrl = videoUrl
             };
-            return View(exampeMovie);
+
+            return View(exampleMovie);
         }
     }
 }

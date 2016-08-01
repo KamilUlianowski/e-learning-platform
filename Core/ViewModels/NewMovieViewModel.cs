@@ -1,5 +1,6 @@
 ﻿using E_LearningWeb.Validators;
 using System.ComponentModel.DataAnnotations;
+using E_LearningWeb.Models;
 
 namespace E_LearningWeb.ViewModels
 {
@@ -15,5 +16,17 @@ namespace E_LearningWeb.ViewModels
         [Required]
         [YoutubeUrl]
         public string VideoUrl { get; set; }
+
+        public NewMovieViewModel(Movie movie)
+        {
+            Id = movie.Id;
+            CourseId = movie.CourseId;
+            Title = movie.Title;
+            VideoUrl = movie.VideoUrl;
+        }
+
+        public NewMovieViewModel()
+        {
+        }
     }
 }
